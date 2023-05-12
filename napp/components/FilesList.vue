@@ -3,10 +3,21 @@
   <div class="container mx-auto h-screen py-2 px-4">
     
     <!-- <button @click="addFiles()">Send</button> -->
+
+
+
+
+    <div class="flex gap-4">
+      <p class="text-gray-700 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p>
+      <p class="text-gray-700 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
+    </div>
+
+
+
     
     <div class="">
 
-      <p class=" text-gray-800 mdi mdi-file my-4">Проектов: {{ files.length }}</p>
+      <p class="  my-4"></p>
 
       <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
         <div class="w-80"><p class="">Название проекта</p></div>

@@ -22,15 +22,15 @@
     </div>
 
 
-    <div class="bg-sky-500">
+    <!-- <div class="bg-sky-500">
       <div class="container mx-auto py-2">
 
-        <div class="px-4">
+        <div class="flex gap-4 px-4">
           <p class="text-gray-100 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
         </div>
 
       </div>
-    </div>
+    </div> -->
 
 
   </div>
