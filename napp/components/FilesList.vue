@@ -1,11 +1,12 @@
 <template>
 
-  <div class="px-2 py-2">
-    <p class=" text-gray-800 mdi mdi-file my-4">Files: {{ files.length }}</p>
-
+  <div class="container mx-auto h-screen py-2 px-4">
+    
     <!-- <button @click="addFiles()">Send</button> -->
     
-    <div class="mx-8">
+    <div class="">
+
+      <p class=" text-gray-800 mdi mdi-file my-4">Проектов: {{ files.length }}</p>
 
       <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
         <div class="w-80"><p class="">Название проекта</p></div>
@@ -18,12 +19,29 @@
 
             <div class="w-80"><p class="">{{ file.name }}</p></div>
             <div class="w-40"><p class="text-center cursor-pointer mdi mdi-download"> Скачать</p></div>
+          
+            <form class="flex items-center space-x-6">
+              <label class="block">
+                <input
+                  type="file" class="block w-full text-sm text-slate-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-sky-50 file:text-sky-700
+                  hover:file:bg-sky-100
+                "/>
+              </label>
+            </form>
+
             <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
             <div class="w-40"><p class="text-center cursor-pointer mdi mdi-information"> Подробнее</p></div>
-            
-            
 
+
+          
+          
           </div>
+
+
           
         </div>      
       </transition-group>      
@@ -53,6 +71,8 @@ export default {
         {'id': 7, 'name': 'МТВ-8006'}, {'id': 8, 'name': 'МТВ-8007'}, {'id': 9, 'name': 'МТВ-8008'},
         {'id': 10, 'name': 'МТВ-8009'}, {'id': 11, 'name': 'МТВ-8010'}, {'id': 12, 'name': 'МТВ-8011'},
         {'id': 13, 'name': 'МТВ-8012'}, {'id': 14, 'name': 'МТВ-8013'}, {'id': 15, 'name': 'МТВ-8014'},
+        {'id': 16, 'name': 'МТВ-8015'}, {'id': 17, 'name': 'МТВ-8015'}, {'id': 18, 'name': 'МТВ-8017'},
+        {'id': 19, 'name': 'МТВ-8018'}, {'id': 20, 'name': 'МТВ-8019'},
       ],
     }
   },
