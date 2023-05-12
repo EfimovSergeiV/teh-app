@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container mx-auto h-screen py-2 px-4">
+  <div class="container mx-auto рh-screen py-2 px-4">
     
     <!-- <button @click="addFiles()">Send</button> -->
 
@@ -8,8 +8,9 @@
 
 
     <div class="flex gap-4">
-      <p class="text-gray-700 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p>
-      <p class="text-gray-700 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
+      <div class=" w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div>
+      <div class=" w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p></div>
+      <div class=" w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p></div>
     </div>
 
 
@@ -26,26 +27,32 @@
 
       <transition-group name="fade">
         <div v-for="file in files" :key="file.id">
-          <div class="flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
+          <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
-            <div class="w-80"><p class="">{{ file.name }}</p></div>
-            <div class="w-40"><p class="text-center cursor-pointer mdi mdi-download"> Скачать</p></div>
-          
-            <form class="flex items-center space-x-6">
-              <label class="block">
-                <input
-                  type="file" class="block w-full text-sm text-slate-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-full file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-sky-50 file:text-sky-700
-                  hover:file:bg-sky-100
-                "/>
-              </label>
-            </form>
+            <div class="">
+              <div class="w-80"><p class="">{{ file.name }}</p></div>
+            </div>
 
-            <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
-            <div class="w-40"><p class="text-center cursor-pointer mdi mdi-information"> Подробнее</p></div>
+            <div class="flex">
+              <div class="w-40"><p class="text-center cursor-pointer mdi mdi-download"> Скачать</p></div>
+              <form class="flex items-center space-x-6">
+                <label class="block">
+                  <input
+                    type="file" class="block w-full text-sm text-slate-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-sky-50 file:text-sky-700
+                    hover:file:bg-sky-100
+                  "/>
+                </label>
+              </form>
+              <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
+              <div class="w-40"><p class="text-center cursor-pointer mdi mdi-information"> Подробнее</p></div>              
+            </div>
+
+            
+
 
 
           
@@ -83,7 +90,6 @@ export default {
         {'id': 10, 'name': 'МТВ-8009'}, {'id': 11, 'name': 'МТВ-8010'}, {'id': 12, 'name': 'МТВ-8011'},
         {'id': 13, 'name': 'МТВ-8012'}, {'id': 14, 'name': 'МТВ-8013'}, {'id': 15, 'name': 'МТВ-8014'},
         {'id': 16, 'name': 'МТВ-8015'}, {'id': 17, 'name': 'МТВ-8015'}, {'id': 18, 'name': 'МТВ-8017'},
-        {'id': 19, 'name': 'МТВ-8018'}, {'id': 20, 'name': 'МТВ-8019'},
       ],
     }
   },

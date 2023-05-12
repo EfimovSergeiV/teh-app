@@ -15,7 +15,9 @@
       <div class="container mx-auto py-4">
 
         <div class="flex gap-4 px-4">
-          <p class="text-gray-100 font-semibold text-sm border-b border-gray-100"> Модели</p>
+          <p class="text-white font-semibold text-sm border-b border-white cursor-pointer"> Модели</p>
+          <p class="text-gray-300 font-semibold text-sm border-b border-gray-300 cursor-pointer"> Обнажёнка</p>
+          <p class="text-gray-300 font-semibold text-sm border-b border-gray-300 cursor-pointer"> Документы</p>
         </div>
 
       </div>
