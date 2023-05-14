@@ -1,74 +1,79 @@
 <template>
+  <div class="">
 
-  <div class="container mx-auto min-h-screen py-2 px-4">
-    
-    <!-- <button @click="addFiles()">Send</button> -->
-
-
-
-
-    <div class="flex gap-4">
-      <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div> 
-      <p class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</p>
-      <p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
-      <p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p>
+    <div class="bg-gray-100">
+      <div class="container mx-auto py-2 px-4">
+        <div class="flex gap-4 items-center ">
+          <div class="w-28"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div> 
+          <p class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</p>
+          <p class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</p>
+          <p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
+          <p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p>
+        </div>      
+      </div>      
     </div>
 
 
+    <div class="container mx-auto min-h-screen py-2 px-4">
+      
 
-    
-    <div class="">
 
-      <p class="  my-4"></p>
 
-      <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
-        <div class="w-80"><p class="">Название проекта</p></div>
-        <div class="w-[640px] text-center"><p class=""> Действия</p></div>
-      </div>
 
-      <transition-group name="fade">
-        <div v-for="file in files" :key="file.id">
-          <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
-            <div class="">
-              <div class="w-80"><p class="">{{ file.name }}</p></div>
-            </div>
+      
+      <div class="">
 
-            <div class="flex justify-end">
-              <div class="w-40"><p class="text-center cursor-pointer mdi mdi-download"> Скачать</p></div>
-              <form class="flex items-center space-x-6">
-                <label class="block">
-                  <input
-                    type="file" class="block w-full text-sm text-slate-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-white file:text-sky-700
-                    hover:file:bg-white
-                  "/>
-                </label>
-              </form>
-              <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
-              <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information"> Подробнее</p></div>              
-            </div>
+        <p class="  my-4"></p>
+
+        <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
+          <div class="w-80 text-xs"><p class="">Название проекта</p></div>
+          <div class="w-[640px] text-center text-xs"><p class=""> Действия</p></div>
+        </div>
+
+        <transition-group name="fade">
+          <div v-for="file in files" :key="file.id">
+            <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
+
+              <div class="">
+                <div class="w-80"><p class="">{{ file.name }}</p></div>
+              </div>
+
+              <div class="flex justify-end">
+                <div class="w-40"><p class="text-center cursor-pointer mdi mdi-download"> Скачать</p></div>
+                <form class="flex items-center space-x-6">
+                  <label class="block">
+                    <input
+                      type="file" class="block w-full text-sm text-slate-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-full file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-white file:text-sky-700
+                      hover:file:bg-white
+                    "/>
+                  </label>
+                </form>
+                <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
+                <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information"> Подробнее</p></div>              
+              </div>
+
+              
+
+
 
             
+            
+            </div>
 
 
+            
+          </div>      
+        </transition-group>      
+      </div>
 
-          
-          
-          </div>
 
-
-          
-        </div>      
-      </transition-group>      
     </div>
-
-
   </div>
-
 </template>
 
 <script>
