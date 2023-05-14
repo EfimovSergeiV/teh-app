@@ -3,10 +3,16 @@
     
     <div class="bg-sky-800">
       <div class="container mx-auto py-8">
-
-        <div class="px-4">
-          <img src="logo.webp" class="h-[35px]" />
+        <div class="flex items-center justify-between">
+          <div class="px-4">
+            <img src="logo.webp" class="h-[35px]" />
+          </div>
+          <div class="flex gap-4">
+            <div class=""><p class="mdi mdi-account text-white text-sm flex items-center">НовыйПользователь</p></div>
+            <div class="mdi mdi-star text-white text-sm flex items-center"><p>Рейтинг 150</p></div>
+          </div>
         </div>
+
 
       </div>
     </div>

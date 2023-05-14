@@ -22,7 +22,7 @@
 
       <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
         <div class="w-80"><p class="">Название проекта</p></div>
-        <div class="w-[640px]"><p class=""> Действия</p></div>
+        <div class="w-[640px] text-center"><p class=""> Действия</p></div>
       </div>
 
       <transition-group name="fade">
@@ -33,7 +33,7 @@
               <div class="w-80"><p class="">{{ file.name }}</p></div>
             </div>
 
-            <div class="flex">
+            <div class="flex justify-end">
               <div class="w-40"><p class="text-center cursor-pointer mdi mdi-download"> Скачать</p></div>
               <form class="flex items-center space-x-6">
                 <label class="block">
@@ -42,13 +42,13 @@
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0
                     file:text-sm file:font-semibold
-                    file:bg-sky-50 file:text-sky-700
-                    hover:file:bg-sky-100
+                    file:bg-white file:text-sky-700
+                    hover:file:bg-white
                   "/>
                 </label>
               </form>
               <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
-              <div class="w-40"><p class="text-center cursor-pointer mdi mdi-information"> Подробнее</p></div>              
+              <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information"> Подробнее</p></div>              
             </div>
 
             
