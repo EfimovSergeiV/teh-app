@@ -8,7 +8,7 @@
 
 
     <div class="flex gap-4">
-      <p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p>
+      <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div> 
       <p class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</p>
       <p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
       <p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p>
