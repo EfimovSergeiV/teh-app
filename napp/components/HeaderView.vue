@@ -2,9 +2,9 @@
   <div class="">
     
     <div class="bg-sky-800">
-      <div class="container mx-auto py-8">
+      <div class="container mx-auto py-8 px-4">
         <div class="flex items-center justify-between">
-          <div class="px-4">
+          <div class="">
             <img src="logo.webp" class="h-[35px]" />
           </div>
           <div class="flex gap-4">

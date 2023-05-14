@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container mx-auto рh-screen py-2 px-4">
+  <div class="container mx-auto min-h-screen py-2 px-4">
     
     <!-- <button @click="addFiles()">Send</button> -->
 
@@ -8,9 +8,10 @@
 
 
     <div class="flex gap-4">
-      <div class=" w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div>
-      <div class=" w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p></div>
-      <div class=" w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p></div>
+      <p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p>
+      <p class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</p>
+      <p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
+      <p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p>
     </div>
 
 
