@@ -27,7 +27,7 @@
 
             <div class="flex items-center justify-between">
 
-              <form class="flex items-center space-x-6">
+              <!-- <form class="flex items-center space-x-6">
                 <label class="block">
                   <input
                     type="file" class="block w-full text-sm text-gray-100
@@ -36,11 +36,26 @@
                     file:text-sm file:font-semibold
                     file:bg-white file:text-sky-700
                     hover:file:bg-white 
-                  " @change="onFileChange" />
+                  " @change="uploadFile" />
                 </label>
               </form>
 
-              <button class="text-white " @click="createProject">Создать проект</button>
+              <button class="text-white " @click="createProject">Создать проект</button> -->
+
+              <div>
+                <h2>Upload File</h2>
+                <form @submit.prevent="uploadFile">
+                  <div>
+                    <label for="file">File:</label>
+                    <input id="file" type="file" @change="onFileChange" />
+                  </div>
+                  <button type="submit">Upload</button>
+                  <div v-if="uploadProgress !== null">
+                    <span>Upload Progress:</span>
+                    <progress :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                  </div>
+                </form>
+              </div>
 
             </div>
 
@@ -59,6 +74,10 @@
 </template>
 
 <script>
+import 'axios-progress-bar/dist/nprogress.css';
+// import NProgress from 'axios-progress-bar';
+// import axios from 'axios';
+
 export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
@@ -67,49 +86,76 @@ export default {
   },
   data() {
     return {
-      name: null,
-      description: null,
+      name: 'МТВ-8002',
+      description: "Не большое описание",
       filename: null,
+
+      file: null,
+      uploadProgress: null,
     }
   },
   methods: {
-    onFileChange(e) {
-      const files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-      this.createImage(files[0]);
+    onFileChange(event) {
+      this.file = event.target.files[0];
     },
-    createImage(file) {
-      // const image = new Image();
-      const reader = new FileReader();
-      const vm = this;
+    async uploadFile() {
+      const formData = new FormData();
+      formData.append('file', this.file);
 
-      reader.onload = (e) => {
-        vm.image = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
+      try {
+        const response = await this.$axios.post('s/projects/', formData, {
+          onUploadProgress: (progressEvent) => {
+            this.uploadProgress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+          },
+        });
 
-
-    createProject(filename) {
-
-      const data = {
-        name: this.name,
-        description: this.description,
-        filename: this.filename
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
       }
-      console.log(filename)
+    },
 
-      this.$axios.$post('s/projects/', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then((resp) => {
-        // this.saveOrder(resp)
 
-        console.log("TRY")
-      }).catch(() => {
-        console.log('CATCH')
-      })
+
+    // onFileChange(e) {
+    //   const files = e.target.files || e.dataTransfer.files;
+    //   if (!files.length)
+    //     return;
+    //   this.createImage(files[0]);
+    // },
+    // createImage(file) {
+    //   // const image = new Image();
+    //   const reader = new FileReader();
+    //   const vm = this;
+
+    //   reader.onload = (e) => {
+    //     vm.image = e.target.result;
+    //   };
+    //   reader.readAsDataURL(file);
+    // },
+
+
+    // createProject(filename) {
+
+    //   const data = {
+    //     name: this.name,
+    //     description: this.description,
+    //     filename: this.filename
+    //   }
+    //   console.log(filename)
+
+    //   this.$axios.$post('s/projects/', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then((resp) => {
+    //     // this.saveOrder(resp)
+
+    //     console.log("TRY")
+    //   }).catch(() => {
+    //     console.log('CATCH')
+    //   })
      
 
-    },
+    // },
   },
 }
 </script>
