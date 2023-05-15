@@ -15,22 +15,41 @@
             </div>
 
 
-            <div class="flex items-center justify-between">
+            <form  class="flex items-center space-x-6" @submit.prevent="uploadFile">
+              <label class="block">
+                <input
+                  id="file" type="file"
+                  class="block w-full text-sm text-slate-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-white file:text-sky-700
+                  hover:file:bg-white
+                " @change="onFileChange"/>
+              </label>
+
+              <div v-if="uploadProgress !== null">
+                <span class="text-white">Upload Progress: {{ uploadProgress }}% </span>
+                <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+              </div>
+              
+              <button class="" type="submit">Загрузить файл</button>
+
+            </form>
+
+            <!-- <div class="flex items-center justify-between">
               <div>
-                <h2>Upload File</h2>
                 <form @submit.prevent="uploadFile">
                   <div>
                     <label for="file">File:</label>
                     <input id="file" type="file" @change="onFileChange" />
                   </div>
-                  <button type="submit">Upload</button>
-                  <div v-if="uploadProgress !== null">
-                    <span class="text-white">Upload Progress: {{ uploadProgress }}% </span>
-                    <progress :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
-                  </div>
+                  
+
+
                 </form>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
