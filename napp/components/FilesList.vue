@@ -16,12 +16,6 @@
 
     <div class="container mx-auto min-h-screen py-2 px-4">
       
-
-
-
-
-
-      
       <div class="">
 
         <p class="  my-4"></p>
@@ -57,12 +51,6 @@
                 <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information"> Подробнее</p></div>              
               </div>
 
-              
-
-
-
-            
-            
             </div>
 
 

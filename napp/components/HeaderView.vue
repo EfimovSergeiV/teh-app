@@ -9,7 +9,7 @@
           </div>
           <div class="flex gap-4">
             <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold">Пользователь</p></div>
-            <div class="mdi mdi-star text-white text-sm flex items-center font-semibold"><p>Рейтинг 150</p></div>
+            <!-- <div class="mdi mdi-star text-white text-sm flex items-center font-semibold"><p>Рейтинг 150</p></div> -->
           </div>
         </div>
 
@@ -22,7 +22,7 @@
 
         <div class="flex gap-4 px-4">
           <p class="text-white font-semibold text-sm border-b border-white cursor-pointer"> Модели</p>
-          <p class="text-gray-300 font-semibold text-sm border-b border-gray-300 cursor-pointer"> Обнажёнка</p>
+          <!-- <p class="text-gray-300 font-semibold text-sm border-b border-gray-300 cursor-pointer"> Обнажёнка</p> -->
           <p class="text-gray-300 font-semibold text-sm border-b border-gray-300 cursor-pointer"> Документы</p>
         </div>
 
