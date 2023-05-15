@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from storage.models import ProjectArchiveModel
 from storage.serializers import ProjectArchiveSerializer
 from django.core.files.storage import FileSystemStorage
+import hashlib
 
 
 class ProjectArchiveView(APIView):
@@ -24,6 +25,14 @@ class ProjectArchiveView(APIView):
 
         file = request.FILES['file']
         fs = FileSystemStorage()
+
+        # Узнаём хэш сумму
+        md5 = hashlib.md5()
+        for chunk in file.chunks():
+            md5.update(chunk)
+        file_md5sum = md5.hexdigest()
+        print(file_md5sum)
+        
 
         fs.save(file.name, file)
 
