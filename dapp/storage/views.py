@@ -17,13 +17,14 @@ class ProjectArchiveView(APIView):
         return Response(sr.data)
     
     def post(self, request):
-        print(request.data)
+        # print(request.data)
 
         file = request.data["file"]
-        print(f'{type(file)}:{file}')
+        # print(f'{type(file)}:{file}')
 
-        # file = request.FILES['file']
-        # fs = FileSystemStorage()
-        # filename = fs.save(file.name, file)
+        file = request.FILES['file']
+        fs = FileSystemStorage()
+
+        fs.save(file.name, file)
 
         return Response({"status": 200})
