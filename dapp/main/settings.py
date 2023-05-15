@@ -26,7 +26,12 @@ SECRET_KEY = 'django-insecure-#%$x3lr=75xcn!wo_9x_-@6gus9bcv83d&xlbe5i^ga2e46em3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '*',
+    # '0.0.0.0',
+    # '127.0.0.1',
+    # '192.168.60.201'
+]
 
 
 # Application definition
@@ -56,6 +61,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://192.168.60.201",
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -120,6 +126,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+TIMEOUT = 1000
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024 * 1024  # 100 GB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024 * 1024  # 100 GB
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -51,7 +51,7 @@
                   </div>
                   <button type="submit">Upload</button>
                   <div v-if="uploadProgress !== null">
-                    <span>Upload Progress:</span>
+                    <span class="text-white">Upload Progress: {{ uploadProgress }}% </span>
                     <progress :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
                   </div>
                 </form>
@@ -100,6 +100,8 @@ export default {
     },
     async uploadFile() {
       const formData = new FormData();
+      formData.append('name', this.name);
+      formData.append('description', this.description);
       formData.append('file', this.file);
 
       try {
