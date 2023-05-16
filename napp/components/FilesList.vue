@@ -49,7 +49,7 @@
                 </form>
                 <transition name="fade" mode="out-in">
 
-                  <button v-if="uploadedId !== fileResp.id" :dissabled="dissableBtns" class="w-40 text-center cursor-pointer mdi mdi-upload" @click="uploadFile(fileResp.id)"> Загрузить</button>
+                  <button v-if="uploadedId !== fileResp.id" :disabled="dissableBtns" class="w-40 text-center cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile(fileResp.id)"> Загрузить</button>
                   <div v-else class="">
                     <div class="text-center">
                       <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
