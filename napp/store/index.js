@@ -1,8 +1,13 @@
 /* eslint-disable camelcase */
 
 export const state = () => ({
-    files: [], 
-    })
+    files: [],
+    toasts: [
+      // {'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'},
+      // {'id': 2, 'msg': "Не выбран файл", 'type': 'error'},
+      // {'id': 3, 'msg': null, 'type': 'success'},
+    ],
+  })
   
 //   export const getters = {
 //     getCounter(state) {
@@ -16,7 +21,17 @@ export const state = () => ({
     },
     cleanListFiles(state) {
       state.files = []
-    }
+    },
+    addToast(state, toast) {
+      state.toasts.push(toast)
+    },
+    hideToast(state, id) {
+      const toast = state.toasts.findIndex((item) => item.id === id)
+      state.toasts.splice(toast, 1)
+    },
+    clearToast(state) {
+      state.toasts.shift()
+    },
   }
   
   export const actions = {
@@ -28,6 +43,17 @@ export const state = () => ({
         }, file * 50);
       }  
     },
-
+    addToast({ commit }, toast ) {
+      /// Сделать присваивание ID
+      commit('addToast', toast)
+  
+      setTimeout(() => {
+        commit('clearToast')
+      }, "8000" )
+  
+    },
+    hideToast({ commit }, toast ) {
+      commit('hideToast', toast)
+    },
   }
   

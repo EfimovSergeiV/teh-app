@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from storage.models import ProjectArchiveModel
@@ -49,7 +50,7 @@ class ProjectArchiveView(APIView):
 
         if check_zip_password(file):
             print("обнаружен пароль на архиве")
-            return Response({"status": "Не сохранено. На архиве обнаружен пароль"})
+            return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
 
 
         else:
@@ -63,4 +64,4 @@ class ProjectArchiveView(APIView):
 
             fs.save(file.name, file)
 
-            return Response({"status": 200})
+            return Response(data={'id': 1, 'msg': f'MD: {file_md5sum}', 'type': 'success'})

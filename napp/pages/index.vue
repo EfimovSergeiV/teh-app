@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
   name: 'IndexPage',
@@ -65,13 +66,14 @@ export default {
     return {
       name: 'МТВ-8002',
       description: "Не большое описание",
-      filename: null,
-
       file: null,
       uploadProgress: 0,
     }
   },
   methods: {
+    ...mapActions({
+      addToast: 'addToast',
+    }),
     onFileChange(event) {
       this.file = event.target.files[0];
     },
@@ -81,19 +83,35 @@ export default {
       formData.append('description', this.description);
       formData.append('file', this.file);
 
-      try {
-        const response = await this.$axios.post('s/projects/', formData, {
-          onUploadProgress: (progressEvent) => {
-            this.uploadProgress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-          },
-        });
+      if (this.name && this.description && this.file ) {
+        try {
+          const response = await this.$axios.post('s/projects/', formData, {
+            onUploadProgress: (progressEvent) => {
+              this.uploadProgress = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+            },
+          });
 
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
+          console.log(response.data);
+
+          if (response.data.type === 'error') {
+            this.addToast(response.data)
+          } else {
+            this.name = null
+            this.description = null
+            this.file = null
+
+            this.addToast(response.data)
+          }
+
+        } catch (error) {
+          this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
+        }        
+      } else {
+        this.addToast({'id': 1, 'msg': "Нет данных для отправки", 'type': 'error'},)
       }
+
     },
 
   },
