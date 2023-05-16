@@ -31,7 +31,13 @@ export const state = () => ({
     },
     createProject(state) {
       state.showCreateProject = !state.showCreateProject
-    }
+    },
+    // addNewUploadFile(state, { id, file }) {
+    //   console.log(id, file)
+    //   const newFile = state.files.find((item) => item.id === id)
+    //   newFile.upload = file.name
+
+    // },
   }
   
   export const actions = {
@@ -56,8 +62,10 @@ export const state = () => ({
       commit('hideToast', toast)
     },
     createProject({ commit }) {
-      console.log('akjgfhja')
       commit('createProject')
-    }
+    },
+    // addNewUploadFile({ commit }, data) {
+    //   commit('addNewUploadFile', { id: data.id, file: data.file })
+    // }
   }
   

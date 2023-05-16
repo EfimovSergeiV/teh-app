@@ -18,18 +18,17 @@
       
       <div class="">
 
-
         <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
           <div class="w-80 text-xs"><p class="">Название проекта</p></div>
           <div class="w-[640px] text-center text-xs"><p class=""> Действия</p></div>
         </div>
 
         <transition-group v-if="files.length > 0" name="fade">
-          <div v-for="file in files" :key="file.id">
+          <div v-for="fileResp in files" :key="fileResp.id">
             <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
               <div class="">
-                <div class="w-80"><p class="">{{ file.name }}</p></div>
+                <div class="w-80"><p class="">{{ fileResp }}</p></div>
               </div>
 
               <div class="flex justify-end">
@@ -37,16 +36,29 @@
                 <form class="flex items-center space-x-6">
                   <label class="block">
                     <input
-                      type="file" class="block w-full text-sm text-slate-500
+                      :id="fileResp.id" type="file" class="block w-full text-sm text-slate-500
                       file:mr-4 file:py-2 file:px-4
                       file:rounded-full file:border-0
                       file:text-sm file:font-semibold
                       file:bg-white file:text-sky-700
                       hover:file:bg-white
-                    "/>
+                    " @change="onFileChange"/>
                   </label>
                 </form>
-                <div class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
+                <transition name="fade">
+
+                  <div v-if="!file" class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
+                  <div v-else class="">
+                    <div class="text-center">
+                      <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+                    </div>                
+                    <div class="">
+                      <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                    </div>
+                  </div>
+
+                </transition>
+
                 <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information"> Подробнее</p></div>              
               </div>
 
@@ -72,7 +84,7 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'FilesList',
   props: {
-    files: {
+    filess: {
       type: Array,
       default: Array,
     },
@@ -87,6 +99,11 @@ export default {
         {'id': 13, 'name': 'МТВ-8012'}, {'id': 14, 'name': 'МТВ-8013'}, {'id': 15, 'name': 'МТВ-8014'},
         {'id': 16, 'name': 'МТВ-8015'}, {'id': 17, 'name': 'МТВ-8015'}, {'id': 18, 'name': 'МТВ-8017'},
       ],
+      name: null,
+      description: null,
+      file: null,
+      uploadProgress: 0,
+      btnStatus: false,
     }
   },
   computed: {
@@ -103,8 +120,52 @@ export default {
   methods: {
     ...mapActions({
       addFiles: 'addFiles',
+      addNewUploadFile: 'addNewUploadFile',
       createProject: 'createProject'
     }),
+    onFileChange(event) {
+      console.log(event)
+      console.log(event.target.id)
+      // this.file = event.event.target.files[0];
+    },
+    async uploadFile() {
+      const formData = new FormData();
+      formData.append('name', this.name);
+      formData.append('description', this.description);
+      formData.append('file', this.file);
+
+      if (this.name && this.file ) {
+        try {
+          this.btnStatus = true;
+          const response = await this.$axios.post('s/projects/', formData, {
+            onUploadProgress: (progressEvent) => {
+              this.uploadProgress = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+            },
+          });
+
+          if (response.data.type === 'error') {
+            this.addToast(response.data)
+            this.btnStatus = false
+          } else {
+            this.name = null
+            this.description = null
+            this.file = null
+            this.btnStatus = false
+            this.createProject()
+            this.addToast(response.data)
+          }
+
+        } catch (error) {
+          this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
+          this.btnStatus = false
+        }        
+      } else {
+        this.addToast({'id': 1, 'msg': "Нет данных для отправки", 'type': 'error'},)
+      }
+
+    },
   },
 }
 </script>

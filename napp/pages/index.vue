@@ -4,8 +4,8 @@
     <div class="relative">
       <div class="container mx-auto px-4">
         <transition name="fade">
-          <div v-if="showCreateProject" id="create-project" class="absolute z-10 my-2">
-            <div class="bg-sky-900 w-[600px] px-4 py-4 rounded-lg">
+          <div v-if="showCreateProject" id="create-project" class="fixed z-10 my-2">
+            <div class="bg-sky-900 w-[600px] px-4 py-4 rounded-lg shadow-lg shadow-gray-900">
               <div class="flex items-center justify-end">
                 <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="createProject"> Закрыть</p>
               </div>
@@ -64,7 +64,7 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
-    const projects = await $axios.$get('s/projects/')
+    const projects = await $axios.$get('s/projects/getall/')
     return { projects }
   },
   data() {
@@ -99,7 +99,7 @@ export default {
       if (this.name && this.file ) {
         try {
           this.btnStatus = true;
-          const response = await this.$axios.post('s/projects/', formData, {
+          const response = await this.$axios.post('s/projects/create/', formData, {
             onUploadProgress: (progressEvent) => {
               this.uploadProgress = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total
@@ -113,8 +113,7 @@ export default {
           } else {
             this.name = null
             this.description = null
-            this.file = null
-            this.btnStatus = false
+
             this.createProject()
             this.addToast(response.data)
           }
@@ -126,6 +125,9 @@ export default {
       } else {
         this.addToast({'id': 1, 'msg': "Нет данных для отправки", 'type': 'error'},)
       }
+        this.file = null
+        this.btnStatus = false
+        this.uploadProgress = 0
 
     },
 

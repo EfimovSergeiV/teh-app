@@ -27,10 +27,8 @@ def check_zip_password(file_path):
         # Если файл не является ZIP-архивом, возвращаем False
         return False
 
-
-class ProjectArchiveView(APIView):
-    """ Представление файлов моделей """
-
+class GetallProjectArchiveView(APIView):
+    
     def get(self, request):
 
         qs = ProjectArchiveModel.objects.get(id=1)
@@ -38,15 +36,16 @@ class ProjectArchiveView(APIView):
 
         return Response(sr.data)
     
-    def post(self, request):
-        # print(request.data)
 
-        file = request.data["file"]
-        # print(f'{type(file)}:{file}')
+
+class CreateProjectArchiveView(APIView):
+    """ Представление файлов моделей """
+
+
+    def post(self, request):
 
         file = request.FILES['file']
         fs = FileSystemStorage()
-
 
         if check_zip_password(file):
             print("обнаружен пароль на архиве")
@@ -65,3 +64,13 @@ class ProjectArchiveView(APIView):
             fs.save(file.name, file)
 
             return Response(data={'id': 1, 'msg': f'MD: {file_md5sum}', 'type': 'success'})
+        
+
+class AppendProjectArchiveView(APIView):
+
+    def post(self, request):
+        id = request.data["id"]
+        file = request.FILES['file']
+        print(f"{ id }, { file }")
+
+        return Response(data={'id': 1})

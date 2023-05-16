@@ -1,7 +1,15 @@
 from django.urls import path
-from storage.views import ProjectArchiveView
+
+from storage.views import (
+    GetallProjectArchiveView, 
+    CreateProjectArchiveView, 
+    AppendProjectArchiveView,
+)
+
 
 urlpatterns = [
-    path('projects/', ProjectArchiveView.as_view()),
+    path('projects/getall/', GetallProjectArchiveView.as_view()),
+    path('projects/create/', CreateProjectArchiveView.as_view()),
+    path('projects/append/', AppendProjectArchiveView.as_view()),
 ]
 
