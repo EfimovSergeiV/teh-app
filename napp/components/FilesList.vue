@@ -16,7 +16,7 @@
 
     <div class="container mx-auto min-h-screen py-2 px-4">
 
-      <p class="text-xs">{{ uploadFiles }}</p>
+      <!-- <p class="text-xs">{{ uploadFiles }}</p> -->
       
       <div class="">
 
@@ -133,7 +133,7 @@ export default {
 
       if (uploadFile === -1) {
         this.uploadFiles.push({
-          "id": EventData.target.id,
+          "id": lineId,
           "file": EventData.target.files[0]
         })        
       } else {
@@ -148,9 +148,10 @@ export default {
 
       if (uploadFile !== -1) {
         const formData = new FormData();
+        const fileData = this.uploadFiles.pop(uploadFile)
         /// Сделать через pop()
-        formData.append('id', this.uploadFiles[uploadFile].id);
-        formData.append('file', this.uploadFiles[uploadFile].file);
+        formData.append('id', fileData.id);
+        formData.append('file', fileData.file);
 
           try {
 
