@@ -47,9 +47,9 @@
                     " @change="onFileChange"/>
                   </label>
                 </form>
-                <transition name="fade">
+                <transition name="fade" mode="out-in">
 
-                  <div v-if="!file" class="w-40" @click="uploadFile(fileResp.id)"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
+                  <button v-if="uploadedId !== fileResp.id" :dissabled="dissableBtns" class="w-40 text-center cursor-pointer mdi mdi-upload" @click="uploadFile(fileResp.id)"> Загрузить</button>
                   <div v-else class="">
                     <div class="text-center">
                       <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
@@ -106,14 +106,14 @@ export default {
       file: null,
       uploadProgress: 0,
       btnStatus: false,
-      uploadFiles: []
+      uploadFiles: [],
+      uploadedId: null,
+      dissableBtns: false
     }
   },
   computed: {
-    
     ...mapState({
       files: (state) => state.files,
-      
     }),
 
   },
@@ -129,56 +129,60 @@ export default {
     }),
     onFileChange(event) {
       const EventData = event
+      const lineId = EventData.target.id
+      const uploadFile = this.uploadFiles.findIndex((item) => item.id === String(lineId))
 
-      // this.file = event.target.files[0];
-      // console.log(this.file)
+      if (uploadFile === -1) {
+        this.uploadFiles.push({
+          "id": EventData.target.id,
+          "file": EventData.target.files[0]
+        })        
+      } else {
+        this.uploadFiles[uploadFile].file = EventData.target.files[0]
+      }
 
-      this.uploadFiles.push({
-        "id": EventData.target.id,
-        "file": EventData.target.files[0]
-      })
-
-      // console.log(this.dataSet[0].id)
-      // console.log(this.dataSet[0].file)
 
     },
     async uploadFile(id) {
 
       const uploadFile = this.uploadFiles.findIndex((item) => item.id === String(id))
-      const formData = new FormData();
-      /// Сделать через pop()
-      formData.append('id', this.uploadFiles[uploadFile].id);
-      formData.append('file', this.uploadFiles[uploadFile].file);
 
+      if (uploadFile !== -1) {
+        const formData = new FormData();
+        /// Сделать через pop()
+        formData.append('id', this.uploadFiles[uploadFile].id);
+        formData.append('file', this.uploadFiles[uploadFile].file);
 
-        try {
-          this.btnStatus = true;
-          const response = await this.$axios.post('s/projects/append/', formData, {
-            onUploadProgress: (progressEvent) => {
-              this.uploadProgress = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total
-              );
-            },
-          });
+          try {
+            this.btnStatus = true;
+            this.uploadedId = id
+            this.dissableBtns = true
 
-          if (response.data.type === 'error') {
-            // this.addToast(response.data)
-            // this.btnStatus = false
-            console.log('sdfhsdfskdf')
-          } else {
-            console.log('sdfhsdfskdf')
-            // this.name = null
-            // this.description = null
-            // this.file = null
-            // this.btnStatus = false
-            // this.createProject()
-            // this.addToast(response.data)
+            const response = await this.$axios.post('s/projects/append/', formData, {
+              onUploadProgress: (progressEvent) => {
+                this.uploadProgress = Math.round(
+                  (progressEvent.loaded * 100) / progressEvent.total
+                );
+              },
+            });
+
+            if (response.data.type === 'error') {
+              this.addToast(response.data)
+            } else {
+              console.log('sdfhsdfskdf')
+            }
+
+          } catch (error) {
+            this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
+            this.btnStatus = false
           }
 
-        } catch (error) {
-          this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
-          this.btnStatus = false
-        }
+      } else {
+        this.addToast({'id': 1, 'msg': "Нечего загружать", 'type': 'error'})
+      }
+
+      this.uploadedId = null
+      this.dissableBtns = false
 
     },
   },

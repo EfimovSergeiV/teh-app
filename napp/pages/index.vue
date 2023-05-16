@@ -125,9 +125,9 @@ export default {
       } else {
         this.addToast({'id': 1, 'msg': "Нет данных для отправки", 'type': 'error'},)
       }
-        this.file = null
-        this.btnStatus = false
-        this.uploadProgress = 0
+      this.file = null
+      this.btnStatus = false
+      this.uploadProgress = 0
 
     },
 
