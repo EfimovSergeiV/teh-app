@@ -28,7 +28,7 @@
                   " @change="onFileChange"/>
 
                   <div class="mt-4">
-                    <button id="file" class="px-6 py-2 bg-white rounded-full text-sm font-semibold text-sky-900" type="submit">Создать</button>
+                    <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" type="submit">Создать</button>
                   </div>
 
                 </form>
@@ -68,6 +68,7 @@ export default {
       description: "Не большое описание",
       file: null,
       uploadProgress: 0,
+      btnStatus: false,
     }
   },
   methods: {
@@ -85,6 +86,7 @@ export default {
 
       if (this.name && this.description && this.file ) {
         try {
+          this.btnStatus = true;
           const response = await this.$axios.post('s/projects/', formData, {
             onUploadProgress: (progressEvent) => {
               this.uploadProgress = Math.round(
@@ -93,20 +95,19 @@ export default {
             },
           });
 
-          console.log(response.data);
-
           if (response.data.type === 'error') {
             this.addToast(response.data)
           } else {
             this.name = null
             this.description = null
             this.file = null
-
+            this.btnStatus = false
             this.addToast(response.data)
           }
 
         } catch (error) {
           this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
+          this.btnStatus = false
         }        
       } else {
         this.addToast({'id': 1, 'msg': "Нет данных для отправки", 'type': 'error'},)
