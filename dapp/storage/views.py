@@ -26,9 +26,12 @@ def check_zip_password(file_path):
     except zipfile.BadZipFile:
         # Если файл не является ZIP-архивом, возвращаем False
         return False
+    
+def get_md5_summ():
+    pass
 
 class GetallProjectArchiveView(APIView):
-    
+
     def get(self, request):
 
         qs = ProjectArchiveModel.objects.get(id=1)
@@ -69,8 +72,24 @@ class CreateProjectArchiveView(APIView):
 class AppendProjectArchiveView(APIView):
 
     def post(self, request):
-        id = request.data["id"]
-        file = request.FILES['file']
-        print(f"{ id }, { file }")
 
-        return Response(data={'id': 1})
+        file = request.FILES['file']
+        fs = FileSystemStorage()
+
+        if check_zip_password(file):
+            print("обнаружен пароль на архиве")
+            return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
+
+
+        else:
+            # Узнаём хэш сумму
+            md5 = hashlib.md5()
+            for chunk in file.chunks():
+                md5.update(chunk)
+            file_md5sum = md5.hexdigest()
+            print(file_md5sum)
+            
+
+            fs.save(file.name, file)
+
+            return Response(data={'id': 1, 'msg': f'MD: {file_md5sum}', 'type': 'success'})

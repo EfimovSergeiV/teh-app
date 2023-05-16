@@ -15,6 +15,8 @@
 
 
     <div class="container mx-auto min-h-screen py-2 px-4">
+
+      <p class="text-xs">{{ uploadFiles }}</p>
       
       <div class="">
 
@@ -28,7 +30,7 @@
             <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
               <div class="">
-                <div class="w-80"><p class="">{{ fileResp }}</p></div>
+                <div class="w-80"><p class="">{{ fileResp.name }}</p></div>
               </div>
 
               <div class="flex justify-end">
@@ -47,7 +49,7 @@
                 </form>
                 <transition name="fade">
 
-                  <div v-if="!file" class="w-40"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
+                  <div v-if="!file" class="w-40" @click="uploadFile(fileResp.id)"><p class="text-center cursor-pointer mdi mdi-upload"> Загрузить</p></div>
                   <div v-else class="">
                     <div class="text-center">
                       <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
@@ -104,6 +106,7 @@ export default {
       file: null,
       uploadProgress: 0,
       btnStatus: false,
+      uploadFiles: []
     }
   },
   computed: {
@@ -121,23 +124,36 @@ export default {
     ...mapActions({
       addFiles: 'addFiles',
       addNewUploadFile: 'addNewUploadFile',
-      createProject: 'createProject'
+      createProject: 'createProject',
+      addToast: 'addToast',
     }),
     onFileChange(event) {
-      console.log(event)
-      console.log(event.target.id)
-      // this.file = event.event.target.files[0];
-    },
-    async uploadFile() {
-      const formData = new FormData();
-      formData.append('name', this.name);
-      formData.append('description', this.description);
-      formData.append('file', this.file);
+      const EventData = event
 
-      if (this.name && this.file ) {
+      // this.file = event.target.files[0];
+      // console.log(this.file)
+
+      this.uploadFiles.push({
+        "id": EventData.target.id,
+        "file": EventData.target.files[0]
+      })
+
+      // console.log(this.dataSet[0].id)
+      // console.log(this.dataSet[0].file)
+
+    },
+    async uploadFile(id) {
+
+      const uploadFile = this.uploadFiles.findIndex((item) => item.id === String(id))
+      const formData = new FormData();
+      /// Сделать через pop()
+      formData.append('id', this.uploadFiles[uploadFile].id);
+      formData.append('file', this.uploadFiles[uploadFile].file);
+
+
         try {
           this.btnStatus = true;
-          const response = await this.$axios.post('s/projects/', formData, {
+          const response = await this.$axios.post('s/projects/append/', formData, {
             onUploadProgress: (progressEvent) => {
               this.uploadProgress = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total
@@ -146,24 +162,23 @@ export default {
           });
 
           if (response.data.type === 'error') {
-            this.addToast(response.data)
-            this.btnStatus = false
+            // this.addToast(response.data)
+            // this.btnStatus = false
+            console.log('sdfhsdfskdf')
           } else {
-            this.name = null
-            this.description = null
-            this.file = null
-            this.btnStatus = false
-            this.createProject()
-            this.addToast(response.data)
+            console.log('sdfhsdfskdf')
+            // this.name = null
+            // this.description = null
+            // this.file = null
+            // this.btnStatus = false
+            // this.createProject()
+            // this.addToast(response.data)
           }
 
         } catch (error) {
           this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
           this.btnStatus = false
-        }        
-      } else {
-        this.addToast({'id': 1, 'msg': "Нет данных для отправки", 'type': 'error'},)
-      }
+        }
 
     },
   },
