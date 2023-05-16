@@ -7,7 +7,7 @@
           <div class="w-28"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div> 
           <p class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</p>
           <p class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</p>
-          <p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer"> Создать проект</p>
+          <p class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProject"> Создать проект</p>
           <p class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</p>
         </div>      
       </div>      
@@ -53,8 +53,6 @@
 
             </div>
 
-
-            
           </div>      
         </transition-group>      
       </div>
@@ -91,8 +89,8 @@ export default {
     
     ...mapState({
       files: (state) => state.files,
+      
     }),
-
 
   },
   mounted() {
@@ -101,6 +99,7 @@ export default {
   methods: {
     ...mapActions({
       addFiles: 'addFiles',
+      createProject: 'createProject'
     }),
   },
 }

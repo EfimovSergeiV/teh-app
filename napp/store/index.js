@@ -2,11 +2,8 @@
 
 export const state = () => ({
     files: [],
-    toasts: [
-      // {'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'},
-      // {'id': 2, 'msg': "Не выбран файл", 'type': 'error'},
-      // {'id': 3, 'msg': null, 'type': 'success'},
-    ],
+    toasts: [],
+    showCreateProject: false
   })
   
 //   export const getters = {
@@ -32,6 +29,9 @@ export const state = () => ({
     clearToast(state) {
       state.toasts.shift()
     },
+    createProject(state) {
+      state.showCreateProject = !state.showCreateProject
+    }
   }
   
   export const actions = {
@@ -55,5 +55,9 @@ export const state = () => ({
     hideToast({ commit }, toast ) {
       commit('hideToast', toast)
     },
+    createProject({ commit }) {
+      console.log('akjgfhja')
+      commit('createProject')
+    }
   }
   
