@@ -18,7 +18,6 @@
       
       <div class="">
 
-        <p class="  my-4"></p>
 
         <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
           <div class="w-80 text-xs"><p class="">Название проекта</p></div>
@@ -57,7 +56,7 @@
         </transition-group>
 
         <div v-else class=" flex justify-center items-center py-12">
-          <p class="mdi mdi-close"> нет файлов </p>
+          <p class="mdi mdi-close"> Нет файлов </p>
         </div>
 
       </div>

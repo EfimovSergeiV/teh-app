@@ -2,9 +2,9 @@
 
   <div class="">
     <div class="relative">
-      <div class="container mx-auto py-2 px-4">
+      <div class="container mx-auto px-4">
         <transition name="fade">
-          <div v-if="showCreateProject" id="create-project" class="absolute z-10">
+          <div v-if="showCreateProject" id="create-project" class="absolute z-10 my-2">
             <div class="bg-sky-900 w-[600px] px-4 py-4 rounded-lg">
               <div class="flex items-center justify-end">
                 <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="createProject"> Закрыть</p>
