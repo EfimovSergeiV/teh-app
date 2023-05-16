@@ -105,7 +105,6 @@ export default {
       description: null,
       file: null,
       uploadProgress: 0,
-      btnStatus: false,
       uploadFiles: [],
       uploadedId: null,
       dissableBtns: false
@@ -154,7 +153,7 @@ export default {
         formData.append('file', this.uploadFiles[uploadFile].file);
 
           try {
-            this.btnStatus = true;
+
             this.uploadedId = id
             this.dissableBtns = true
 
@@ -166,15 +165,10 @@ export default {
               },
             });
 
-            if (response.data.type === 'error') {
-              this.addToast(response.data)
-            } else {
-              console.log('sdfhsdfskdf')
-            }
+            this.addToast(response.data)
 
           } catch (error) {
             this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
-            this.btnStatus = false
           }
 
       } else {

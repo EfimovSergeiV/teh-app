@@ -108,15 +108,14 @@ export default {
           });
 
           if (response.data.type === 'error') {
-            this.addToast(response.data)
             this.btnStatus = false
           } else {
             this.name = null
             this.description = null
-
             this.createProject()
-            this.addToast(response.data)
           }
+          
+          this.addToast(response.data)
 
         } catch (error) {
           this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
