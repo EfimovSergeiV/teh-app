@@ -25,7 +25,7 @@
           <div class="w-[640px] text-center text-xs"><p class=""> Действия</p></div>
         </div>
 
-        <transition-group name="fade">
+        <transition-group v-if="files.length > 0" name="fade">
           <div v-for="file in files" :key="file.id">
             <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
@@ -54,7 +54,12 @@
             </div>
 
           </div>      
-        </transition-group>      
+        </transition-group>
+
+        <div v-else class=" flex justify-center items-center py-12">
+          <p class="mdi mdi-close"> нет файлов </p>
+        </div>
+
       </div>
 
 
@@ -68,7 +73,7 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'FilesList',
   props: {
-    filess: {
+    files: {
       type: Array,
       default: Array,
     },
