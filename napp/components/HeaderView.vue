@@ -4,9 +4,9 @@
     <div class="bg-sky-800">
       <div class=" container mx-auto py-8 px-4">
         <div class="flex items-center justify-between">
-          <div class="">
+          <nuxt-link :to="{ name: 'index' }" class="">
             <img src="/logo.webp" class="h-[35px]" />
-          </div>
+          </nuxt-link>
           <div class="flex gap-4">
             <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold">Пользователь</p></div>
             <!-- <div class="mdi mdi-star text-white text-sm flex items-center font-semibold"><p>Рейтинг 150</p></div> -->

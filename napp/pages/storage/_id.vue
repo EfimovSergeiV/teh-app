@@ -14,7 +14,6 @@
       </div>
     </div>
 
-
     <div class="container min-h-screen mx-auto px-4">
 
       <div class="my-4">
@@ -33,10 +32,10 @@
         <p>Файлы проекта:</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
         <div v-for="project_file in project.project_files" :key="project_file.id" class="">
 
-          <div class="my-2 border-b border-gray-300">
+          <div class="border-b border-gray-300">
             <p class="">{{ project_file.name }}</p>
             <div class="">
               <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
@@ -57,19 +56,18 @@
               </div>
             </div>
             <div class="flex gap-2">
-
               <div class="">
                 <button class="font-semibold text-gray-900 text-sm">Обновить</button>
               </div>
             </div>
           </div>
 
-        </div>
+        </div>        
+
+
       </div>
 
     </div>
-
-
 
   </div>
 </template>
@@ -90,7 +88,7 @@ export default {
       file: null,
       uploadProgress: 0,
       btnStatus: false,
-
+      showform: true
     }
   },
   computed: {

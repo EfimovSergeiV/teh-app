@@ -112,7 +112,7 @@ export default {
       uploadProgress: 0,
       uploadFiles: [],
       uploadedId: null,
-      dissableBtns: false
+      dissableBtns: false,
     }
   },
   computed: {
