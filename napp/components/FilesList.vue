@@ -24,7 +24,7 @@
           <div class="text-center text-xs"><p class=""> Действия</p></div>
         </div> -->
 
-        <transition-group v-if="files.length > 0" class="grid grid-cols-3 gap-4" name="fade">
+        <transition-group v-if="files.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" name="fade">
           <div v-for="fileResp in files" :key="fileResp.id">
             <div class=" border-b border-gray-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-center xl:justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
