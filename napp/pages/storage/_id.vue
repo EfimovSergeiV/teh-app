@@ -19,16 +19,16 @@
       <div class="my-4">
         <p class="font-semibold text-gray-700">{{ project.name }}</p>
         
-        <div class="my-4">
-          <p class="text-sm">Описание:</p>
+        <div class="my-6">
+          <p class="text-sm my-1">Описание:</p>
           <p class="text-sm font-semibold text-gray-700">{{ project.description }}</p>
         </div>
 
-        <p class="text-sm">Создан: {{ project.created_date }}</p>        
+        <p class="text-right text-sm">Создан: {{ project.created_date }}</p>        
       </div>
 
 
-      <div class="my-4 border-b border-gray-400">
+      <div class="my-6 border-b border-gray-400">
         <p>Файлы проекта:</p>
       </div>
 
@@ -89,7 +89,7 @@
               <div class="flex items-center justify-end">
                 <button class="mdi mdi-close text-sm" @click="uploadform = !uploadform"></button>
               </div>
-              <div class="">
+              <div class="my-2">
                 <label for="message" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ name }}</span></label>
                 <input id="text" v-model="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
               </div>
