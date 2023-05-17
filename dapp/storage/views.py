@@ -30,12 +30,14 @@ def check_zip_password(file_path):
 def get_md5_summ():
     pass
 
+
+
 class GetallProjectArchiveView(APIView):
 
     def get(self, request):
 
-        qs = ProjectArchiveModel.objects.get(id=1)
-        sr = ProjectArchiveSerializer(qs, context={'request':request})
+        qs = ProjectArchiveModel.objects.all()
+        sr = ProjectArchiveSerializer(qs, many=True, context={'request':request})
 
         return Response(sr.data)
     

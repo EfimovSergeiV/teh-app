@@ -54,7 +54,7 @@
         </transition>
       </div>
     </div>
-    <FilesList />
+    <FilesList :projects="projects" />
   </div>
 </template>
 
@@ -112,6 +112,7 @@ export default {
           } else {
             this.name = null
             this.description = null
+            this.updateData()
             this.createProject()
           }
           

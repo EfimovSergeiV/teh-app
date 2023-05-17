@@ -13,7 +13,7 @@ class FileArchiveSerializer(serializers.ModelSerializer):
 class ProjectArchiveSerializer(serializers.ModelSerializer):
     """ Сериализатор представления моделей """
 
-    project_file = FileArchiveSerializer(many=True)
+    project_files = FileArchiveSerializer(many=True)
     
     class Meta:
         model = ProjectArchiveModel

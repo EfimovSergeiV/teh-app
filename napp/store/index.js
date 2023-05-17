@@ -14,6 +14,7 @@ export const state = () => ({
 
   export const mutations = {
     addFile(state, file) {
+      console.log("Update")
       state.files.push(file)
     },
     cleanListFiles(state) {
@@ -41,6 +42,16 @@ export const state = () => ({
   }
   
   export const actions = {
+    updateData({ commit }, location) {
+      this.$axios.$get('s/projects/getall/').then((resp) => {
+        commit('cleanListFiles')
+        for (const file in resp) {
+          setTimeout(function() {
+            commit('addFile', resp[file])
+          }, file * 50);
+        }  
+      }).catch(() => {})
+    },
     addFiles({ commit }, files ) {
       commit('cleanListFiles')
       for (const file in files) {
