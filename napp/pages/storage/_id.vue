@@ -7,7 +7,13 @@
           <nuxt-link :to="{ name: 'index' }" class="text-gray-600 font-semibold text-sm mdi mdi-home"> Вернуться на главную</nuxt-link>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateData"> Обновить</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
+        </div>
+      </div>
+    </div>
 
+    <div class="bg-white">
+      <div class="container mx-auto py-2 px-4">
+        <div class="flex gap-4 items-center ">
           <button class="text-green-600 font-semibold text-sm mdi mdi-check-bold"> Обновить проект</button>
           <button class="text-red-600 font-semibold text-sm mdi mdi-close-thick"> Отменить и вернуться на главную</button>
         </div>
