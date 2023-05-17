@@ -16,26 +16,24 @@
 
 
     <div class="container mx-auto min-h-screen py-2 px-4">
-
-      <p class="text-xs">{{ projects }}</p>
       
       <div class="">
 
-        <div class="my-2 flex gap-4 items-center text-gray-700 hover:text-gray-900 transition-all duration-700">
-          <div class="w-80 text-xs"><p class="">Название проекта</p></div>
-          <div class="w-[640px] text-center text-xs"><p class=""> Действия</p></div>
+        <div class="my-2 grid grid-cols-2 gap-4 text-gray-700 hover:text-gray-900 transition-all duration-700">
+          <div class="text-center text-xs"><p class="">Название проекта</p></div>
+          <div class="text-center text-xs"><p class=""> Действия</p></div>
         </div>
 
         <transition-group v-if="files.length > 0" name="fade">
           <div v-for="fileResp in files" :key="fileResp.id">
-            <div class="flex gap-4 items-center justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
+            <div class=" border-b border-gray-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-center xl:justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
               <div class="">
-                <div class="w-80"><p class="">{{ fileResp.name }}</p></div>
+                <div class="w-80"><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
               </div>
 
-              <div class="flex justify-end">
-                <div class="w-40"><a :href="fileResp.project_files.slice(-1)[0].file" class="text-center cursor-pointer mdi mdi-download"> Скачать</a></div>
+              <div class="flex items-center justify-end">
+                <div class="w-24"><a :href="fileResp.project_files.slice(-1)[0].file" class="text-center text-sm cursor-pointer mdi mdi-download font-semibold"> Скачать</a></div>
                 <form class="flex items-center space-x-6">
                   <label class="block">
                     <input
@@ -50,7 +48,7 @@
                 </form>
                 <transition name="fade" mode="out-in">
 
-                  <button v-if="uploadedId !== fileResp.id" :disabled="dissableBtns" class="w-40 text-center cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile(fileResp.id)"> Загрузить</button>
+                  <button v-if="uploadedId !== fileResp.id" :disabled="dissableBtns" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile(fileResp.id)"> Загрузить</button>
                   <div v-else class="">
                     <div class="text-center">
                       <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
@@ -62,7 +60,7 @@
 
                 </transition>
 
-                <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information"> Подробнее</p></div>              
+                <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information text-sm font-semibold"> Подробнее</p></div>              
               </div>
 
             </div>

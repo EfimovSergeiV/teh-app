@@ -2,7 +2,7 @@
   <div class="">
     
     <div class="bg-sky-800">
-      <div class="container mx-auto py-8 px-4">
+      <div class=" container mx-auto py-8 px-4">
         <div class="flex items-center justify-between">
           <div class="">
             <img src="logo.webp" class="h-[35px]" />
@@ -18,7 +18,7 @@
     </div>
 
     <div class="bg-sky-700">
-      <div class="container mx-auto py-4">
+      <div class=" container mx-auto py-4">
 
         <div class="flex gap-4 px-4">
           <p class="text-white font-semibold text-sm border-b border-white cursor-pointer"> Модели</p>

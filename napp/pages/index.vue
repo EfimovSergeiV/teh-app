@@ -85,7 +85,8 @@ export default {
   methods: {
     ...mapActions({
       addToast: 'addToast',
-      createProject: 'createProject'
+      createProject: 'createProject',
+      updateData: 'updateData',
     }),
     onFileChange(event) {
       this.file = event.target.files[0];
