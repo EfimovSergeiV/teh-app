@@ -45,24 +45,98 @@
               <p class="text-xs">md5: {{ project_file.md5 }}</p>              
             </div>
 
-            <div class="flex">
-              <div class="">
-                <div class="text-center">
-                  <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
-                </div>                
-                <div class=" flex items-center justify-center">
-                  <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+
+
+            <div class="relative">
+              <div class="flex items-center justify-center">
+                <form class="flex items-center space-x-6">
+                  <label class="block">
+                    <input
+                      id="1" type="file" class="block w-full text-sm text-slate-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-full file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-white file:text-sky-700
+                      hover:file:bg-white
+                    " @change="onFileChange"/>
+                  </label>
+                </form>
+              </div>
+              <div class="flex items-center justify-center">
+                <button :disabled="dissableBtns" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400"> Обновить</button>
+              </div>
+
+              <div v-if="false" class="absolute top-0 w-full h-full">
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-b from-gray-900/10 to-gray-900/30 backdrop-blur-sm ">
+                  <div class="">
+                    <div class="text-center">
+                      <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+                    </div>                
+                    <div class=" flex items-center justify-center">
+                      <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="flex gap-2">
+          </div>
+        </div>
+        
+        <div class="border-b border-gray-300 h-full flex items-center justify-center">
+
+          <transition name="fade" mode="out-in">
+            <div v-if="uploadform" class=" w-full">
+              <div class="flex items-center justify-end">
+                <button class="mdi mdi-close text-sm" @click="uploadform = !uploadform"></button>
+              </div>
               <div class="">
-                <button class="font-semibold text-gray-900 text-sm">Обновить</button>
+                <label for="message" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ name }}</span></label>
+                <input id="text" v-model="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
+              </div>
+            
+              <div class="relative">
+                <div class="flex items-center justify-center">
+                  <form class="flex items-center space-x-6">
+                    <label class="block">
+                      <input
+                        id="1" type="file" class="block w-full text-sm text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-white file:text-sky-700
+                        hover:file:bg-white
+                      " @change="onFileChange"/>
+                    </label>
+                  </form>
+                </div>
+                <div class="flex items-center justify-center">
+                  <button :disabled="dissableBtns" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400"> Загрузить</button>
+                </div>
+
+                <div v-if="false" class="absolute top-0 w-full h-full">
+                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-b from-gray-900/10 to-gray-900/30 backdrop-blur-sm ">
+                    <div class="">
+                      <div class="text-center">
+                        <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+                      </div>                
+                      <div class=" flex items-center justify-center">
+                        <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>        
+
+            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadform = !uploadform"> Загрузить</button>
+
+          </transition>
+
+
+        </div>
+
+
 
 
       </div>
@@ -88,7 +162,7 @@ export default {
       file: null,
       uploadProgress: 0,
       btnStatus: false,
-      showform: true
+      uploadform: false
     }
   },
   computed: {

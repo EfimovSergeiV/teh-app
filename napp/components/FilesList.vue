@@ -28,19 +28,19 @@
           <div v-for="fileResp in files" :key="fileResp.id">
             <div class=" border-b border-gray-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-center xl:justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
-              <div class="">
+              <nuxt-link :to="{ name: 'storage-id', params: { id: fileResp.id }}" class="">
                 <div class="w-80">
                   <div class=""><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
                   <div class="grid grid-cols-1">
                     <p class="text-xs">Обновлён: {{ fileResp.project_files.slice(-1)[0].created_date }}</p>
-                    <p class="text-xs">MD5: {{ fileResp.project_files.slice(-1)[0].md5 }}</p>
+                    <!-- <p class="text-xs">MD5: {{ fileResp.project_files.slice(-1)[0].md5 }}</p> -->
                   </div>
                 </div>
-              </div>
+              </nuxt-link>
 
               <div class="flex items-center justify-end">
-                <div class="w-24"><a :href="fileResp.project_files.slice(-1)[0].file" class="text-center text-sm cursor-pointer mdi mdi-download font-semibold"> Скачать</a></div>
-                <form class="flex items-center space-x-6">
+                <div class="w-28"><a :href="fileResp.project_files.slice(-1)[0].file" class="text-center text-sm cursor-pointer mdi mdi-download font-semibold"> Скачать всё</a></div>
+                <!-- <form class="flex items-center space-x-6">
                   <label class="block">
                     <input
                       :id="fileResp.id" type="file" class="block w-full text-sm text-slate-500
@@ -64,9 +64,9 @@
                     </div>
                   </div>
 
-                </transition>
+                </transition> -->
 
-                <div class="w-40"><p class="text-right cursor-pointer mdi mdi-information text-sm font-semibold"> Подробнее</p></div>              
+                <div class="w-28"><p class="text-right cursor-pointer mdi mdi-information text-sm font-semibold"> Подробнее</p></div>              
               </div>
 
             </div>
