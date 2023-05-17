@@ -5,7 +5,9 @@
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
           <nuxt-link :to="{ name: 'index' }" class="text-gray-600 font-semibold text-sm mdi mdi-home"> Вернуться на главную</nuxt-link>
+          <button class="text-gray-600 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateData"> Обновить</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
+
           <button class="text-green-600 font-semibold text-sm mdi mdi-check-bold"> Обновить проект</button>
           <button class="text-red-600 font-semibold text-sm mdi mdi-close-thick"> Отменить и вернуться на главную</button>
         </div>
@@ -17,8 +19,12 @@
 
       <div class="my-4">
         <p class="font-semibold text-gray-700">{{ project.name }}</p>
-        <p class="text-sm">Описание:</p>
-        <p class="text-sm font-semibold text-gray-700">{{ project.description }}</p>
+        
+        <div class="my-4">
+          <p class="text-sm">Описание:</p>
+          <p class="text-sm font-semibold text-gray-700">{{ project.description }}</p>
+        </div>
+
         <p class="text-sm">Создан: {{ project.created_date }}</p>        
       </div>
 
@@ -27,13 +33,19 @@
         <p>Файлы проекта:</p>
       </div>
 
-      <div class="">
+      <div class="grid grid-cols-2 gap-4">
         <div v-for="project_file in project.project_files" :key="project_file.id" class="">
 
           <div class="my-2 border-b border-gray-300">
             <p class="">{{ project_file.name }}</p>
-            <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
-            <p class="text-xs">md5: {{ project_file.md5 }}</p>
+            <div class="">
+              <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
+            </div>
+            <div class="my-2">
+              <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
+              <p class="text-xs">md5: {{ project_file.md5 }}</p>              
+            </div>
+
             <div class="flex">
               <div class="">
                 <div class="text-center">
@@ -45,9 +57,7 @@
               </div>
             </div>
             <div class="flex gap-2">
-              <div class="">
-                <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
-              </div>
+
               <div class="">
                 <button class="font-semibold text-gray-900 text-sm">Обновить</button>
               </div>
