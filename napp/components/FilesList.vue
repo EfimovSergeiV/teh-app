@@ -29,7 +29,13 @@
             <div class=" border-b border-gray-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-center xl:justify-between text-gray-700 hover:text-gray-900 transition-all duration-700">
 
               <div class="">
-                <div class="w-80"><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
+                <div class="w-80">
+                  <div class=""><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
+                  <div class="grid grid-cols-1">
+                    <p class="text-xs">Обновлён: {{ fileResp.project_files.slice(-1)[0].created_date }}</p>
+                    <p class="text-xs">MD5: {{ fileResp.project_files.slice(-1)[0].md5 }}</p>
+                  </div>
+                </div>
               </div>
 
               <div class="flex items-center justify-end">

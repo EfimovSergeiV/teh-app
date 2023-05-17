@@ -3,7 +3,7 @@ from storage.models import ProjectArchiveModel, FileArchiveModel
 
 class FileArchiveAdmin(admin.TabularInline):
     model = FileArchiveModel
-    readonly_fields = ('created_date', 'md5')
+    # readonly_fields = ('created_date', 'md5')
 
     fieldsets = (
         (None, {'fields': (('md5', 'file', 'created_date'),)}),
