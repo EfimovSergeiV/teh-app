@@ -5,7 +5,7 @@
       <div class=" container mx-auto py-8 px-4">
         <div class="flex items-center justify-between">
           <div class="">
-            <img src="logo.webp" class="h-[35px]" />
+            <img src="/logo.webp" class="h-[35px]" />
           </div>
           <div class="flex gap-4">
             <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold">Пользователь</p></div>

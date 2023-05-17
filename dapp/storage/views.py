@@ -9,6 +9,7 @@ import hashlib, zipfile
 
 
 def check_zip_password(file_path):
+    """ Проверка на запароленный архив """
     try:
         with zipfile.ZipFile(file_path) as zip_file:
             # Получаем имена файлов в архиве
@@ -27,12 +28,28 @@ def check_zip_password(file_path):
         # Если файл не является ZIP-архивом, возвращаем False
         return False
     
-def get_md5_summ():
-    pass
+def get_md5_summ(file):
+    """ Проверка MD5 суммы архива """
+    md5 = hashlib.md5()
+    for chunk in file.chunks():
+        md5.update(chunk)
+    file_md5sum = md5.hexdigest()
+    return file_md5sum
+
+
+
+class GetOneProject(APIView):
+    """ Данные выбранного проекта """
+
+    def get(self, request, pk):
+        qs = ProjectArchiveModel.objects.get(id=pk)
+        sr = ProjectArchiveSerializer(qs, context={'request': request})
+        return Response(sr.data)
 
 
 
 class GetallProjectArchiveView(APIView):
+    """ Список всех проектов со всеми архивами """
 
     def get(self, request):
 
@@ -44,8 +61,7 @@ class GetallProjectArchiveView(APIView):
 
 
 class CreateProjectArchiveView(APIView):
-    """ Представление файлов моделей """
-
+    """ Создаём проект и добавляем первый архив """
 
     def post(self, request):
 
@@ -56,14 +72,13 @@ class CreateProjectArchiveView(APIView):
             print("обнаружен пароль на архиве")
             return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
 
-
         else:
             # Узнаём хэш сумму
             md5 = hashlib.md5()
             for chunk in file.chunks():
                 md5.update(chunk)
             file_md5sum = md5.hexdigest()
-            print(file_md5sum)
+            file_md5sum = get_md5_summ()
             
 
             fs.save(file.name, file)
@@ -72,6 +87,7 @@ class CreateProjectArchiveView(APIView):
         
 
 class AppendProjectArchiveView(APIView):
+    """ Добавляем архив к проекту """
 
     def post(self, request):
 
