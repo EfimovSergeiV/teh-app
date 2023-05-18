@@ -44,12 +44,10 @@
       </div>
 
 
-      <div class="my-6 border-b border-gray-400">
-        <p>Файлы проекта:</p>
-      </div>
+
 
       <div>
-        <div class="border-b border-gray-300 h-full flex items-center justify-center">
+        <div class=" h-full flex items-center justify-center">
 
           <transition name="fade" mode="out-in">
             <div v-if="uploadform" class=" w-full">
@@ -96,9 +94,14 @@
             </div>
 
 
-            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Загрузить новый</button>
+            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-gray-700 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Добавить архив</button>
 
           </transition>
+        </div>
+
+
+        <div class="my-6 border-b border-gray-400">
+          <p>Файлы проекта:</p>
         </div>
 
 
