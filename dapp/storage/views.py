@@ -94,7 +94,7 @@ class CreateOrUpdateFilesView(APIView):
         md5_summ = get_md5_summ(file)
 
 
-        return Response(data={'id': 1, 'msg': f'md5: { md5_summ }', 'type': 'success'})
+        return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
 
