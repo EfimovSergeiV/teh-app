@@ -59,7 +59,7 @@ export default {
   },
 
   loading: {
-    color: 'yellow',
+    color: '#22c55e',
     height: '1px',
   },
 
