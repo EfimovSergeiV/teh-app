@@ -51,7 +51,7 @@
 
                   <div class="flex items-center justify-end">
                     <div class="mt-4">
-                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="createProject">Создать</button>
+                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="editProject">Отправить</button>
                     </div>
                   </div>
                 </div>
@@ -75,15 +75,13 @@
                   <textarea id="message" v-model="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Опишите проект..."></textarea>
                   <div class="flex items-center justify-end">
                     <div class="mt-4">
-                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="createProject">Создать</button>
+                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="editProject">Отправить</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>            
           </transition>
-
-        
         </div>
 
         <p class="text-right text-sm">Создан: {{ project.created_date }}</p>        
@@ -256,6 +254,7 @@ export default {
       addToast: 'addToast',
       createProject: 'createProject',
       updateProject: 'updateProject',
+      updateProjects: 'updateProjects',
       addFiles: 'addFiles',
     }),
     onFileChange(event) {
@@ -273,6 +272,29 @@ export default {
 
         this.uploadFiles[IndexFile].file = EventData.target.files[0]
       }
+    },
+    async editProject() {
+
+      if (this.name) {
+        try {
+          const response = await this.$axios.post(`s/projects/create-or-update/${ this.project.id }/`, {
+            name: this.name,
+            description: this.description,
+          })
+
+          this.addToast(response.data)
+          this.updateProjects()
+          // this.createProjectForm() /// Hidden this form
+
+        } catch (error) {
+          console.log(error)
+          this.addToast({ "id": 1, "msg": "Что то пошло не так!", "type": "error" })
+        }          
+      } else {
+        this.addToast({ "id": 1, "msg": "Нада обозвать проект!", "type": "error" })
+      }
+      this.loadingNow = false
+      this.loadingID = 0
     },
     async uploadFile(id) {
       const IndexUploadFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))

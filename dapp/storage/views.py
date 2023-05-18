@@ -62,7 +62,7 @@ class GetallProjectArchiveView(APIView):
 class CreateOrUpdateProjectView(APIView):
     """ Создать или обновить архив проекта """
 
-    def post(self, request):
+    def post(self, request, pk=None):
         if request.data["description"] is None:
             request.data["description"] = 'Нет описания'
 
@@ -70,11 +70,17 @@ class CreateOrUpdateProjectView(APIView):
         sr = ProjectCreateSerializer(data=data)
 
         if sr.is_valid():
-            sr.save()
-            return Response(data={'id': 1, 'msg': 'Проект создан', 'type': 'success'})
+            if pk:
+                msg = 'Проект обновлён'
+                print(f'Update Project {pk}')
+            else:
+                msg = 'Проект создан'
+                sr.save()
+            return Response(data={'id': 1, 'msg': f'{ msg }', 'type': 'success'})
         
         else:
             return Response(status.HTTP_400_BAD_REQUEST)
+        
 
 
 class CreateOrUpdateFilesView(APIView):
