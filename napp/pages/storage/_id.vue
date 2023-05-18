@@ -33,10 +33,57 @@
     <div class="container min-h-screen mx-auto px-4">
 
       <div class="my-4">
-        <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil"></span></p>
+        <div class="relative">
+          <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer" @click="editProjectNameForm = true"></span></p>
         
-        <div class="my-6">
-          <p class="text-sm font-semibold text-gray-700">{{ project.description }} <span class="text-xs mdi mdi-pencil"></span></p>
+          <transition name="fade">
+            <div v-if="editProjectNameForm" class="absolute top-0 w-full z-20">
+              <div class="bg-sky-900 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
+                <div class="my-2">
+                  <div class="flex items-center justify-end">
+                    <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="editProjectNameForm = false"> Закрыть</p>
+                  </div>
+
+                  <div class="">
+                    <label for="message" class="block mt-2 mb-1 text-xs font-medium text-gray-100">Название проекта: <span class="font-semibold">{{ name }}</span></label>
+                      <input id="text" v-model="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="МТВ-8000 ExpSuperVOC">
+                  </div>
+
+                  <div class="flex items-center justify-end">
+                    <div class="mt-4">
+                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="createProject">Создать</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>            
+          </transition>
+        </div>
+        
+        
+        <div class="my-6 relative">
+          <p class="text-sm font-semibold text-gray-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer" @click="editDescriptionForm = true"></span></p>
+        
+          <transition name="fade">
+            <div v-if="editDescriptionForm" class="absolute top-0 w-full z-20">
+              <div class="bg-sky-900 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
+                <div class="my-2">
+                  <div class="flex items-center justify-end">
+                    <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="editDescriptionForm = false"> Закрыть</p>
+                  </div>
+                  <label for="message" class="block mt-2 mb-1 text-xs font-medium text-gray-100">Обновление описания:</label>
+                  <textarea id="message" v-model="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Опишите проект..."></textarea>
+                  <div class="flex items-center justify-end">
+                    <div class="mt-4">
+                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="createProject">Создать</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>            
+          </transition>
+
+        
         </div>
 
         <p class="text-right text-sm">Создан: {{ project.created_date }}</p>        
@@ -187,6 +234,8 @@ export default {
       loadingNow: false,
       loadingID: 0,
       changeProjectForm: true,
+      editProjectNameForm: false,
+      editDescriptionForm: false,
     }
   },
 
