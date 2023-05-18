@@ -7,7 +7,7 @@
           <div class="w-28"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ projects.length }}</p></div> 
           <button class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button>
-          <button class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProject"> Создать проект</button>
+          <button class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProjectForm"> Создать проект</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProjects"> Обновить</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</button>
         </div>      
@@ -134,65 +134,12 @@ export default {
       addProjects: 'addProjects',
       // addFiles: 'addFiles',
       addNewUploadFile: 'addNewUploadFile',
-      createProject: 'createProject',
+      createProjectForm: 'createProjectForm',
       addToast: 'addToast',
       updateProjects: 'updateProjects',
     }),
-    onFileChange(event) {
-      const EventData = event
-      const lineId = EventData.target.id
-      const uploadFile = this.uploadFiles.findIndex((item) => item.id === String(lineId))
-
-      if (uploadFile === -1) {
-        this.uploadFiles.push({
-          "id": lineId,
-          "file": EventData.target.files[0]
-        })        
-      } else {
-        this.uploadFiles[uploadFile].file = EventData.target.files[0]
-      }
 
 
-    },
-    async uploadFile(id) {
-
-      const uploadFile = this.uploadFiles.findIndex((item) => item.id === String(id))
-
-      if (uploadFile !== -1) {
-        const formData = new FormData();
-        const fileData = this.uploadFiles.pop(uploadFile)
-        /// Сделать через pop()
-        formData.append('id', fileData.id);
-        formData.append('file', fileData.file);
-
-          try {
-
-            this.uploadedId = id
-            this.dissableBtns = true
-
-            const response = await this.$axios.post('s/projects/append/', formData, {
-              onUploadProgress: (progressEvent) => {
-                this.uploadProgress = Math.round(
-                  (progressEvent.loaded * 100) / progressEvent.total
-                );
-              },
-            });
-
-            this.updateProjects()
-            this.addToast(response.data)
-
-          } catch (error) {
-            this.addToast({'id': 1, 'msg': "Что то пошло не так!", 'type': 'error'})
-          }
-
-      } else {
-        this.addToast({'id': 1, 'msg': "Нечего загружать", 'type': 'error'})
-      }
-
-      this.uploadedId = null
-      this.dissableBtns = false
-
-    },
   },
 }
 </script>

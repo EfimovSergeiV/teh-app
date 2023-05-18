@@ -17,7 +17,7 @@
                     <img src="/cat-two.webp" class="w-28 rounded-l-md"/>
                   </div>
                   <div class="h-full w-60 flex items-center justify-center">
-                    <p class="text-base font-semibold text-gray-700">Успешно загружено!</p>
+                    <p class="text-base font-semibold text-gray-700">{{ toast.msg }}</p>
                   </div>
                 </div>
 

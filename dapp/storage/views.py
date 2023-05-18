@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from storage.models import ProjectArchiveModel
-from storage.serializers import ProjectArchiveSerializer
+from storage.serializers import ProjectArchiveSerializer, ProjectCreateSerializer
 from django.core.files.storage import FileSystemStorage
 import hashlib, zipfile
 
@@ -57,14 +57,32 @@ class GetallProjectArchiveView(APIView):
         sr = ProjectArchiveSerializer(qs, many=True, context={'request':request})
 
         return Response(sr.data)
-    
 
-class CreateOrUpdateView(APIView):
+
+class CreateOrUpdateProjectView(APIView):
+    """ Создать или обновить архив проекта """
+
+    def post(self, request):
+        if request.data["description"] is None:
+            request.data["description"] = 'Нет описания'
+
+        data = request.data
+        sr = ProjectCreateSerializer(data=data)
+
+        if sr.is_valid():
+            sr.save()
+            return Response(data={'id': 1, 'msg': 'Проект создан', 'type': 'success'})
+        
+        else:
+            return Response(status.HTTP_400_BAD_REQUEST)
+
+
+class CreateOrUpdateFilesView(APIView):
     """ Создать или обновить архив проекта """
 
     def post(self, request):
         file = request.FILES['file']
-        
+
         fs = FileSystemStorage()
 
         print(file.name, request.data)

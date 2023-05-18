@@ -11,14 +11,24 @@
       </div>
     </div>
 
-    <div class="bg-white">
-      <div class="container mx-auto py-2 px-4">
-        <div class="flex gap-4 items-center ">
-          <button class="text-green-600 font-semibold text-sm mdi mdi-check-bold"> Обновить проект</button>
-          <button class="text-red-600 font-semibold text-sm mdi mdi-close-thick"> Отменить изменения</button>
-        </div>
+
+    <div class="relative pt-1 pb-4">
+      <div class="container mx-auto px-4">
+
+        <transition name="fade">
+          <div v-if="changeProjectForm" class="bg-white">
+            <div class="absolute">
+              <div class="flex gap-4 items-center ">
+                <button class="text-green-600 font-semibold text-sm mdi mdi-check-bold" @click="changeProjectForm = false"> Обновить проект</button>
+                <button class="text-red-600 font-semibold text-sm mdi mdi-close-thick"> Отменить изменения</button>
+              </div>
+            </div>
+          </div>
+        </transition>
+
       </div>
     </div>
+
 
     <div class="container min-h-screen mx-auto px-4">
 
@@ -177,6 +187,7 @@ export default {
       uploadProgress: 0,
       loadingNow: false,
       loadingID: 0,
+      changeProjectForm: true,
     }
   },
 
@@ -228,7 +239,7 @@ export default {
           this.loadingNow = true
           this.loadingID = fileData.file_id
 
-          const response = await this.$axios.post('s/projects/create-or-update/', formData, {
+          const response = await this.$axios.post('s/files/create-or-update/', formData, {
             onUploadProgress: (progressEvent) => {
               this.uploadProgress = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total

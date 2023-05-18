@@ -10,6 +10,13 @@ class FileArchiveSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ProjectCreateSerializer(serializers.ModelSerializer):
+    """ Сериализатор представления моделей """
+    
+    class Meta:
+        model = ProjectArchiveModel
+        fields = '__all__'
+
 class ProjectArchiveSerializer(serializers.ModelSerializer):
     """ Сериализатор представления моделей """
 

@@ -36,7 +36,7 @@ export const state = () => ({
     clearToast(state) {
       state.toasts.shift()
     },
-    createProject(state) {
+    createProjectForm(state) {
       state.showCreateProject = !state.showCreateProject
     },
     // addNewUploadFile(state, { id, file }) {
@@ -96,8 +96,8 @@ export const state = () => ({
     hideToast({ commit }, toast ) {
       commit('hideToast', toast)
     },
-    createProject({ commit }) {
-      commit('createProject')
+    createProjectForm({ commit }) {
+      commit('createProjectForm')
     },
     // addNewUploadFile({ commit }, data) {
     //   commit('addNewUploadFile', { id: data.id, file: data.file })
