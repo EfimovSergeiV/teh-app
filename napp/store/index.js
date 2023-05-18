@@ -67,13 +67,12 @@ export const state = () => ({
       }).catch(() => {})
     },
     updateProject({ commit }, id) {
+      commit('cleanListFiles')
       this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
-
-        commit('cleanListFiles')
         for (const file in resp.project_files) {
           setTimeout(function() {
             commit('addFile', resp.project_files[file])
-          }, file * 500);
+          }, file * 100);
         }  
       }).catch(() => {})
     },

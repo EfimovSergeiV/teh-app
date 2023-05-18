@@ -39,7 +39,7 @@
       </div>
 
       <div>
-        <transition-group name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
+        <transition-group tag="div" name="absolute-left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
           <div v-for="project_file in files" :key="project_file.id" class="">
 
             <div class="border-b border-gray-300">
@@ -237,6 +237,7 @@ export default {
           })
 
           this.addToast(response.data)
+          this.updateProject(fileData.project_id)
 
         } catch (error) {
           this.addToast({ "id": 1, "msg": "Что то пошло не так!", "type": "error" })
