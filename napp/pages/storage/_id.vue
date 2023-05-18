@@ -36,7 +36,6 @@
         <p class="font-semibold text-gray-700">{{ project.name }}</p>
         
         <div class="my-6">
-          <p class="text-sm my-1">Описание:</p>
           <p class="text-sm font-semibold text-gray-700">{{ project.description }}</p>
         </div>
 
