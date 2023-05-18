@@ -54,7 +54,7 @@
         </transition>
       </div>
     </div>
-    <FilesList :projects="projects" />
+    <FilesList :projects-response="projects" />
   </div>
 </template>
 
@@ -86,7 +86,7 @@ export default {
     ...mapActions({
       addToast: 'addToast',
       createProject: 'createProject',
-      updateData: 'updateData',
+      updateProject: 'updateProject',
     }),
     onFileChange(event) {
       this.file = event.target.files[0];
@@ -113,7 +113,7 @@ export default {
           } else {
             this.name = null
             this.description = null
-            this.updateData()
+            this.updateProject()
             this.createProject()
           }
           

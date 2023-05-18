@@ -59,6 +59,31 @@ class GetallProjectArchiveView(APIView):
         return Response(sr.data)
     
 
+class CreateOrUpdateView(APIView):
+    """ Создать или обновить архив проекта """
+
+    def post(self, request):
+        file = request.FILES['file']
+        
+        fs = FileSystemStorage()
+
+        print(file.name, request.data)
+
+        # Проверки архива
+        if check_zip_password(file):
+            print("обнаружен пароль на архиве")
+            return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
+        md5_summ = get_md5_summ(file)
+
+
+        return Response(data={'id': 1, 'msg': f'md5: { md5_summ }', 'type': 'success'})
+
+
+
+    
+
+
+# Ниже не нужны
 
 class CreateProjectArchiveView(APIView):
     """ Создаём проект и добавляем первый архив """

@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 
 export const state = () => ({
+    projects: [],
     files: [],
     toasts: [],
     showCreateProject: false
@@ -13,8 +14,13 @@ export const state = () => ({
 //   }
 
   export const mutations = {
+    addProject(state, project) {
+      state.projects.push(project)
+    },
+    cleanListProjects(state) {
+      state.projects = []
+    },
     addFile(state, file) {
-      console.log("Update")
       state.files.push(file)
     },
     cleanListFiles(state) {
@@ -42,13 +48,32 @@ export const state = () => ({
   }
   
   export const actions = {
-    updateData({ commit }, location) {
+    addProjects({ commit }, projects) {
+      commit('cleanListProjects')
+      for (const project in projects) {
+        setTimeout(function() {
+          commit('addProject', projects[project])
+        }, project * 50)
+      }
+    },
+    updateProjects({ commit }, location) {
       this.$axios.$get('s/projects/getall/').then((resp) => {
-        commit('cleanListFiles')
-        for (const file in resp) {
+        commit('cleanListProjects')
+        for (const project in resp) {
           setTimeout(function() {
-            commit('addFile', resp[file])
-          }, file * 50);
+            commit('addProject', resp[project])
+          }, project * 50);
+        }  
+      }).catch(() => {})
+    },
+    updateProject({ commit }, id) {
+      this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
+
+        commit('cleanListFiles')
+        for (const file in resp.project_files) {
+          setTimeout(function() {
+            commit('addFile', resp.project_files[file])
+          }, file * 500);
         }  
       }).catch(() => {})
     },
@@ -57,7 +82,7 @@ export const state = () => ({
       for (const file in files) {
         setTimeout(function() {
           commit('addFile', files[file])
-        }, file * 50);
+        }, file * 100);
       }  
     },
     addToast({ commit }, toast ) {

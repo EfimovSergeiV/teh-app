@@ -14,7 +14,7 @@
                 
                 <div v-if="toast.type == 'success'" class="flex gap-2 items-center">
                   <div class="">
-                    <img src="cat-two.webp" class="w-28 rounded-l-md"/>
+                    <img src="/cat-two.webp" class="w-28 rounded-l-md"/>
                   </div>
                   <div class="h-full w-60 flex items-center justify-center">
                     <p class="text-base font-semibold text-gray-700">Успешно загружено!</p>
@@ -23,7 +23,7 @@
 
                 <div v-else class="flex gap-2 items-center">
                   <div class="">
-                    <img src="cat-third.webp" class="w-28 rounded-l-md"/>
+                    <img src="/cat-third.webp" class="w-28 rounded-l-md"/>
                   </div>
                   <div class="h-full w-60 flex items-center justify-center">
                     <div class="text-center">

@@ -4,11 +4,11 @@
     <div class="bg-gray-100">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
-          <div class="w-28"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ files.length }}</p></div> 
+          <div class="w-28"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ projects.length }}</p></div> 
           <button class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProject"> Создать проект</button>
-          <button class="text-gray-600 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateData"> Обновить</button>
+          <button class="text-gray-600 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProjects"> Обновить</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</button>
         </div>      
       </div>      
@@ -24,8 +24,8 @@
           <div class="text-center text-xs"><p class=""> Действия</p></div>
         </div> -->
 
-        <transition-group v-if="files.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" name="fade">
-          <div v-for="fileResp in files" :key="fileResp.id">
+        <transition-group v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" name="left-emergence">
+          <div v-for="fileResp in projects" :key="fileResp.id">
             <div class=" border-b border-gray-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-start text-gray-700 hover:text-gray-900 transition-all duration-700">
 
               <nuxt-link :to="{ name: 'storage-id', params: { id: fileResp.id }}" class="w-full">
@@ -91,7 +91,11 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'FilesList',
   props: {
-    projects: {
+    projectsResponse: {
+      type: Array,
+      default: Array,
+    },
+    filesResponse: {
       type: Array,
       default: Array,
     },
@@ -117,20 +121,22 @@ export default {
   },
   computed: {
     ...mapState({
+      projects: (state) => state.projects,
       files: (state) => state.files,
     }),
 
   },
   mounted() {
-    this.addFiles(this.projects)
+    this.addProjects(this.projectsResponse)
   },
   methods: {
     ...mapActions({
-      addFiles: 'addFiles',
+      addProjects: 'addProjects',
+      // addFiles: 'addFiles',
       addNewUploadFile: 'addNewUploadFile',
       createProject: 'createProject',
       addToast: 'addToast',
-      updateData: 'updateData',
+      updateProjects: 'updateProjects',
     }),
     onFileChange(event) {
       const EventData = event
@@ -172,7 +178,7 @@ export default {
               },
             });
 
-            this.updateData()
+            this.updateProjects()
             this.addToast(response.data)
 
           } catch (error) {
