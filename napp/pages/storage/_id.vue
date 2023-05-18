@@ -33,10 +33,10 @@
     <div class="container min-h-screen mx-auto px-4">
 
       <div class="my-4">
-        <p class="font-semibold text-gray-700">{{ project.name }}</p>
+        <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil"></span></p>
         
         <div class="my-6">
-          <p class="text-sm font-semibold text-gray-700">{{ project.description }}</p>
+          <p class="text-sm font-semibold text-gray-700">{{ project.description }} <span class="text-xs mdi mdi-pencil"></span></p>
         </div>
 
         <p class="text-right text-sm">Создан: {{ project.created_date }}</p>        
