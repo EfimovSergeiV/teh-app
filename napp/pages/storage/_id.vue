@@ -109,8 +109,8 @@
 
           <div v-for="project_file in files" :key="project_file.id" class="">
 
-            <div class="border-b border-gray-200 bg-white rounded-sm p-4">
-              <p class="">{{ project_file.name }}</p>
+            <div class="border-b border-gray-200 bg-white rounded-sm py-2">
+              <p class="border-b border-gray-200">{{ project_file.name }}</p>
               
               <div class="flex items-center justify-start my-1">
                 <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
