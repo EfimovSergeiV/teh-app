@@ -249,7 +249,7 @@ export default {
             this.uploadform = false
             setTimeout(() => {
               this.updateProject(fileData.project_id)
-            }, "1000");
+            }, "1500");
           }
 
 
