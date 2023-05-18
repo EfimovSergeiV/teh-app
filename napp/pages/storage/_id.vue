@@ -13,7 +13,7 @@
 
 
     <div class="relative pt-1 pb-4">
-      <div class="container mx-auto px-4">
+      <!-- <div class="container mx-auto px-4">
 
         <transition name="fade">
           <div v-if="changeProjectForm" class="bg-white">
@@ -26,7 +26,7 @@
           </div>
         </transition>
 
-      </div>
+      </div> -->
     </div>
 
 
@@ -34,7 +34,7 @@
 
       <div class="my-4">
         <div class="relative">
-          <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer" @click="editProjectNameForm = true"></span></p>
+          <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
         
           <transition name="fade">
             <div v-if="editProjectNameForm" class="absolute top-0 w-full z-20">
@@ -62,7 +62,7 @@
         
         
         <div class="my-6 relative">
-          <p class="text-sm font-semibold text-gray-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer" @click="editDescriptionForm = true"></span></p>
+          <p class="text-sm font-semibold text-gray-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
         
           <transition name="fade">
             <div v-if="editDescriptionForm" class="absolute top-0 w-full z-20">
@@ -247,6 +247,8 @@ export default {
 
   },
   mounted() {
+    this.name = this.project.name
+    this.description = this.project.description
     this.addFiles(this.project.project_files)
   },
   methods: {
