@@ -3,7 +3,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from storage.models import ProjectArchiveModel
+from storage.models import ProjectArchiveModel, FileArchiveModel
 from storage.serializers import (
     ProjectArchiveSerializer,
     ProjectCreateSerializer,
@@ -106,26 +106,40 @@ class CreateOrUpdateFilesView(APIView):
 
 
         serializer = FileArchiveSerializer
+        
+        project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
+
+        data = {
+            "project": project.id,
+            "md5": md5_summ,
+            "file": file,
+        }
+
+        try:
+            data['name'] = request.data["name"]
+        except KeyError:
+            pass
+
+        
         if request.data["file_id"] == 'newfile':
-            print("создаём новую запись, добавляем файл / заносим в историю")
-
-            data = {
-                "project": request.data["project_id"],
-                "name": request.data["name"],
-                "md5": md5_summ,
-                "file": file,
-            }
-
+            # print("создаём новую запись, добавляем файл / заносим в историю")
             serializer_data = serializer(data=data)
             if serializer_data.is_valid():
                 serializer_data.save()
-            else:
-                print(f"Данные не прошли\n {data}")
-                print(serializer_data.errors)
-
 
         else:
-            print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
+            qs = FileArchiveModel.objects.get(id=request.data["file_id"])
+            data['name'] = qs.name
+
+            # print(f'data: {data}, id: {qs.id}, qs: {qs}')
+
+            serializer_data = serializer(data=data)
+            if serializer_data.is_valid():
+                serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
+                # print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
+
+            # else:
+                # print('serializer not valid ', serializer_data.errors)
 
 
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
