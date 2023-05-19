@@ -5,6 +5,7 @@ __pycache__/
 
 static/
 files/
+storage/migrations/
 
 
 # C extensions
