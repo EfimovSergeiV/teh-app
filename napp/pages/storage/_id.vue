@@ -150,59 +150,65 @@
           <p>Файлы проекта:</p>
         </div>
 
+        <div v-if="files.lenght > 0">
+          <transition-group tag="div" name="absolute-left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
 
-        <transition-group tag="div" name="absolute-left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
+            <div v-for="project_file in files" :key="project_file.id" class="">
 
-          <div v-for="project_file in files" :key="project_file.id" class="">
-
-            <div class="border-b border-gray-200 bg-white rounded-sm py-2">
-              <p class="border-b border-gray-200">{{ project_file.name }}</p>
-              
-              <div class="flex items-center justify-start my-1">
-                <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
-              </div>
-              <div class="my-2">
-                <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
-                <p class="text-xs">md5: {{ project_file.md5 }}</p>              
-              </div>
-
-
-
-              <div class="relative">
-                <div class="flex items-center justify-center">
-                  <form class="flex items-center space-x-6">
-                    <label class="block">
-                      <input
-                        :id="project_file.id" type="file" class="block w-full text-sm text-slate-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-white file:text-sky-700
-                        hover:file:bg-white
-                      " @change="onFileChange"/>
-                    </label>
-                  </form>
+              <div class="border-b border-gray-200 bg-white rounded-sm py-2">
+                <p class="border-b border-gray-200">{{ project_file.name }}</p>
+                
+                <div class="flex items-center justify-start my-1">
+                  <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
                 </div>
-                <div class="flex items-center justify-center">
-                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
+                <div class="my-2">
+                  <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
+                  <p class="text-xs">md5: {{ project_file.md5 }}</p>              
                 </div>
 
-                <div v-if="loadingID === String(project_file.id)" class="absolute top-0 w-full h-full">
-                  <div class="w-full h-full flex items-center justify-center bg-white">
-                    <div class="">
-                      <div class="text-center">
-                        <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
-                      </div>                
-                      <div class=" flex items-center justify-center">
-                        <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+
+
+                <div class="relative">
+                  <div class="flex items-center justify-center">
+                    <form class="flex items-center space-x-6">
+                      <label class="block">
+                        <input
+                          :id="project_file.id" type="file" class="block w-full text-sm text-slate-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-full file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-white file:text-sky-700
+                          hover:file:bg-white
+                        " @change="onFileChange"/>
+                      </label>
+                    </form>
+                  </div>
+                  <div class="flex items-center justify-center">
+                    <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
+                  </div>
+
+                  <div v-if="loadingID === String(project_file.id)" class="absolute top-0 w-full h-full">
+                    <div class="w-full h-full flex items-center justify-center bg-white">
+                      <div class="">
+                        <div class="text-center">
+                          <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+                        </div>                
+                        <div class=" flex items-center justify-center">
+                          <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </transition-group>
+        </div>
+        <div v-else class="">
+          <div class="flex items-center justify-center">
+            <p class="">Нет архивов</p>
           </div>
-        </transition-group>
+        </div>
 
       </div>
 
