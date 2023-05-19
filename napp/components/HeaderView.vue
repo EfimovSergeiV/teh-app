@@ -8,7 +8,7 @@
             <img src="/logo.webp" class="h-[35px]" />
           </nuxt-link>
           <div class="flex gap-4">
-            <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold">Пользователь</p></div>
+            <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold"> Пользователь</p></div>
             <!-- <div class="mdi mdi-star text-white text-sm flex items-center font-semibold"><p>Рейтинг 150</p></div> -->
           </div>
         </div>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="bg-sky-700">
-      <div class=" container mx-auto">
+      <div class="py-1 container mx-auto">
 
         <div class="flex gap-4 py-2 px-4">
           <div v-for="category in categories" :key="category.id" class="">
