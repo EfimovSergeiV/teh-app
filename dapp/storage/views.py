@@ -72,7 +72,8 @@ class CreateOrUpdateProjectView(APIView):
         if sr.is_valid():
             if pk:
                 msg = 'Проект обновлён'
-                print(f'Update Project {pk}')
+                qs = ProjectArchiveModel.objects.get(id=pk)
+                sr.update(qs, sr.data)
             else:
                 msg = 'Проект создан'
                 sr.save()

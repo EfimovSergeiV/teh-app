@@ -11,6 +11,8 @@
       </div>
     </div>
 
+    {{ updated }}
+
 
     <div class="relative pt-1 pb-4">
       <!-- <div class="container mx-auto px-4">
@@ -224,6 +226,8 @@ export default {
       description: null,
       file: null,
       
+      updated: null,
+
       btnStatus: false,
       uploadform: false,
 
@@ -283,8 +287,13 @@ export default {
           })
 
           this.addToast(response.data)
-          this.updateProjects()
-          // this.createProjectForm() /// Hidden this form
+          this.editProjectNameForm = false
+          this.editDescriptionForm = false
+
+          await this.$axios.get(`s/projects/getone/${this.project.id}/`).then((resp) => {
+            this.project = resp.data
+          })
+          
 
         } catch (error) {
           console.log(error)
