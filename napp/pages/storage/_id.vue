@@ -101,8 +101,8 @@
                 <button class="mdi mdi-close text-sm" @click="uploadform = !uploadform"></button>
               </div>
               <div class="my-2">
-                <label for="archiveName" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ name }}</span></label>
-                <input id="archiveName" v-model="archiveName" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
+                <label for="archiveName" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ newArchiveName }}</span></label>
+                <input id="archiveName" v-model="newArchiveName" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
               </div>
             
               <div class="relative">
@@ -237,6 +237,7 @@ export default {
       btnStatus: false,
       uploadform: false,
 
+      newArchiveName: null,
       uploadFiles: [],
       uploadProgress: 0,
       loadingNow: false,
@@ -302,7 +303,6 @@ export default {
           
 
         } catch (error) {
-          console.log(error)
           this.addToast({ "id": 1, "msg": "Что то пошло не так!", "type": "error" })
         }          
       } else {
@@ -321,6 +321,10 @@ export default {
         formData.append("project_id", fileData.project_id)
         formData.append("file_id", fileData.file_id)
         formData.append("file", fileData.file)
+
+        if (this.newArchiveName) {
+          formData.append("name", this.newArchiveName)
+        }
 
         try {
           this.loadingNow = true
@@ -351,6 +355,7 @@ export default {
         this.addToast({ "id": 1, "msg": "Нечего загружать", "type": "error" })
       }
 
+      this.newArchiveName = null
       this.loadingNow = false
       this.loadingID = 0
       

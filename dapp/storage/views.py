@@ -1,9 +1,14 @@
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from storage.models import ProjectArchiveModel
-from storage.serializers import ProjectArchiveSerializer, ProjectCreateSerializer
+from storage.serializers import (
+    ProjectArchiveSerializer,
+    ProjectCreateSerializer,
+    FileArchiveSerializer
+)   
 from django.core.files.storage import FileSystemStorage
 import hashlib, zipfile
 
@@ -89,7 +94,6 @@ class CreateOrUpdateFilesView(APIView):
 
     def post(self, request):
         file = request.FILES['file']
-
         fs = FileSystemStorage()
 
         print(file.name, request.data)
@@ -101,7 +105,38 @@ class CreateOrUpdateFilesView(APIView):
         md5_summ = get_md5_summ(file)
 
 
+        serializer = FileArchiveSerializer
+        if request.data["file_id"] == 'newfile':
+            print("создаём новую запись, добавляем файл / заносим в историю")
+
+            data = {
+                "project": request.data["project_id"],
+                "name": request.data["name"],
+                "md5": md5_summ,
+                "file": file,
+            }
+
+            serializer_data = serializer(data=data)
+            if serializer_data.is_valid():
+                serializer_data.save()
+            else:
+                print(f"Данные не прошли\n {data}")
+                print(serializer_data.errors)
+
+
+        else:
+            print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
+
+
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
+
+
+
+
+
+
+
+
 
 
 
