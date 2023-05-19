@@ -11,8 +11,6 @@
       </div>
     </div>
 
-    {{ updated }}
-
 
     <div class="relative pt-1 pb-4">
       <!-- <div class="container mx-auto px-4">
@@ -37,6 +35,11 @@
       <div class="my-4">
         <div class="relative">
           <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
+          
+          <div class="my-4">
+            <p class="text-gray-700 text-sm font-semibold mdi mdi-download">Скачать проект</p>
+          </div>
+          
         
           <transition name="fade">
             <div v-if="editProjectNameForm" class="absolute top-0 w-full z-20">
@@ -86,7 +89,18 @@
           </transition>
         </div>
 
-        <p class="text-right text-sm">Создан: {{ project.created_date }}</p>        
+        <div class="flex items-center justify-end gap-4 py-4">
+          <div class="grid grid-cols-1">
+            <div class="flex justify-between gap-4">
+              <p class="text-right text-xs text-gray-700 font-semibold">Создан: </p>
+              <p class="text-right text-xs text-gray-700 font-semibold">{{ project.created_date }}</p>
+            </div>
+            <div class="flex justify-between gap-4">
+              <p class="text-right text-xs text-gray-700 font-semibold">Обновлён: </p>
+              <p class="text-right text-xs text-gray-700 font-semibold">{{ project.created_date }}</p>
+            </div>
+          </div>
+        </div>        
       </div>
 
 
@@ -100,9 +114,12 @@
               <div class="flex items-center justify-end">
                 <button class="mdi mdi-close text-sm" @click="uploadform = !uploadform"></button>
               </div>
-              <div class="my-2">
-                <label for="archiveName" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ newArchiveName }}</span></label>
-                <input id="archiveName" v-model="newArchiveName" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
+
+              <div class="flex items-center justify-center">
+                <div class="min-w-[400px] md:min-w-[560px] my-2">
+                  <label for="archiveName" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ newArchiveName }}</span></label>
+                  <input id="archiveName" v-model="newArchiveName" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
+                </div>
               </div>
             
               <div class="relative">
@@ -120,8 +137,17 @@
                     </label>
                   </form>
                 </div>
-                <div class="flex items-center justify-center my-2">
+                <div class="flex items-center justify-center my-2 gap-2">
+
+                  <!-- <div>
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                      <p class="text-gray-700 text-sm font-semibold">Добавить ко всем проектам</p>
+                    </label>
+                  </div> -->
+
                   <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile('newfile')"> Загрузить</button>
+
                 </div>
 
                 <div v-if="loadingID === 'newfile'" class="absolute top-0 w-full h-full">
@@ -151,21 +177,32 @@
         </div>
 
         <div v-if="files.length > 0">
-          <transition-group tag="div" name="absolute-left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
+          <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
 
             <div v-for="project_file in files" :key="project_file.id" class="">
 
               <div class="border-b border-gray-200 bg-white rounded-sm py-2">
                 <p class="border-b border-gray-200">{{ project_file.name }}</p>
                 
-                <div class="flex items-center justify-start my-1">
+                <div class="flex items-center justify-start my-2">
+                  <div>
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                      <p class="text-gray-700 text-sm font-semibold"></p>
+                    </label>
+                  </div>
                   <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
                 </div>
                 <div class="my-2">
+
+                  <div class="flex gap-2">
+                    <p class="text-sm">Последний</p>
+                    <button class="text-sm text-gray-800 font-semibold">История</button>
+                  </div>
+                  
                   <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
                   <p class="text-xs">md5: {{ project_file.md5 }}</p>              
                 </div>
-
 
 
                 <div class="relative">
