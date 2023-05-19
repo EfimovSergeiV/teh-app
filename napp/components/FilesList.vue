@@ -4,7 +4,7 @@
     <div class="bg-gray-100">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
-          <div class="w-28"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: {{ projects.length }}</p></div> 
+          <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ projects.length }}</span></p></div> 
           <button class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button>
           <button class="text-gray-600 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProjectForm"> Создать проект</button>

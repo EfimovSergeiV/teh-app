@@ -18,20 +18,18 @@
     </div>
 
     <div class="bg-sky-700">
-      <div class=" container mx-auto py-2">
+      <div class=" container mx-auto">
 
-        <div class="flex gap-4 my-2 px-4">
+        <div class="flex gap-4 py-2 px-4">
           <div v-for="category in categories" :key="category.id" class="">
-            <p class="text-white font-semibold text-sm border-b border-white cursor-pointer">{{ category.name }}</p>
+            <p class="text-white font-semibold text-sm border-white cursor-pointer">{{ category.name }}</p>
           </div>
         </div>
 
-        <div class="flex gap-4 my-2 px-4">
-          <div class="">
-            <p class="text-white font-semibold text-xs  border-white cursor-pointer">Микросварка</p>
+        <div class="flex gap-4 py-2 px-4">
+          <div v-for="inserted in inserteds" :key="inserted.id" class="">
+            <p class="text-white font-semibold text-xs border-b border-white cursor-pointer">{{ inserted.name }}</p>
           </div>
-          <p class="text-gray-300 font-semibold text-xs cursor-pointer"> Дуговая сварка</p>
-          <p class="text-gray-300 font-semibold text-xs cursor-pointer"> Микросварка</p>
         </div>
 
       </div>
@@ -71,7 +69,14 @@ export default {
         { "id": 3, "name": "Трансформаторы", "inserted": [ { "id": 2, "name": "Точечная переменным током" }, { "id": 3, "name": "Точечная постоянным током"}, { "id": 3, "name": "Точечная конденсаторная"}, { "id": 3, "name": "Шовная постоянным током"}, { "id": 3, "name": "Рельефная переменным током"}, { "id": 3, "name": "Стыковая"}, ] },
         { "id": 4, "name": "Источники", "inserted": [ { "id": 2, "name": "Точечная переменным током" }, { "id": 3, "name": "Точечная постоянным током"}, { "id": 3, "name": "Точечная конденсаторная"}, { "id": 3, "name": "Шовная постоянным током"}, { "id": 3, "name": "Рельефная переменным током"}, { "id": 3, "name": "Стыковая"}, ] },
       ],
-      showInserted: []
+      inserteds: [
+        { "id": 2, "name": "Контактная сваарка" },
+        { "id": 2, "name": "Дуговая сваарка" },
+        { "id": 2, "name": "Диффузионная сваарка" },
+        { "id": 2, "name": "Микросварка сваарка" },
+        { "id": 2, "name": "Контактная пайка" },
+        { "id": 2, "name": "Специального назначения" },
+      ]
     }
   },
 }

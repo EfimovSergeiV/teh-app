@@ -37,7 +37,7 @@
           <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
           
           <div class="my-4">
-            <p class="text-gray-700 text-sm font-semibold mdi mdi-download">Скачать проект</p>
+            <p class="text-gray-700 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
           </div>
           
         
@@ -90,7 +90,7 @@
         </div>
 
         <div class="flex items-center justify-end gap-4 py-4">
-          <div class="grid grid-cols-1">
+          <div class="grid gap-1 grid-cols-1">
             <div class="flex justify-between gap-4">
               <p class="text-right text-xs text-gray-700 font-semibold">Создан: </p>
               <p class="text-right text-xs text-gray-700 font-semibold">{{ project.created_date }}</p>
