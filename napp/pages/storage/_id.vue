@@ -255,7 +255,7 @@
       <div v-if="historyFilesModal" class="fixed top-0 w-full">
         <div class="">
 
-          <div class="container mx-auto py-2 px-4 bg-gray-100 h-[700px] border border-gray-700/50 rounded-br-lg rounded-bl-lg shadow-lg shadow-gray-900/50">
+          <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-600 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
             <div class="flex justify-between my-2">
               <div class=""><p class="font-semibold text-gray-700 text-sm">История изменений</p></div>
@@ -285,16 +285,16 @@
                               <p class="text-gray-700 text-sm font-semibold"></p>
                             </label>
                           </div>
-                          <a :href="historical_file.file" class=" text-sm">Скачать</a>
+                          <a :href="historical_file.file" class=" text-sm text-gray-900">Скачать</a>
                         </div>
 
                         <div class="my-1">
-                          <p class="text-xs">{{ historical_file.author }}</p>
-                          <p class="text-xs">{{ historical_file.created_date }}</p>
+                          <p class="text-xs mdi mdi-account text-gray-900"> {{ historical_file.author }}</p>
+                          <p class="text-xs mdi mdi-calendar-clock text-gray-900"> {{ historical_file.created_date }}</p>
                         </div>
 
                         <div class="">
-                          <p class="text-xs">{{ historical_file.md5 }}</p>
+                          <p class="text-xs text-gray-900">{{ historical_file.md5 }}</p>
                         </div>
 
                       </div>
