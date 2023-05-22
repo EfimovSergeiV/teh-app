@@ -55,7 +55,7 @@ class FileHistoryModel(models.Model):
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
     file = models.CharField(verbose_name="Путь к архиву", max_length=500)
-    created_date = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
+    created_date = models.DateTimeField(verbose_name="Дата создания")
     
     class Meta:
         verbose_name = "Файл"

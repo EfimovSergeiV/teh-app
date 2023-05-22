@@ -34,7 +34,7 @@
 
       <div class="my-4">
         <div class="relative">
-          <p class="font-semibold text-gray-700">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
+          <p class="font-semibold text-gray-800">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
           
           <div class="my-4">
             <p class="text-gray-700 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
@@ -175,36 +175,33 @@
         </div>
 
         <div v-if="files.length > 0">
-          <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
+          <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
 
             <div v-for="project_file in files" :key="project_file.id" class="">
 
               <div class="border-b border-gray-200 bg-white rounded-sm py-2">
                 <p class="border-b border-gray-200">{{ project_file.name }}</p>
                 
-                <div class="flex items-center justify-start my-2">
+                <div class="flex items-center justify-start my-2 gap-2">
                   <div>
-                    <label class="flex items-center gap-2">
+                    <label class="flex items-center">
                       <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
                       <p class="text-gray-700 text-sm font-semibold"></p>
                     </label>
                   </div>
                   <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
-                </div>
-                <div class="my-2">
-
-                  <div class="flex gap-2">
-                    <p class="text-sm">Последний</p>
+                  <div class="">
                     <button class="text-sm text-gray-800 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
-                  </div>
+                  </div>                
+                
+                </div>
 
-                  <div class="grid grid-cols-1 gap-0.5">
-                    <p class="text-sm">Автор: {{ project_file.author }}</p>
-                    
-                    <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
-                    <p class="text-xs">md5: {{ project_file.md5 }}</p>                               
+                <div class="my-2">
+                  <div class="grid grid-cols-1 gap-1">
+                    <p class="text-sm mdi mdi-account text-gray-900"> {{ project_file.author }}</p>
+                    <p class="text-sm mdi mdi-update text-gray-900"> {{ project_file.created_date }}</p>
+                    <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
                   </div>
-   
                 </div>
 
 
@@ -261,24 +258,24 @@
           <div class="container mx-auto py-2 px-4 bg-gray-100 h-[700px] border border-gray-700/50 rounded-br-lg rounded-bl-lg shadow-lg shadow-gray-900/50">
 
             <div class="flex justify-between my-2">
-              <div class=""><p>История изменений</p></div>
-              <div class=""><button class="text-sm mdi mdi-close" @click="historyFilesModal = false"> Закрыть</button></div>
+              <div class=""><p class="font-semibold text-gray-700 text-sm">История изменений</p></div>
+              <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-gray-700" @click="historyFilesModal = false"> Закрыть</button></div>
+            </div>
+            
+            <div class="">
+              <button class="text-sm">Загрузить в историю</button>
             </div>
 
-            <div class="my-4">
+            <div class="my-2">
               <div class="">
                 <div class="">
-
-
-
-
 
                   <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 py-4">
                     <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
                       <div class="border-b border-gray-300">
 
                         <div class="">
-                          <p class="text-sm font-semibold text-gray-900">{{ historical_file.name }}</p>
+                          <p class="text-sm font-semibold text-gray-700">{{ historical_file.name }}</p>
                         </div>
 
                         <div class="flex items-center justify-start my-1">
@@ -291,9 +288,12 @@
                           <a :href="historical_file.file" class=" text-sm">Скачать</a>
                         </div>
 
-                        <div class="">
+                        <div class="my-1">
                           <p class="text-xs">{{ historical_file.author }}</p>
                           <p class="text-xs">{{ historical_file.created_date }}</p>
+                        </div>
+
+                        <div class="">
                           <p class="text-xs">{{ historical_file.md5 }}</p>
                         </div>
 
