@@ -1,9 +1,20 @@
 from rest_framework import serializers
-from storage.models import ProjectArchiveModel, FileArchiveModel
+from storage.models import ProjectArchiveModel, FileArchiveModel, FileHistoryModel
+
+
+class FileHistorySerializer(serializers.ModelSerializer):
+    """ Сериалихзатор истории файла """
+
+    class Meta:
+        model = FileHistoryModel
+        fields = '__all__'
+
 
 
 class FileArchiveSerializer(serializers.ModelSerializer):
     """ Файлы """
+    historical_files = FileHistorySerializer(many=True)
+
 
     class Meta:
         model = FileArchiveModel
@@ -17,11 +28,15 @@ class ProjectCreateSerializer(serializers.ModelSerializer):
         model = ProjectArchiveModel
         fields = '__all__'
 
+
 class ProjectArchiveSerializer(serializers.ModelSerializer):
     """ Сериализатор представления моделей """
 
     project_files = FileArchiveSerializer(many=True)
     
+    
     class Meta:
         model = ProjectArchiveModel
         fields = '__all__'
+
+

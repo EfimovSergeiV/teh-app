@@ -195,11 +195,16 @@
 
                   <div class="flex gap-2">
                     <p class="text-sm">Последний</p>
-                    <button class="text-sm text-gray-800 font-semibold">История</button>
+                    <button class="text-sm text-gray-800 font-semibold">История версий</button>
                   </div>
-                  
-                  <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
-                  <p class="text-xs">md5: {{ project_file.md5 }}</p>              
+
+                  <div class="grid grid-cols-1 gap-0.5">
+                    <p class="text-sm">Автор: {{ project_file.author }}</p>
+                    
+                    <p class="text-sm">Обновлён: {{ project_file.created_date }}</p>
+                    <p class="text-xs">md5: {{ project_file.md5 }}</p>                               
+                  </div>
+   
                 </div>
 
 
