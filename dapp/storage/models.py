@@ -50,7 +50,7 @@ class FileArchiveModel(models.Model):
 class FileHistoryModel(models.Model):
     """ История файлов """
 
-    latest = models.ForeignKey(FileArchiveModel, related_name='historical_files' ,on_delete=models.CASCADE)
+    latest = models.ForeignKey(FileArchiveModel, related_name='historical_files', on_delete=models.CASCADE)
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)

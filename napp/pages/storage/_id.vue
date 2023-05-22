@@ -189,17 +189,17 @@
                       <p class="text-gray-700 text-sm font-semibold"></p>
                     </label>
                   </div>
-                  <a :href="project_file.file" class="font-semibold text-gray-900 text-sm">Скачать</a>
+                  <a :href="project_file.file" class="font-semibold text-gray-800 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-gray-800 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
+                    <button class="text-sm text-gray-800" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
                   </div>                
                 
                 </div>
 
                 <div class="my-2">
                   <div class="grid grid-cols-1 gap-1">
-                    <p class="text-sm mdi mdi-account text-gray-900"> {{ project_file.author }}</p>
-                    <p class="text-sm mdi mdi-update text-gray-900"> {{ project_file.created_date }}</p>
+                    <p class="text-sm mdi mdi-account font-semibold text-gray-800"> {{ project_file.author }}</p>
+                    <p class="text-sm mdi mdi-update font-semibold text-gray-800"> {{ project_file.created_date }}</p>
                     <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
                   </div>
                 </div>
@@ -262,20 +262,22 @@
               <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-gray-700" @click="historyFilesModal = false"> Закрыть</button></div>
             </div>
             
-            <div class="">
-              <button class="text-sm">Загрузить в историю</button>
+            <div class="flex gap-4">
+              <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
+              <button class="text-gray-600 font-semibold text-sm mdi mdi-upload cursor-pointer">Загрузить в историю</button>
             </div>
+            
 
             <div class="my-2">
-              <div class="">
+              <div class="overflow-y-auto h-[500px] py-1 border-b border-t border-sky-500/50">
                 <div class="">
 
-                  <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
+                  <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
                     <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
                       <div class="border-b border-gray-300">
 
                         <div class="">
-                          <p class="text-sm font-semibold text-gray-700">{{ historical_file.name }}</p>
+                          <p class="text-sm text-gray-700">{{ historical_file.id }}. {{ historical_file.name }}</p>
                         </div>
 
                         <div class="flex items-center justify-start my-1">
@@ -289,8 +291,8 @@
                         </div>
 
                         <div class="my-1">
-                          <p class="text-xs mdi mdi-account text-gray-900"> {{ historical_file.author }}</p>
-                          <p class="text-xs mdi mdi-calendar-clock text-gray-900"> {{ historical_file.created_date }}</p>
+                          <p class="text-xs font-semibold text-gray-800 mdi mdi-account"> {{ historical_file.author }}</p>
+                          <p class="text-xs font-semibold text-gray-800 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
                         </div>
 
                         <div class="">
@@ -299,12 +301,8 @@
 
                       </div>
 
-
-                    
                     </div>
                   </transition-group>
-
-                  
 
                 </div>
               </div>

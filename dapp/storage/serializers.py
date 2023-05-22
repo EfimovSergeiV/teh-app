@@ -13,8 +13,7 @@ class FileHistorySerializer(serializers.ModelSerializer):
 
 class FileArchiveSerializer(serializers.ModelSerializer):
     """ Файлы """
-    historical_files = FileHistorySerializer(many=True)
-
+    historical_files = FileHistorySerializer(many=True, read_only=True)
 
     class Meta:
         model = FileArchiveModel
