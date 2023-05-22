@@ -28,6 +28,17 @@
   transition: all 0.3s ease;
 }
 
+/* Исчезновение Сверху вниз*/
+.top-emergence-enter,
+.top-emergence-leave-to {
+  opacity: 0;
+  transform: translateY(-12em);
+}
+.top-emergence-enter-active,
+.top-emergence-leave-active {
+  transition: all 0.3s ease;
+}
+
 /* Исчезновение влево и стили корзины*/
 .right-emergence-enter,
 .right-emergence-leave-to {

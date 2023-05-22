@@ -4,6 +4,7 @@ export const state = () => ({
     projects: [],
     files: [],
     toasts: [],
+    historical_files: [],
     showCreateProject: false
   })
   
@@ -25,6 +26,12 @@ export const state = () => ({
     },
     cleanListFiles(state) {
       state.files = []
+    },
+    cleanHistoryFiles(state) {
+      state.historical_files = []
+    },
+    addHistoryFile(state, file) {
+      state.historical_files.push(file)
     },
     addToast(state, toast) {
       state.toasts.push(toast)
@@ -83,6 +90,14 @@ export const state = () => ({
           commit('addFile', files[file])
         }, file * 100);
       }  
+    },
+    addHistoryFiles({ commit }, files) {
+      commit('cleanHistoryFiles')
+      for (const file in files) {
+        setTimeout(function() {
+          commit('addHistoryFile', files[file])
+        }, file * 100);
+      }
     },
     addToast({ commit }, toast ) {
       /// Сделать присваивание ID

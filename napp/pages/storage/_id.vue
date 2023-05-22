@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="relative">
 
     <div class="bg-white">
       <div class="container mx-auto py-2 px-4">
@@ -195,7 +195,7 @@
 
                   <div class="flex gap-2">
                     <p class="text-sm">Последний</p>
-                    <button class="text-sm text-gray-800 font-semibold">История версий</button>
+                    <button class="text-sm text-gray-800 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
                   </div>
 
                   <div class="grid grid-cols-1 gap-0.5">
@@ -254,6 +254,65 @@
 
     </div>
 
+    <transition name="top-emergence">
+      <div v-if="historyFilesModal" class="fixed top-0 w-full">
+        <div class="">
+
+          <div class="container mx-auto py-2 px-4 bg-gray-100 h-[700px] border border-gray-700/50 rounded-br-lg rounded-bl-lg shadow-lg shadow-gray-900/50">
+
+            <div class="flex justify-between my-2">
+              <div class=""><p>История изменений</p></div>
+              <div class=""><button class="text-sm mdi mdi-close" @click="historyFilesModal = false"> Закрыть</button></div>
+            </div>
+
+            <div class="my-4">
+              <div class="">
+                <div class="">
+
+
+
+
+
+                  <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-4">
+                    <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
+
+                      <div class="flex items-center justify-start my-2">
+                        <div>
+                          <label class="flex items-center gap-2">
+                            <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                            <p class="text-gray-700 text-sm font-semibold"></p>
+                          </label>
+                        </div>
+                        <a href="#" class="font-semibold text-gray-900 text-sm">Скачать</a>
+                      </div>
+
+                      <div class="">
+                        <p class="text-xs">{{ historical_file.name }}</p>
+                        <p class="text-xs">{{ historical_file.author }}</p>
+                        <p class="text-xs">{{ historical_file.md5 }}</p>
+                        <p class="text-xs">{{ historical_file.created_date }}</p>
+                        <p class="text-xs">{{ historical_file.file }}</p>
+                      </div>
+                    
+                    </div>
+                  </transition-group>
+
+                  
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </transition>
+
+      
+    
+
+
   </div>
 </template>
 
@@ -285,6 +344,9 @@ export default {
       changeProjectForm: true,
       editProjectNameForm: false,
       editDescriptionForm: false,
+
+      historyFilesModal: false,
+
     }
   },
 
@@ -292,6 +354,7 @@ export default {
     ...mapState({
       projects: (state) => state.projects,
       files: (state) => state.files,
+      historical_files: (state) => state.historical_files
     }),
 
   },
@@ -307,6 +370,7 @@ export default {
       updateProject: 'updateProject',
       updateProjects: 'updateProjects',
       addFiles: 'addFiles',
+      addHistoryFiles: 'addHistoryFiles',
     }),
     onFileChange(event) {
       const EventData = event
