@@ -252,10 +252,10 @@
     </div>
 
     <transition name="top-emergence">
-      <div v-if="historyFilesModal" class="fixed top-0 w-full">
+      <div v-if="historyFilesModal" class="fixed z-30 top-0 w-full">
         <div class="">
 
-          <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-600 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
+          <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
             <div class="flex justify-between my-2">
               <div class=""><p class="font-semibold text-gray-700 text-sm">История изменений</p></div>
@@ -270,7 +270,7 @@
               <div class="">
                 <div class="">
 
-                  <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 py-4">
+                  <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
                     <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
                       <div class="border-b border-gray-300">
 
