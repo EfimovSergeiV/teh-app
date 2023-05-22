@@ -273,26 +273,33 @@
 
 
 
-                  <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-4">
+                  <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 py-4">
                     <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
+                      <div class="border-b border-gray-300">
 
-                      <div class="flex items-center justify-start my-2">
-                        <div>
-                          <label class="flex items-center gap-2">
-                            <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
-                            <p class="text-gray-700 text-sm font-semibold"></p>
-                          </label>
+                        <div class="">
+                          <p class="text-sm font-semibold text-gray-900">{{ historical_file.name }}</p>
                         </div>
-                        <a href="#" class="font-semibold text-gray-900 text-sm">Скачать</a>
+
+                        <div class="flex items-center justify-start my-1">
+                          <div>
+                            <label class="flex items-center gap-2">
+                              <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                              <p class="text-gray-700 text-sm font-semibold"></p>
+                            </label>
+                          </div>
+                          <a :href="historical_file.file" class=" text-sm">Скачать</a>
+                        </div>
+
+                        <div class="">
+                          <p class="text-xs">{{ historical_file.author }}</p>
+                          <p class="text-xs">{{ historical_file.created_date }}</p>
+                          <p class="text-xs">{{ historical_file.md5 }}</p>
+                        </div>
+
                       </div>
 
-                      <div class="">
-                        <p class="text-xs">{{ historical_file.name }}</p>
-                        <p class="text-xs">{{ historical_file.author }}</p>
-                        <p class="text-xs">{{ historical_file.md5 }}</p>
-                        <p class="text-xs">{{ historical_file.created_date }}</p>
-                        <p class="text-xs">{{ historical_file.file }}</p>
-                      </div>
+
                     
                     </div>
                   </transition-group>

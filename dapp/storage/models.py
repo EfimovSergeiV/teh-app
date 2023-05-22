@@ -13,7 +13,7 @@ class ProjectArchiveModel(models.Model):
     class Meta:
         verbose_name = "Проект"
         verbose_name_plural = "Проекты"
-        ordering = ['-id',]
+        ordering = ['-created_date',]
 
     def __str__(self) -> str:
         return self.name
@@ -40,6 +40,7 @@ class FileArchiveModel(models.Model):
     class Meta:
         verbose_name = "Архив"
         verbose_name_plural = "Архивы"
+        ordering = ['-created_date',]
 
 
     def __str__(self) -> str:
@@ -59,6 +60,7 @@ class FileHistoryModel(models.Model):
     class Meta:
         verbose_name = "Файл"
         verbose_name_plural = "Файлы"
+        ordering = ['-created_date',]
 
     def __str__(self) -> str:
         return self.name
