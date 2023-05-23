@@ -13,30 +13,37 @@
             <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold"> Пользователь</p></div>
           </div> -->
 
-          <div class="flex items-center justify-end gap-2">
-            <div class="">
-              <input id="username" v-model="login.username" class="shadow appearance-none rounded w-full py-0.5 px-1 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Логин">
-            </div>
-            <div class="">
-              <input id="username" v-model="login.password" class="shadow appearance-none rounded w-full py-0.5 px-1 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="password" placeholder="Пароль">
-            </div>
-            <div class="">
-              <button class="py-0.5 px-2 bg-white shadow rounded text-sm" @click="userLogin">
-                Войти
-              </button>
-            </div>
-            <div class="">
-              <button class="py-0.5 px-2 bg-white shadow rounded text-sm" @click="logout">
-                Выйти
-              </button>
-            </div>
+          <div class="grid grid-cols-1 gap-2">
+
+            <transition name="fade">
+              <div v-if="isAuthenticated" id="isAuthenticated" class="flex items-center justify-end gap-2">
+                <div class="flex gap-2">
+                  <p class="text-white font-semibold">{{ loggedInUser }}</p>
+                  <button class="py-0.5 px-2 bg-white shadow rounded font-semibold text-gray-700 text-sm" @click="logout">
+                    выйти
+                  </button>
+                </div>
+              </div>
+
+              <div v-else id="notAuthenticated" class="flex items-center justify-end gap-2">
+                <div class="">
+                  <input id="username" v-model="login.username" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Логин">
+                </div>
+                <div class="">
+                  <input id="username" v-model="login.password" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="password" placeholder="Пароль">
+                </div>
+                <div class="">
+                  <button class="py-0.5 px-2 font-semibold bg-white text-gray-700 shadow rounded text-sm" @click="userLogin">
+                    войти
+                  </button>
+                </div>
+              </div>
+            </transition>
+
           </div>
-
         </div>
 
-        <div class="flex justify-end">
-          {{ isAuthenticated }} {{ loggedInUser }}
-        </div>
+
 
 
       </div>
