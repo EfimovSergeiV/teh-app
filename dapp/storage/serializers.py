@@ -39,3 +39,14 @@ class ProjectArchiveSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SearchSerializer(serializers.ModelSerializer):
+    """ Поиск по истории файлов """
+
+    class Meta:
+        model = FileHistoryModel
+        fields = (
+            'id', 
+            'name',
+            'author',
+            'created_date',
+            )

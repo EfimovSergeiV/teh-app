@@ -7,15 +7,45 @@
           <nuxt-link :to="{ name: 'index' }" class="">
             <img src="/logo.webp" class="h-[35px]" />
           </nuxt-link>
-          <div class="flex gap-4">
+
+
+          <!-- <div class="flex gap-4">
             <div class=""><p class="mdi mdi-account text-white text-sm flex items-center font-semibold"> Пользователь</p></div>
-            <!-- <div class="mdi mdi-star text-white text-sm flex items-center font-semibold"><p>Рейтинг 150</p></div> -->
+          </div> -->
+
+          <div class="flex items-center justify-end gap-2">
+            <div class="">
+              <input id="username" v-model="login.username" class="shadow appearance-none rounded w-full py-0.5 px-1 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Логин">
+            </div>
+            <div class="">
+              <input id="username" v-model="login.password" class="shadow appearance-none rounded w-full py-0.5 px-1 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="password" placeholder="Пароль">
+            </div>
+            <div class="">
+              <button class="py-0.5 px-2 bg-white shadow rounded text-sm" @click="userLogin">
+                Войти
+              </button>
+            </div>
+            <div class="">
+              <button class="py-0.5 px-2 bg-white shadow rounded text-sm" @click="logout">
+                Выйти
+              </button>
+            </div>
           </div>
+
+        </div>
+
+        <div class="flex justify-end">
+          {{ isAuthenticated }} {{ loggedInUser }}
         </div>
 
 
       </div>
     </div>
+
+
+
+
+
 
     <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
@@ -52,9 +82,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'HeaderView',
+  middleware: 'guest',
   props: {
     // filess: {
     //   type: Array,
@@ -76,8 +108,28 @@ export default {
         { "id": 2, "name": "Микросварка сваарка" },
         { "id": 2, "name": "Контактная пайка" },
         { "id": 2, "name": "Специального назначения" },
-      ]
+      ],
+      login: {
+        username: '',
+        password: ''
+      }
     }
   },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser'])
+  },
+  methods: {
+    async userLogin() {
+      try {
+        const response = await this.$auth.loginWith('local', { data: this.login })
+        console.log(response)
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async logout() {
+      await this.$auth.logout();
+    },
+  }
 }
 </script>

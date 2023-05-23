@@ -9,11 +9,12 @@ class ProjectArchiveModel(models.Model):
     name = models.CharField(verbose_name="Название", max_length=120)
     description = models.TextField(verbose_name="Описание", max_length=5000, null=True, blank=True, default="Не описано")
     created_date = models.DateTimeField(verbose_name="Дата создания", default=timezone.now)
+    updated_date = models.DateTimeField(verbose_name="Дата обновления", auto_now=True)
 
     class Meta:
         verbose_name = "Проект"
         verbose_name_plural = "Проекты"
-        ordering = ['-created_date',]
+        ordering = ['-updated_date',]
 
     def __str__(self) -> str:
         return self.name

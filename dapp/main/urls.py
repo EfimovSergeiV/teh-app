@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from main import settings
 from django.conf.urls.static import static
+from main.views import AuthView, UserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', AuthView.as_view()),
+    path('user/', UserView.as_view()),
     path('s/', include('storage.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

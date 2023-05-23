@@ -9,9 +9,14 @@ from storage.serializers import (
     ProjectCreateSerializer,
     FileArchiveSerializer,
     FileHistorySerializer,
+    SearchSerializer,
 )   
 from django.core.files.storage import FileSystemStorage
 import hashlib, zipfile
+from storage.documents import FileDocument
+from django.db.models import Case, When
+from elasticsearch_dsl import Q
+
 
 
 def check_zip_password(file_path):
@@ -58,7 +63,7 @@ class GetallProjectArchiveView(APIView):
     """ Список всех проектов со всеми архивами """
 
     def get(self, request):
-
+        print(f'\n{ request.headers }')
         qs = ProjectArchiveModel.objects.all()
         sr = ProjectArchiveSerializer(qs, many=True, context={'request':request})
 
@@ -162,9 +167,38 @@ class CreateOrUpdateFilesView(APIView):
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
+class SearchView(APIView):
+    serializer_class = SearchSerializer
+    document_class = FileDocument
 
+    def post(self, request):
+        search_query = request.data['name']
+        query = Q('multi_match', query=search_query,
+                fields=[
+                    'name',
+                    'author',
+                    # 'created_date',
+                ], fuzziness='auto')
 
+        search = self.document_class.search().query(query) #[0:30]
+        response = search.execute()
+        print(response)
 
+        files = [file.id for file in response ]
+        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
+        qs = FileHistoryModel.objects.filter(id__in=files).order_by(preserved)
+
+        serializer = self.serializer_class(qs, many=True, context={'request':request})
+        return Response(serializer.data)
+
+"""
+{
+    "id": 161,
+    "name": "Модели",
+    "author": "Владимир Путин",
+    "created_date": "15.10.2012 11:25:22"
+}
+"""
 
 
 

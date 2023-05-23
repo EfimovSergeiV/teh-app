@@ -41,6 +41,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // '@nuxtjs/auth',
+    '@nuxtjs/auth-next',
   ],
 
   colorMode: {
@@ -75,6 +77,32 @@ export default {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: "http://127.0.0.1:8000"
     baseURL: "http://192.168.60.201:8080"
+  },
+
+  auth: {
+    watchLoggedIn: true,
+    cookie: true,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'auth/',
+            method: 'post',
+            propertyName: 'data.token',
+          },
+          user: {
+            url: 'user/',
+            method: 'get',
+            propertyName: 'data',
+          },
+          token: {
+            maxAge: 0,
+            global: true,
+          },
+          logout: false,
+        },
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

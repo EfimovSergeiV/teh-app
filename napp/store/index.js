@@ -5,14 +5,22 @@ export const state = () => ({
     files: [],
     toasts: [],
     historical_files: [],
-    showCreateProject: false
+    showCreateProject: false,
+    showSearchForm: false,
+    // auth: {
+    //   loggedIn: false,
+    //   user: undefined,
+    // }
   })
   
-//   export const getters = {
-//     getCounter(state) {
-//       return state.counter
-//     }
-//   }
+  export const getters = {
+    isAuthenticated(state) {
+      return state.auth.loggedIn
+    },
+    loggedInUser(state) {
+      return state.auth.user
+    }
+  }
 
   export const mutations = {
     addProject(state, project) {
@@ -96,7 +104,7 @@ export const state = () => ({
       for (const file in files) {
         setTimeout(function() {
           commit('addHistoryFile', files[file])
-        }, file * 100);
+        }, file * 0);
       }
     },
     addToast({ commit }, toast ) {
