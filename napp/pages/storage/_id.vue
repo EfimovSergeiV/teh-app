@@ -144,7 +144,7 @@
                     </label>
                   </div> -->
 
-                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile('newfile')"> Загрузить</button>
+                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="uploadFile('newfile')"> Загрузить</button>
 
                 </div>
 
@@ -277,22 +277,21 @@
                       <div class="border-b border-gray-300">
 
                         <div class="">
-                          <p class="text-sm text-gray-700">{{ historical_file.id }}. {{ historical_file.name }}</p>
+                          <p class="text-xs text-sky-700">{{ historical_file.name }}</p>
                         </div>
 
-                        <div class="flex items-center justify-start my-1">
+                        <div class="flex items-center justify-start gap-2 my-1">
                           <div>
                             <label class="flex items-center gap-2">
                               <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
-                              <p class="text-gray-700 text-sm font-semibold"></p>
                             </label>
                           </div>
-                          <a :href="historical_file.file" class=" text-sm text-gray-900">Скачать</a>
+                          <a :href="historical_file.file" class=" text-sm text-sky-900">Скачать</a>
                         </div>
 
-                        <div class="my-1">
-                          <p class="text-xs font-semibold text-gray-800 mdi mdi-account"> {{ historical_file.author }}</p>
-                          <p class="text-xs font-semibold text-gray-800 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
+                        <div class="my-2">
+                          <p class="text-xs font-semibold text-sky-800 mdi mdi-account"> {{ historical_file.author }}</p>
+                          <p class="text-xs font-semibold text-sky-800 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
                         </div>
 
                         <div class="">

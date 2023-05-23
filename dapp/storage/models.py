@@ -36,7 +36,6 @@ class FileArchiveModel(models.Model):
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
     file = models.FileField(verbose_name="Архив", upload_to=upload_file_to)
     created_date = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
-    # history = models.JSONField(verbose_name="История изменений", null=True, blank=True)
 
     class Meta:
         verbose_name = "Архив"

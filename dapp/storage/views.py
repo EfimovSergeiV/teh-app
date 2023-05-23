@@ -95,6 +95,38 @@ class CreateOrUpdateProjectView(APIView):
         
 
 
+def add_file_to_history(data):
+    """ Добавляем загруженный файл в историю """
+    
+    # create_random_date = f"20{randint(10,23)}-{randint(1, 12)}-{randint(1, 29)} {randint(7, 18)}:{randint(1,60)}:22.273656"
+
+    # print(create_random_date)
+
+    # while count < max:
+    #     count += 1
+    
+    FileHistoryModel.objects.create(
+        latest_id = data.id,
+        author = data.author,
+        created_date = data.created_date,
+        name = data.name,
+        md5 = data.md5,
+        file = data.file,
+    )
+
+    # writed_data = {
+    #     "latest_id": data.id,
+    #     "author" : data.author,
+    #     "name" : data.name,
+    #     "md5" : data.md5,
+    #     "file" : data.file,
+    #     "created_date": data.created_date,        
+    # }
+    # FileHistoryModel.objects.create(writed_data)
+
+    # print(writed_data)
+
+
 class CreateOrUpdateFilesView(APIView):
     """ Создать или обновить архив проекта """
 
@@ -102,7 +134,7 @@ class CreateOrUpdateFilesView(APIView):
         file = request.FILES['file']
         fs = FileSystemStorage()
 
-        print(file.name, request.data)
+        # print(file.name, request.data)
 
         # Проверки архива
         if check_zip_password(file):
@@ -112,26 +144,20 @@ class CreateOrUpdateFilesView(APIView):
 
 
         serializer = FileArchiveSerializer
-        
         project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
-
         history_serializer = FileHistorySerializer
         history = FileHistoryModel.objects.get(id=3)
-
         history = history_serializer(history)
-
-        
 
         hd = history.data
         hd["created_date"] = timezone.now()
-        print(hd)
+        # print(hd)
 
         data = {
             "project": project.id,
             "md5": md5_summ,
             "file": file,
             "author": "Пользователь",
-            # "historical_files": [hd,],
         }
 
         try:
@@ -139,13 +165,12 @@ class CreateOrUpdateFilesView(APIView):
         except KeyError:
             pass
 
-        
         if request.data["file_id"] == 'newfile':
             # print("создаём новую запись, добавляем файл / заносим в историю")
             serializer_data = serializer(data=data)
             if serializer_data.is_valid():
                 print("SAVING")
-                serializer_data.save()
+                saved_data = serializer_data.save()
             else:
                 print(serializer_data.errors)
 
@@ -158,12 +183,15 @@ class CreateOrUpdateFilesView(APIView):
             serializer_data = serializer(data=data)
             if serializer_data.is_valid():
                 print("UPDATE")
-                serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
+                saved_data = serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
                 # print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
 
             else:
                 print(serializer_data.errors)
 
+
+        # Добавляем файл в историю загрузок
+        add_file_to_history(saved_data)
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
