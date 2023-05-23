@@ -4,9 +4,9 @@
     <div class="bg-white">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
-          <nuxt-link :to="{ name: 'index' }" class="text-gray-600 font-semibold text-sm mdi mdi-home"> Вернуться на главную</nuxt-link>
-          <button class="text-gray-600 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProject($route.params.id)"> Обновить</button>
-          <button class="text-gray-600 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
+          <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Вернуться на главную</nuxt-link>
+          <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProject($route.params.id)"> Обновить</button>
+          <button class="text-sky-900 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
         </div>
       </div>
     </div>
@@ -34,16 +34,16 @@
 
       <div class="my-4">
         <div class="relative">
-          <p class="font-semibold text-gray-800">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
+          <p class="font-semibold text-sky-900">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
           
-          <div class="my-4">
-            <p class="text-gray-700 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
+          <div class="my-2">
+            <p class="text-sky-800 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
           </div>
           
         
           <transition name="fade">
             <div v-if="editProjectNameForm" class="absolute top-0 w-full z-20">
-              <div class="bg-sky-900 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
+              <div class="bg-sky-800 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
                 <div class="my-2">
                   <div class="flex items-center justify-end">
                     <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="editProjectNameForm = false"> Закрыть</p>
@@ -66,8 +66,8 @@
         </div>
         
         
-        <div class="my-6 relative">
-          <p class="text-sm font-semibold text-gray-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
+        <div class="my-2 relative">
+          <p class="text-sm font-semibold text-sky-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
         
           <transition name="fade">
             <div v-if="editDescriptionForm" class="absolute top-0 w-full z-20">
@@ -170,8 +170,8 @@
         </div>
 
 
-        <div class="my-6 border-b border-gray-400">
-          <p>Файлы проекта:</p>
+        <div class="my-6 border-b border-sky-400">
+          <p class="text-sky-700">Файлы проекта:</p>
         </div>
 
         <div v-if="files.length > 0">
@@ -179,8 +179,8 @@
 
             <div v-for="project_file in files" :key="project_file.id" class="">
 
-              <div class="border-b border-gray-200 bg-white rounded-sm py-2">
-                <p class="border-b border-gray-200">{{ project_file.name }}</p>
+              <div class="border-b text-sky-900 border-gray-200 bg-white rounded-sm py-2">
+                <p class="border-b text-sky-900 border-gray-200">{{ project_file.name }}</p>
                 
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
@@ -189,17 +189,17 @@
                       <p class="text-gray-700 text-sm font-semibold"></p>
                     </label>
                   </div>
-                  <a :href="project_file.file" class="font-semibold text-gray-800 text-sm">Скачать</a>
+                  <a :href="project_file.file" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-gray-800" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
+                    <button class="text-sm text-sky-900 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
                   </div>                
                 
                 </div>
 
                 <div class="my-2">
                   <div class="grid grid-cols-1 gap-1">
-                    <p class="text-sm mdi mdi-account font-semibold text-gray-800"> {{ project_file.author }}</p>
-                    <p class="text-sm mdi mdi-update font-semibold text-gray-800"> {{ project_file.created_date }}</p>
+                    <p class="text-sm mdi mdi-account font-semibold text-sky-800"> {{ project_file.author }}</p>
+                    <p class="text-sm mdi mdi-update font-semibold text-sky-800"> {{ project_file.created_date }}</p>
                     <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
                   </div>
                 </div>
@@ -221,7 +221,7 @@
                     </form>
                   </div>
                   <div class="flex items-center justify-center">
-                    <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
+                    <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
                   </div>
 
                   <div v-if="loadingID === String(project_file.id)" class="absolute top-0 w-full h-full">
@@ -263,8 +263,8 @@
             </div>
             
             <div class="flex gap-4">
-              <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
-              <button class="text-gray-600 font-semibold text-sm mdi mdi-upload cursor-pointer">Загрузить в историю</button>
+              <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
+              <button class="text-sky-900 font-semibold text-sm mdi mdi-upload cursor-pointer">Загрузить в историю</button>
             </div>
             
 
