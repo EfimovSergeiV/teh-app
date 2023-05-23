@@ -92,12 +92,12 @@
         <div class="flex items-center justify-end gap-4 py-4">
           <div class="grid gap-1 grid-cols-1">
             <div class="flex justify-between gap-4">
-              <p class="text-right text-xs text-gray-700 font-semibold">Создан: </p>
-              <p class="text-right text-xs text-gray-700 font-semibold">{{ project.created_date }}</p>
+              <p class="text-right text-xs text-sky-700 font-semibold">Создан: </p>
+              <p class="text-right text-xs text-sky-800 font-semibold">{{ project.created_date }}</p>
             </div>
             <div class="flex justify-between gap-4">
-              <p class="text-right text-xs text-gray-700 font-semibold">Обновлён: </p>
-              <p class="text-right text-xs text-gray-700 font-semibold">{{ project.created_date }}</p>
+              <p class="text-right text-xs text-sky-700 font-semibold">Обновлён: </p>
+              <p class="text-right text-xs text-sky-800 font-semibold">{{ project.created_date }}</p>
             </div>
           </div>
         </div>        
@@ -200,7 +200,7 @@
                   <div class="grid grid-cols-1 gap-1">
                     <p class="text-sm mdi mdi-account font-semibold text-sky-800"> {{ project_file.author }}</p>
                     <p class="text-sm mdi mdi-update font-semibold text-sky-800"> {{ project_file.created_date }}</p>
-                    <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
+                    <p class="text-xs text-sky-900">md5: {{ project_file.md5 }}</p>                               
                   </div>
                 </div>
 
@@ -258,8 +258,8 @@
           <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
             <div class="flex justify-between my-2">
-              <div class=""><p class="font-semibold text-gray-700 text-sm">История изменений</p></div>
-              <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-gray-700" @click="historyFilesModal = false"> Закрыть</button></div>
+              <div class=""><p class="font-semibold text-sky-800 text-sm">История изменений</p></div>
+              <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
             </div>
             
             <div class="flex gap-4">
@@ -296,7 +296,7 @@
                         </div>
 
                         <div class="">
-                          <p class="text-xs text-gray-900">{{ historical_file.md5 }}</p>
+                          <p class="text-xs text-sky-900">{{ historical_file.md5 }}</p>
                         </div>
 
                       </div>
