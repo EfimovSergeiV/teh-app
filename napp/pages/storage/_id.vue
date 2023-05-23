@@ -164,7 +164,7 @@
             </div>
 
 
-            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-gray-700 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Добавить архив</button>
+            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Добавить архив</button>
 
           </transition>
         </div>
