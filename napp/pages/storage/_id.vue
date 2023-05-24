@@ -33,8 +33,14 @@
     <div class="container min-h-screen mx-auto px-4">
 
       <div class="my-4">
+
+        <div class="flex items-center justify-end">
+          <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span>
+        </div>
+
+
         <div class="relative">
-          <p class="font-semibold text-sky-900">{{ project.name }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span></p>
+          <p class="text-lg font-semibold text-sky-900">{{ project.name }} </p>
           
           <div class="my-2">
             <p class="text-sky-800 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
@@ -67,7 +73,7 @@
         
         
         <div class="my-2 relative">
-          <p class="text-sm font-semibold text-sky-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
+          <p class="text-base text-sky-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
         
           <transition name="fade">
             <div v-if="editDescriptionForm" class="absolute top-0 w-full z-20">
@@ -259,12 +265,39 @@
 
             <div class="flex justify-between my-2">
               <div class=""><p class="font-semibold text-sky-800 text-sm">История изменений</p></div>
-              <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
+              <div class=""><button class="text-sm mdi mdi-close text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
             </div>
             
-            <div class="flex gap-4">
+            <div class="flex items-center justify-between gap-2">
               <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
-              <button class="text-sky-900 font-semibold text-sm mdi mdi-upload cursor-pointer">Загрузить в историю</button>
+              
+              <div v-if="historical_files.length > 0" class="grid grid-cols-1 gap-y-4">
+                <div class="flex gap-2 w-full">
+
+                  <input id="username" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов">
+                  <input id="username" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
+
+                </div>
+
+                <div class="flex items-center">
+                  <form class="flex items-center space-x-6">
+                    <label class="block">
+                      <input
+                          :id="historical_files[0].latest" type="file" class="block w-full text-sm text-slate-500
+                          file:rounded-full file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-white file:text-sky-700
+                          hover:file:bg-white
+                        " @change="onFileChange"/>
+                    </label>
+                  </form>
+                  <span class="flex items-center mdi mdi-upload cursor-pointer text-sky-700 font-semibold text-sm">
+                    <button :disabled="loadingNow" class="" @click="uploadFile(historical_files[0].latest);historyFilesModal = false">Загрузить в историю</button>
+                  </span>
+
+                </div>
+              </div>
+              
             </div>
             
 
@@ -325,6 +358,7 @@ import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'ProjectPage',
+  // middleware: ['auth'],
   async asyncData({ params, $axios }) {
     const project = await $axios.$get(`s/projects/getone/${params.id}/`)
     return { project }
@@ -350,6 +384,8 @@ export default {
       editDescriptionForm: false,
 
       historyFilesModal: false,
+      authorFileHistory: null,
+      dateFileHistory: null,
 
     }
   },
@@ -419,7 +455,7 @@ export default {
       this.loadingNow = false
       this.loadingID = 0
     },
-    async uploadFile(id) {
+    async uploadFile(id, latestId) {
       const IndexUploadFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))
 
       if (IndexUploadFile !== -1) {
@@ -433,6 +469,16 @@ export default {
         if (this.newArchiveName) {
           formData.append("name", this.newArchiveName)
         }
+        if (this.authorFileHistory) {
+          formData.append("author_history", this.authorFileHistory)
+        }
+        if (this.dateFileHistory) {
+          formData.append("date_history", this.dateFileHistory)
+        }
+        if (latestId) {
+          formData.append("latest_id", latestId)
+        }
+
 
         try {
           this.loadingNow = true

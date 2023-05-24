@@ -8,7 +8,15 @@ module.exports = {
     'plugins/**/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
+        'serif': [ 'Proxima-Regular', 'Noto Sans', 'Open Sans', ],
+        'mono': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
+        'display': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
+        'body': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),

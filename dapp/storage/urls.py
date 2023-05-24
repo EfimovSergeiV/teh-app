@@ -6,8 +6,8 @@ from storage.views import (
     CreateOrUpdateProjectView,
     CreateOrUpdateFilesView,
     SearchView,
-    CreateProjectArchiveView, 
-    AppendProjectArchiveView,
+    # CreateProjectArchiveView, 
+    # AppendProjectArchiveView,
 )
 
 
@@ -19,7 +19,7 @@ urlpatterns = [
     path('files/create-or-update/', CreateOrUpdateFilesView.as_view()),
     path('search/', SearchView.as_view()),
 
-    path('projects/create/', CreateProjectArchiveView.as_view()),
-    path('projects/append/', AppendProjectArchiveView.as_view()),
+    # path('projects/create/', CreateProjectArchiveView.as_view()),
+    # path('projects/append/', AppendProjectArchiveView.as_view()),
 ]
 

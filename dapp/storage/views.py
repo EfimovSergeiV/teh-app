@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
+from datetime import datetime
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,6 +17,7 @@ import hashlib, zipfile
 from storage.documents import FileDocument
 from django.db.models import Case, When
 from elasticsearch_dsl import Q
+from django.contrib.auth.models import User
 
 
 
@@ -97,34 +99,26 @@ class CreateOrUpdateProjectView(APIView):
 
 def add_file_to_history(data):
     """ Добавляем загруженный файл в историю """
-    
-    # create_random_date = f"20{randint(10,23)}-{randint(1, 12)}-{randint(1, 29)} {randint(7, 18)}:{randint(1,60)}:22.273656"
 
-    # print(create_random_date)
+    try:
+        FileHistoryModel.objects.create(
+            latest_id = data.id,
+            author = data.author,
+            created_date = data.created_date,
+            name = data.name,
+            md5 = data.md5,
+            file = data.file,
+        )
+    except AttributeError:
+        FileHistoryModel.objects.create(
+            latest_id = data["id"],
+            author = data["author"],
+            created_date = data["created_date"],
+            name = data["name"],
+            md5 = data["md5"],
+            file = data["file"],
+        )
 
-    # while count < max:
-    #     count += 1
-    
-    FileHistoryModel.objects.create(
-        latest_id = data.id,
-        author = data.author,
-        created_date = data.created_date,
-        name = data.name,
-        md5 = data.md5,
-        file = data.file,
-    )
-
-    # writed_data = {
-    #     "latest_id": data.id,
-    #     "author" : data.author,
-    #     "name" : data.name,
-    #     "md5" : data.md5,
-    #     "file" : data.file,
-    #     "created_date": data.created_date,        
-    # }
-    # FileHistoryModel.objects.create(writed_data)
-
-    # print(writed_data)
 
 
 class CreateOrUpdateFilesView(APIView):
@@ -145,34 +139,43 @@ class CreateOrUpdateFilesView(APIView):
 
         serializer = FileArchiveSerializer
         project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
-        history_serializer = FileHistorySerializer
-        history = FileHistoryModel.objects.get(id=3)
-        history = history_serializer(history)
 
-        hd = history.data
-        hd["created_date"] = timezone.now()
-        # print(hd)
+
+        profile = User.objects.get(username=request.user)
+        uploader = f'{profile.first_name} {profile.last_name}'
+
+
+        author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
+        created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
+
+        print(request.data)
 
         data = {
             "project": project.id,
             "md5": md5_summ,
             "file": file,
-            "author": "Пользователь",
+            "author": author,
+            "created_date": created_data
         }
+
 
         try:
             data['name'] = request.data["name"]
         except KeyError:
             pass
 
+
+        #if 'date_history' not in request.data.keys():
         if request.data["file_id"] == 'newfile':
             # print("создаём новую запись, добавляем файл / заносим в историю")
             serializer_data = serializer(data=data)
+
             if serializer_data.is_valid():
                 print("SAVING")
                 saved_data = serializer_data.save()
             else:
                 print(serializer_data.errors)
+
 
         else:
             qs = FileArchiveModel.objects.get(id=request.data["file_id"])
@@ -183,16 +186,28 @@ class CreateOrUpdateFilesView(APIView):
             serializer_data = serializer(data=data)
             if serializer_data.is_valid():
                 print("UPDATE")
-                saved_data = serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
+                if 'date_history' in request.data.keys():
+                    print('move file to history')
+                    saved_data = data
+                    saved_data['id'] = int(request.data["file_id"])
+
                 # print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
+                else:
+                    print('move file to NOW')
+                    saved_data = serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
 
             else:
                 print(serializer_data.errors)
 
 
         # Добавляем файл в историю загрузок
+        print(saved_data)
         add_file_to_history(saved_data)
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
+
+
+
+
 
 
 class SearchView(APIView):
@@ -219,73 +234,5 @@ class SearchView(APIView):
         serializer = self.serializer_class(qs, many=True, context={'request':request})
         return Response(serializer.data)
 
-"""
-{
-    "id": 161,
-    "name": "Модели",
-    "author": "Владимир Путин",
-    "created_date": "15.10.2012 11:25:22"
-}
-"""
 
 
-
-
-
-
-    
-
-
-# Ниже не нужны
-
-class CreateProjectArchiveView(APIView):
-    """ Создаём проект и добавляем первый архив """
-
-    def post(self, request):
-
-        file = request.FILES['file']
-        fs = FileSystemStorage()
-
-        if check_zip_password(file):
-            print("обнаружен пароль на архиве")
-            return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
-
-        else:
-            # Узнаём хэш сумму
-            md5 = hashlib.md5()
-            for chunk in file.chunks():
-                md5.update(chunk)
-            file_md5sum = md5.hexdigest()
-            file_md5sum = get_md5_summ()
-            
-
-            fs.save(file.name, file)
-
-            return Response(data={'id': 1, 'msg': f'MD: {file_md5sum}', 'type': 'success'})
-        
-
-class AppendProjectArchiveView(APIView):
-    """ Добавляем архив к проекту """
-
-    def post(self, request):
-
-        file = request.FILES['file']
-        fs = FileSystemStorage()
-
-        if check_zip_password(file):
-            print("обнаружен пароль на архиве")
-            return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
-
-
-        else:
-            # Узнаём хэш сумму
-            md5 = hashlib.md5()
-            for chunk in file.chunks():
-                md5.update(chunk)
-            file_md5sum = md5.hexdigest()
-            print(file_md5sum)
-            
-
-            fs.save(file.name, file)
-
-            return Response(data={'id': 1, 'msg': f'MD: {file_md5sum}', 'type': 'success'})
