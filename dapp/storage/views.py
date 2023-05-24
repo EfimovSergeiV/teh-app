@@ -99,7 +99,7 @@ class CreateOrUpdateProjectView(APIView):
 
 def add_file_to_history(data):
     """ Добавляем загруженный файл в историю """
-
+    # Добавить обновление архива
     try:
         FileHistoryModel.objects.create(
             latest_id = data.id,

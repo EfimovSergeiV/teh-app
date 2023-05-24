@@ -73,7 +73,7 @@
         
         
         <div class="my-2 relative">
-          <p class="text-base text-sky-700">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
+          <p class="text-base text-sky-800">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
         
           <transition name="fade">
             <div v-if="editDescriptionForm" class="absolute top-0 w-full z-20">
@@ -177,7 +177,7 @@
 
 
         <div class="my-6 border-b border-sky-400">
-          <p class="text-sky-700">Файлы проекта:</p>
+          <p class="text-sky-800">Файлы проекта:</p>
         </div>
 
         <div v-if="files.length > 0">
