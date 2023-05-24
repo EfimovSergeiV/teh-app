@@ -35,7 +35,7 @@
       <div class="my-4">
 
         <div class="flex items-center justify-end">
-          <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectNameForm = true"></span>
+          <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectDataForm = true"></span>
         </div>
 
 
@@ -48,11 +48,11 @@
           
         
           <transition name="fade">
-            <div v-if="editProjectNameForm" class="absolute top-0 w-full z-20">
+            <div v-if="editProjectDataForm" class="absolute top-0 w-full z-20">
               <div class="bg-sky-800 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
                 <div class="my-2">
                   <div class="flex items-center justify-end">
-                    <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="editProjectNameForm = false"> Закрыть</p>
+                    <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="editProjectDataForm = false"> Закрыть</p>
                   </div>
 
                   <div class="">
@@ -60,6 +60,10 @@
                       <input id="text" v-model="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="МТВ-8000 ExpSuperVOC">
                   </div>
 
+                  <label for="message" class="block mt-2 mb-1 text-xs font-medium text-gray-100">Описание:</label>
+                  <textarea id="message" v-model="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Опишите проект..."></textarea>
+
+
                   <div class="flex items-center justify-end">
                     <div class="mt-4">
                       <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="editProject">Отправить</button>
@@ -67,32 +71,14 @@
                   </div>
                 </div>
               </div>
+
             </div>            
           </transition>
         </div>
         
         
         <div class="my-2 relative">
-          <p class="text-base text-sky-800">{{ project.description }} <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editDescriptionForm = true"></span></p>
-        
-          <transition name="fade">
-            <div v-if="editDescriptionForm" class="absolute top-0 w-full z-20">
-              <div class="bg-sky-900 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
-                <div class="my-2">
-                  <div class="flex items-center justify-end">
-                    <p class="text-white text-sm mdi mdi-close cursor-pointer" @click="editDescriptionForm = false"> Закрыть</p>
-                  </div>
-                  <label for="message" class="block mt-2 mb-1 text-xs font-medium text-gray-100">Обновление описания:</label>
-                  <textarea id="message" v-model="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Опишите проект..."></textarea>
-                  <div class="flex items-center justify-end">
-                    <div class="mt-4">
-                      <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="editProject">Отправить</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>            
-          </transition>
+          <p class="text-base text-sky-800">{{ project.description }}</p>
         </div>
 
         <div class="flex items-center justify-end gap-4 py-4">
@@ -111,6 +97,48 @@
 
 
       <div>
+
+        <div class="my-6">
+          <div class="my-2 border-b border-sky-400">
+
+
+            <div class="flex items-center justify-between">
+              <p class="text-sky-800">Узлы пректа:</p>
+              <div class="flex my-2 gap-2 w-[320px]">
+                <div class="w-full">
+                  <input id="username" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла">
+                </div>
+                <div class="w-full">
+                  <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="uploadform = !uploadform"> Добавить узел</button>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="grid grid-cols-6 my-4 gap-4">
+            <div v-for="i in 40" :key="i" class="">
+              <div class="">
+                <p class="text-xs">5ТМДР.588.046 - Токоподвод</p>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="my-2 border-b border-sky-400">
+          <p class="text-sky-800">Архивы узла/пректа:</p>
+        </div>
+
+
         <div class=" h-full flex items-center justify-center">
 
           <transition name="fade" mode="out-in">
@@ -143,12 +171,12 @@
                 </div>
                 <div class="flex items-center justify-center my-2 gap-2">
 
-                  <!-- <div>
+                  <div>
                     <label class="flex items-center gap-2">
                       <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
                       <p class="text-gray-700 text-sm font-semibold">Добавить ко всем проектам</p>
                     </label>
-                  </div> -->
+                  </div>
 
                   <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="uploadFile('newfile')"> Загрузить</button>
 
@@ -176,9 +204,6 @@
         </div>
 
 
-        <div class="my-6 border-b border-sky-400">
-          <p class="text-sky-800">Файлы проекта:</p>
-        </div>
 
         <div v-if="files.length > 0">
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
@@ -246,6 +271,9 @@
               </div>
             </div>
           </transition-group>
+          <div class="flex items-center justify-end my-4">
+            <p class="text-sky-800 text-base font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
+          </div>
         </div>
         <div v-else class="">
           <div class="flex items-center justify-center">
@@ -264,7 +292,7 @@
           <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
             <div class="flex justify-between my-2">
-              <div class=""><p class="font-semibold text-sky-800 text-sm">История изменений</p></div>
+              <div class=""><p class="font-semibold text-sky-800 text-sm">История версий</p></div>
               <div class=""><button class="text-sm mdi mdi-close text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
             </div>
             
@@ -380,9 +408,12 @@ export default {
       loadingNow: false,
       loadingID: 0,
       changeProjectForm: true,
+
+
       editProjectNameForm: false,
       editDescriptionForm: false,
 
+      editProjectDataForm: false,
       historyFilesModal: false,
       authorFileHistory: null,
       dateFileHistory: null,
