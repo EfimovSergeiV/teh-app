@@ -39,9 +39,8 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
-    const cts = await $axios.$get(`s/cts/`)
     const projects = await $axios.$get('s/projects/getall/')
-    return { cts, projects }
+    return { projects }
   },
   data() {
     return {
@@ -51,18 +50,11 @@ export default {
   },
   computed: {
       ...mapState({
-        selectedCategory: (state) => state.selectedCategory,
         showCreateProject: (state) => state.showCreateProject,
       }),
     },
-  mounted() {
-    this.selectCategory(this.cts[0])
-    this.addCategory(this.cts)
-  },
   methods: {
     ...mapActions({
-      selectCategory: 'selectCategory',
-      addCategory: 'addCategory',
       addToast: 'addToast',
       createProjectForm: 'createProjectForm',
       updateProjects: 'updateProjects',
@@ -76,7 +68,6 @@ export default {
           try {
 
             const response = await this.$axios.post('s/projects/create-or-update/', {
-              category: this.selectedCategory,
               name: this.name,
               description: this.description,
             })

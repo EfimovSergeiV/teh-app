@@ -42,9 +42,9 @@
         <div class="relative">
           <p class="text-lg font-semibold text-sky-900">{{ project.name }} </p>
           
-          <div class="my-2">
+          <!-- <div class="my-2">
             <p class="text-sky-800 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
-          </div>
+          </div> -->
           
         
           <transition name="fade">
@@ -89,7 +89,7 @@
             </div>
             <div class="flex justify-between gap-4">
               <p class="text-right text-xs text-sky-700 font-semibold">Обновлён: </p>
-              <p class="text-right text-xs text-sky-800 font-semibold">{{ project.created_date }}</p>
+              <p class="text-right text-xs text-sky-800 font-semibold">{{ project.updated_date }}</p>
             </div>
           </div>
         </div>        
@@ -102,7 +102,7 @@
           <div class="my-2 border-b border-sky-400">
 
 
-            <div class="flex items-center justify-between">
+            <!-- <div class="flex items-center justify-between">
               <p class="text-sky-800">Узлы пректа:</p>
               <div class="flex my-2 gap-2 w-[320px]">
                 <div class="w-full">
@@ -112,20 +112,34 @@
                   <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="uploadform = !uploadform"> Добавить узел</button>
                 </div>
               </div>
+            </div> -->
+
+            <div class="flex items-center justify-between my-2">
+              <div class="">
+                <p class="text-sky-800">Узлы пректа:</p>
+              </div>
+              <div class="flex gap-2">
+
+                <div class="">
+                  <input id="username" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла"/>
+                </div>
+                <div class="">
+                  <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="uploadform = !uploadform"> Добавить узел</button>
+
+                </div>
+              </div>
             </div>
 
 
           </div>
 
-          <div class="grid grid-cols-6 my-4 gap-4">
+          <div class="grid grid-cols-5 my-4 gap-4">
             <div v-for="i in 40" :key="i" class="">
               <div class="">
                 <p class="text-xs">5ТМДР.588.046 - Токоподвод</p>
               </div>
             </div>
           </div>
-
-
 
         </div>
 
@@ -135,7 +149,7 @@
 
 
         <div class="my-2 border-b border-sky-400">
-          <p class="text-sky-800">Архивы узла/пректа:</p>
+          <p class="text-sky-800">Архивы узла/пректа: Сюда вывести название чего отображаем</p>
         </div>
 
 
@@ -386,10 +400,11 @@ import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'ProjectPage',
-  // middleware: ['auth'],
+  middleware: ['auth'],
   async asyncData({ params, $axios }) {
+    const cts = await $axios.$get(`s/cts/`)
     const project = await $axios.$get(`s/projects/getone/${params.id}/`)
-    return { project }
+    return { cts, project }
   },
   data() {
     return {
@@ -432,10 +447,12 @@ export default {
   mounted() {
     this.name = this.project.name
     this.description = this.project.description
+    this.addCategory(this.cts)
     this.addFiles(this.project.project_files)
   },
   methods: {
     ...mapActions({
+      addCategory: 'addCategory',
       addToast: 'addToast',
       createProject: 'createProject',
       updateProject: 'updateProject',

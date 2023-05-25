@@ -4,9 +4,11 @@ from datetime import datetime
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from storage.models import ProjectArchiveModel, FileArchiveModel, FileHistoryModel
+from storage.models import *
 from storage.serializers import (
+    CategorySerializer,
     ProjectArchiveSerializer,
+    AssemblySerializer,
     ProjectCreateSerializer,
     FileArchiveSerializer,
     FileHistorySerializer,
@@ -51,6 +53,16 @@ def get_md5_summ(file):
 
 
 
+class CategoryView(APIView):
+    """ Категории проектов """
+    
+    def get(self, request):
+        qs = CategoryModel.objects.all()
+        sr = CategorySerializer(qs, many=True, context={'request': request})
+        return Response(sr.data)
+
+
+
 class GetOneProject(APIView):
     """ Данные выбранного проекта """
 
@@ -65,7 +77,6 @@ class GetallProjectArchiveView(APIView):
     """ Список всех проектов со всеми архивами """
 
     def get(self, request):
-        print(f'\n{ request.headers }')
         qs = ProjectArchiveModel.objects.all()
         sr = ProjectArchiveSerializer(qs, many=True, context={'request':request})
 
@@ -93,6 +104,7 @@ class CreateOrUpdateProjectView(APIView):
             return Response(data={'id': 1, 'msg': f'{ msg }', 'type': 'success'})
         
         else:
+            print(sr.errors)
             return Response(status.HTTP_400_BAD_REQUEST)
         
 
@@ -148,7 +160,6 @@ class CreateOrUpdateFilesView(APIView):
         author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
         created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
-        print(request.data)
 
         data = {
             "project": project.id,

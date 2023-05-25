@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 
 export const state = () => ({
+    cts: [],
+    selectedCategory: null,
     projects: [],
     files: [],
     toasts: [],
@@ -23,6 +25,12 @@ export const state = () => ({
   }
 
   export const mutations = {
+    selectCategory(state, id) {
+      state.selectedCategory = id
+    },
+    addCategory(state, cts) {
+      state.cts = cts
+    },
     addProject(state, project) {
       state.projects.push(project)
     },
@@ -63,6 +71,12 @@ export const state = () => ({
   }
   
   export const actions = {
+    addCategory({commit}, cts) {
+      commit('addCategory', cts)
+    },
+    selectCategory({commit}, ct) {
+      commit('selectCategory', ct.id )
+    },
     addProjects({ commit }, projects) {
       commit('cleanListProjects')
       for (const project in projects) {

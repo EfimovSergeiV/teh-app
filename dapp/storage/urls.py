@@ -1,6 +1,7 @@
 from django.urls import path
 
 from storage.views import (
+    CategoryView,
     GetOneProject,
     GetallProjectArchiveView,
     CreateOrUpdateProjectView,
@@ -12,6 +13,7 @@ from storage.views import (
 
 
 urlpatterns = [
+    path('cts/', CategoryView.as_view()),
     path('projects/getone/<int:pk>/', GetOneProject.as_view()),
     path('projects/getall/', GetallProjectArchiveView.as_view()),
     path('projects/create-or-update/', CreateOrUpdateProjectView.as_view()),

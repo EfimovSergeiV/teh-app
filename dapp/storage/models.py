@@ -3,9 +3,23 @@ from django.utils import timezone
 import os
 
 
+class CategoryModel(models.Model):
+    """ Категории проектов """
+    name = models.CharField(verbose_name="Название категории", max_length=250)
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категория"
+        ordering = ['id',]
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class ProjectArchiveModel(models.Model):
     """ Модели архивы """
 
+    category = models.ForeignKey(CategoryModel, related_name="project_category", on_delete=models.CASCADE)
     name = models.CharField(verbose_name="Название", max_length=120)
     description = models.TextField(verbose_name="Описание", max_length=5000, null=True, blank=True, default="Не описано")
     created_date = models.DateTimeField(verbose_name="Дата создания", default=timezone.now)
@@ -27,10 +41,25 @@ def upload_file_to(instance, filename):
     return file_path
 
 
+class AssemblyModel(models.Model):
+    """ Узлы/сборки проекта """
+
+    project = models.ForeignKey(ProjectArchiveModel, verbose_name="Проект", related_name='project_assembly', on_delete=models.CASCADE)
+    name = models.CharField(verbose_name="Название узла", max_length=250)
+
+    class Meta:
+        verbose_name = "Узел/Сборка"
+        verbose_name_plural = "Узлы/Сборки"
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class FileArchiveModel(models.Model):
     """ Файлы """
     
     project = models.ForeignKey(ProjectArchiveModel, verbose_name="Проект", related_name='project_files', on_delete=models.CASCADE)
+    assembly = models.ForeignKey(AssemblyModel, verbose_name="Узел/Сборка", related_name='assembly_files', null=True, blank=True, on_delete=models.CASCADE)
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
@@ -50,6 +79,7 @@ class FileArchiveModel(models.Model):
 class FileHistoryModel(models.Model):
     """ История файлов """
 
+    assembly = models.ForeignKey(AssemblyModel, verbose_name="Узел/Сборка", related_name='assembly_history_files', null=True, blank=True, on_delete=models.CASCADE)
     latest = models.ForeignKey(FileArchiveModel, related_name='historical_files', on_delete=models.CASCADE)
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)

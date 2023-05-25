@@ -32,8 +32,20 @@
                 <div class="">
                   <div class=""><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
                   <div class="grid grid-cols-1">
-                    <p class="text-xs">Обновлён: {{ fileResp.created_date }}</p>
-                    <!-- <p class="text-xs">MD5: {{ fileResp.project_files.slice(-1)[0].md5 }}</p> -->
+
+                    <div class="flex items-center justify-start gap-4 py-1">
+                      <div class="grid gap-1 grid-cols-1">
+                        <div class="flex justify-between gap-4">
+                          <p class="text-right text-xs text-sky-700">Создан: </p>
+                          <p class="text-right text-xs text-sky-800">{{ fileResp.created_date }}</p>
+                        </div>
+                        <div class="flex justify-between gap-4">
+                          <p class="text-right text-xs text-sky-700">Обновлён: </p>
+                          <p class="text-right text-xs text-sky-800">{{ fileResp.updated_date }}</p>
+                        </div>
+                      </div>
+                    </div> 
+
                   </div>
                 </div>
               </nuxt-link>

@@ -1,5 +1,21 @@
 from rest_framework import serializers
-from storage.models import ProjectArchiveModel, FileArchiveModel, FileHistoryModel
+from storage.models import *
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """ категории проектов """
+
+    class Meta:
+        model = CategoryModel
+        fields = '__all__'
+
+
+class AssemblySerializer(serializers.ModelSerializer):
+    """ Узлы/сборки проекта """
+
+    class Meta:
+        model = AssemblyModel
+        fields = '__all__'
 
 
 class FileHistorySerializer(serializers.ModelSerializer):
