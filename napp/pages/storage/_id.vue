@@ -6,7 +6,7 @@
 
         <div class="flex items-center gap-4 py-2 px-4">
 
-          <nuxt-link :to="{name: 'index'}" class="text-white font-semibold text-sm border-white mdi mdi-arrow-left-bold">{{ selectedCategory }} Вернуться</nuxt-link>
+          <p class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
           <!-- <div v-for="ct in cts" :key="ct.id" class="">
             
             <div v-if="ct.id === selectedCategory" class="border-b border-white">
@@ -23,14 +23,12 @@
     <div class="bg-gray-100">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
-          <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Список проектов</nuxt-link>
+          <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Главная</nuxt-link>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProject($route.params.id)"> Обновить</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
         </div>
       </div>
     </div>
-
-    <p class="text-xs"> {{ project }}</p>
 
 
     <div class="relative pt-1 pb-4">
@@ -459,12 +457,16 @@ export default {
       selectedCategory: (state) => state.selectedCategory,
       historical_files: (state) => state.historical_files
     }),
-
+    getNowCategoryName() {
+      const id = this.cts.findIndex((item) => item.id === this.selectedCategory)
+      return this.cts[id]
+    },
   },
   mounted() {
     this.name = this.project.name
     this.description = this.project.description
     this.addCategory(this.cts)
+    this.selectCategory(this.project.category)
     this.addFiles(this.project.project_files)
   },
   methods: {
@@ -494,6 +496,7 @@ export default {
         this.uploadFiles[IndexFile].file = EventData.target.files[0]
       }
     },
+
     async editProject() {
 
       if (this.name) {
