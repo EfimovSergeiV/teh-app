@@ -1,14 +1,35 @@
 <template>
 
   <div class="">
-    <div class="flex items-center justify-center py-1 bg-red-500">
-      <p class="text-white font-semibold text-sm">
-        Просмотр и.т.п. доступен только авторизованным пользователям
-      </p>
-    </div>
     <div class="relative">
+
+
+
+      <div class="bg-sky-700">
+        <div class="py-1 container mx-auto">
+
+          <div class="flex items-center gap-4 py-2 px-4">
+            <div v-for="ct in cts" :key="ct.id" class="">
+
+              <div v-if="ct.id === selectedCategory" class="border-b border-white">
+                <button class="text-white font-semibold text-sm border-white">{{ ct.name }}</button>
+              </div>
+
+              <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct.id); getCategoryProjects(ct.id)">{{ ct.name }}</button>              
+              
+            </div>
+          </div>
+
+          <!-- <div class="flex gap-4 py-2 px-4">
+            <div v-for="inserted in inserteds" :key="inserted.id" class="">
+              <p class="text-white font-semibold text-xs border-b border-white cursor-pointer">{{ inserted.name }}</p>
+            </div>
+          </div> -->
+
+        </div>
+      </div>
+
       <div class="container mx-auto px-4">
-        
         <transition name="fade">
           <div v-if="showCreateProject" id="create-project" class="fixed z-10 my-2">
             <div class="bg-sky-900 w-[600px] px-4 py-4 rounded-lg shadow-lg shadow-gray-900">
@@ -35,6 +56,13 @@
         </transition>
       </div>
     </div>
+
+    <div class="flex items-center justify-center py-1 bg-red-500">
+      <p class="text-white font-semibold text-sm">
+        Просмотр и.т.п. доступен только авторизованным пользователям
+      </p>
+    </div>
+    
     <FilesList />
   </div>
 </template>
@@ -59,12 +87,13 @@ export default {
       ...mapState({
         selectedCategory: (state) => state.selectedCategory,
         showCreateProject: (state) => state.showCreateProject,
+        projects: (state) => state.projects,
       }),
     },
   mounted() {
-    this.selectCategory(this.cts[0])
+    this.selectCategory(this.cts[0].id)
     this.addCategory(this.cts)
-    
+    this.getCategoryProjects(this.selectedCategory)
   },
   methods: {
     ...mapActions({
@@ -77,6 +106,17 @@ export default {
     }),
     onFileChange(event) {
       this.file = event.target.files[0];
+    },
+    async getCategoryProjects(id) {
+      try {
+
+        console.log('BUG ', this.projects.length)
+        const projects = await this.$axios.get(`s/projects/${id}/`)
+        this.addProjects(projects.data)          
+
+      } catch (err){
+        console.log(err)
+      }
     },
     async createProject() {
 

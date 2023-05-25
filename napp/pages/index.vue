@@ -13,7 +13,7 @@
                 <button class="text-white font-semibold text-sm border-white">{{ ct.name }}</button>
               </div>
 
-              <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct); getCategoryProjects(ct.id)">{{ ct.name }}</button>              
+              <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct.id); getCategoryProjects(ct.id)">{{ ct.name }}</button>              
               
             </div>
           </div>
@@ -82,7 +82,7 @@ export default {
       }),
     },
   mounted() {
-    this.selectCategory(this.cts[0])
+    this.selectCategory(this.cts[0].id)
     this.addCategory(this.cts)
     this.getCategoryProjects(this.selectedCategory)
   },
@@ -121,7 +121,7 @@ export default {
             })
 
             this.addToast(response.data)
-            this.updateProjects()
+            this.updateProjects(this.selectedCategory)
             this.createProjectForm()
 
           } catch (error) {

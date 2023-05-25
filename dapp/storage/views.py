@@ -9,7 +9,6 @@ from storage.serializers import (
     CategorySerializer,
     ProjectArchiveSerializer,
     AssemblySerializer,
-    ProjectCreateSerializer,
     FileArchiveSerializer,
     FileHistorySerializer,
     SearchSerializer,
@@ -82,29 +81,31 @@ class GetallProjectArchiveView(APIView):
         return Response(sr.data)
 
 
+
+
+
 class CreateOrUpdateProjectView(APIView):
     """ Создать или обновить архив проекта """
-
-    def post(self, request, pk=None):
-        if request.data["description"] is None:
-            request.data["description"] = 'Нет описания'
-
+    pass
+    def post(self, request):
         data = request.data
-        sr = ProjectCreateSerializer(data=data)
+        if data["description"] is None:
+            data["description"] = 'Нет описания'
 
-        if sr.is_valid():
-            if pk:
+        serializer = ProjectArchiveSerializer(data=data)
+
+        if serializer.is_valid():
+            if 'project' in data.keys():
                 msg = 'Проект обновлён'
-                qs = ProjectArchiveModel.objects.get(id=pk)
-                sr.update(qs, sr.data)
+                print('update')
+                project = ProjectArchiveModel.objects.get(id=data['project'])
+                serializer.update(project, validated_data=serializer.validated_data)
             else:
                 msg = 'Проект создан'
-                sr.save()
-            return Response(data={'id': 1, 'msg': f'{ msg }', 'type': 'success'})
-        
-        else:
-            print(sr.errors)
-            return Response(status.HTTP_400_BAD_REQUEST)
+                serializer.save()
+
+        return Response(data={'id': 1, 'msg': f'{ msg }', 'type': 'success'})
+
         
 
 

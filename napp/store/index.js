@@ -74,8 +74,8 @@ export const state = () => ({
     addCategory({commit}, cts) {
       commit('addCategory', cts)
     },
-    selectCategory({commit}, ct) {
-      commit('selectCategory', ct.id )
+    selectCategory({commit}, id) {
+      commit('selectCategory', id )
     },
     addProjects({ commit }, projects) {
       commit('cleanListProjects')

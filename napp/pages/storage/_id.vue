@@ -6,7 +6,7 @@
 
         <div class="flex items-center gap-4 py-2 px-4">
 
-          <nuxt-link :to="{name: 'index'}" class="text-white font-semibold text-sm border-white mdi mdi-arrow-left-bold"> Вернуться</nuxt-link>
+          <nuxt-link :to="{name: 'index'}" class="text-white font-semibold text-sm border-white mdi mdi-arrow-left-bold">{{ selectedCategory }} Вернуться</nuxt-link>
           <!-- <div v-for="ct in cts" :key="ct.id" class="">
             
             <div v-if="ct.id === selectedCategory" class="border-b border-white">
@@ -29,6 +29,8 @@
         </div>
       </div>
     </div>
+
+    <p class="text-xs"> {{ project }}</p>
 
 
     <div class="relative pt-1 pb-4">
@@ -442,11 +444,6 @@ export default {
       loadingNow: false,
       loadingID: 0,
       changeProjectForm: true,
-
-
-      editProjectNameForm: false,
-      editDescriptionForm: false,
-
       editProjectDataForm: false,
       historyFilesModal: false,
       authorFileHistory: null,
@@ -501,14 +498,15 @@ export default {
 
       if (this.name) {
         try {
-          const response = await this.$axios.post(`s/projects/create-or-update/${ this.project.id }/`, {
+          const response = await this.$axios.post(`s/projects/create-or-update/`, {
+            category: this.project.category,
+            project: this.project.id,
             name: this.name,
             description: this.description,
           })
 
           this.addToast(response.data)
-          this.editProjectNameForm = false
-          this.editDescriptionForm = false
+          this.editProjectDataForm = false
 
           await this.$axios.get(`s/projects/getone/${this.project.id}/`).then((resp) => {
             this.project = resp.data
