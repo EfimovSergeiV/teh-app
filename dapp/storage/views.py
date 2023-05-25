@@ -105,6 +105,22 @@ class CreateOrUpdateProjectView(APIView):
                 serializer.save()
 
         return Response(data={'id': 1, 'msg': f'{ msg }', 'type': 'success'})
+    
+
+class AssemblyView(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        serializer = AssemblySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            print(serializer.errors)
+
+
+        return Response(data={'id': 1, 'msg': f'Cборка добавлена', 'type': 'success'})
 
         
 

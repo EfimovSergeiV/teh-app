@@ -136,15 +136,15 @@
 
             <div class="flex items-center justify-between my-2">
               <div class="">
-                <p class="text-sky-800">Узлы пректа:</p>
+                <p class="text-sky-800">Узлы/сборки пректа:</p>
               </div>
               <div class="flex gap-2">
 
                 <div class="">
-                  <input id="username" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла"/>
+                  <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки"/>
                 </div>
                 <div class="">
-                  <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="uploadform = !uploadform"> Добавить узел</button>
+                  <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="addAssembly"> Добавить узел/сборку</button>
 
                 </div>
               </div>
@@ -154,9 +154,9 @@
           </div>
 
           <div class="grid grid-cols-5 my-4 gap-4">
-            <div v-for="i in 40" :key="i" class="">
+            <div v-for="assembly in project.project_assembly" :key="assembly.id" class="">
               <div class="">
-                <p class="text-xs">5ТМДР.588.046 - Токоподвод</p>
+                <button class="text-xs">{{ assembly.name }}</button>
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@
 
 
         <div class="my-2 border-b border-sky-400">
-          <p class="text-sky-800">Архивы узла/пректа: Сюда вывести название чего отображаем</p>
+          <p class="text-sky-800">Архивы узла/сборки: Сюда вывести название чего отображаем</p>
         </div>
 
 
@@ -448,6 +448,7 @@ export default {
       authorFileHistory: null,
       dateFileHistory: null,
 
+      assemblyName: null,
     }
   },
 
@@ -526,6 +527,27 @@ export default {
       this.loadingNow = false
       this.loadingID = 0
     },
+
+    async addAssembly() {
+      try {
+        const response = await this.$axios.post('s/assembly/create/',{
+          project: this.project.id,
+          name: this.assemblyName
+        })
+        this.addToast(response.data)
+
+        // if (response.data.type === 'success') {
+        //   this.uploadform = false
+        //   setTimeout(() => {
+        //     this.updateProject(fileData.project_id)
+        //   }, "1500");
+        // }
+
+      } catch (error) {
+        this.addToast({ "id": 1, "msg": "Что то пошло не так!", "type": "error" })
+      }
+    },
+
     async uploadFile(id, latestId) {
       const IndexUploadFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))
 
