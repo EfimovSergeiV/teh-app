@@ -1,7 +1,26 @@
 <template>
   <div class="relative">
 
-    <div class="bg-white">
+    <div class="bg-sky-700">
+      <div class="py-1 container mx-auto">
+
+        <div class="flex items-center gap-4 py-2 px-4">
+
+          <nuxt-link :to="{name: 'index'}" class="text-white font-semibold text-sm border-white mdi mdi-arrow-left-bold"> Вернуться</nuxt-link>
+          <!-- <div v-for="ct in cts" :key="ct.id" class="">
+            
+            <div v-if="ct.id === selectedCategory" class="border-b border-white">
+              <nuxt-link :to="{name: 'index'}" class="text-white font-semibold text-sm border-white">{{ ct.name }}</nuxt-link>
+            </div>
+            
+          </div> -->
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="bg-gray-100">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
           <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Список проектов</nuxt-link>
@@ -440,6 +459,7 @@ export default {
     ...mapState({
       projects: (state) => state.projects,
       files: (state) => state.files,
+      selectedCategory: (state) => state.selectedCategory,
       historical_files: (state) => state.historical_files
     }),
 
@@ -453,6 +473,7 @@ export default {
   methods: {
     ...mapActions({
       addCategory: 'addCategory',
+      selectCategory: 'selectCategory',
       addToast: 'addToast',
       createProject: 'createProject',
       updateProject: 'updateProject',

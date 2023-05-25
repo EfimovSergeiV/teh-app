@@ -54,7 +54,7 @@
 
 
 
-    <div class="bg-sky-700">
+    <!-- <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
 
         <div class="flex items-center gap-4 py-2 px-4">
@@ -64,20 +64,20 @@
               <button class="text-white font-semibold text-sm border-white">{{ ct.name }}</button>
             </div>
 
-            <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct)">{{ ct.name }}</button>              
+            <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct); getCategoryProjects(ct.id)">{{ ct.name }}</button>              
             
           </div>
         </div>
 
+
+
+      </div>
+    </div> -->
         <!-- <div class="flex gap-4 py-2 px-4">
           <div v-for="inserted in inserteds" :key="inserted.id" class="">
             <p class="text-white font-semibold text-xs border-b border-white cursor-pointer">{{ inserted.name }}</p>
           </div>
         </div> -->
-
-      </div>
-    </div>
-
 
     <!-- <div class="bg-sky-500">
       <div class="container mx-auto py-2">
@@ -135,15 +135,11 @@ export default {
       }),
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },  
-  watch: {
-    selectedCategory() {
-      this.getCategoryProjects(this.selectedCategory)
-    },
-  },
-
-  mounted() {
-    this.getCategoryProjects(this.selectedCategory)
-  },    
+  // watch: {
+  //   selectedCategory() {
+  //     this.getCategoryProjects(this.selectedCategory)
+  //   },
+  // },   
 
   methods: {
     ...mapActions({

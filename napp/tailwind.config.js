@@ -10,11 +10,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
-        'serif': [ 'Proxima-Regular', 'Noto Sans', 'Open Sans', ],
-        'mono': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
-        'display': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
-        'body': ['Proxima-Regular', 'Noto Sans', 'Open Sans', ],
+        'sans': ['Proxima-Regular',],
+        'serif': [ 'Proxima-Regular',],
+        'mono': ['Proxima-Regular',],
+        'display': ['Proxima-Regular',],
+        'body': ['Proxima-Regular',],
       },
     },
   },
