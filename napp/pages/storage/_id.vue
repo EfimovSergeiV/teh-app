@@ -6,7 +6,8 @@
 
         <div class="flex items-center gap-4 py-2 px-4">
 
-          <p class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
+          <p v-if="getNowCategoryName" class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
+
           <!-- <div v-for="ct in cts" :key="ct.id" class="">
             
             <div v-if="ct.id === selectedCategory" class="border-b border-white">
@@ -192,7 +193,7 @@
                   <form class="flex items-center space-x-6">
                     <label class="block">
                       <input
-                        id="newfile" type="file" class="block w-full text-sm text-slate-500
+                        id="newfile" type="file" webkitdirectory class="block w-full text-sm text-slate-500
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold

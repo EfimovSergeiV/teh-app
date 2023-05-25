@@ -59,7 +59,7 @@
 
     <div class="flex items-center justify-center py-1 bg-red-500">
       <p class="text-white font-semibold text-sm">
-        Просмотр и.т.п. доступен только авторизованным пользователям
+        Просмотр доступен только авторизованным пользователям (PS: user:user)
       </p>
     </div>
     
