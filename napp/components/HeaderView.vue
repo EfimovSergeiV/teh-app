@@ -134,10 +134,21 @@ export default {
         cts: (state) => state.cts,
       }),
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
+  },  
+  watch: {
+    selectedCategory() {
+      this.getCategoryProjects(this.selectedCategory)
+    },
   },
+
+  mounted() {
+    this.getCategoryProjects(this.selectedCategory)
+  },    
+
   methods: {
     ...mapActions({
       selectCategory: 'selectCategory',
+      addProjects: 'addProjects',
       // addCategory: 'addCategory',
       // addToast: 'addToast',
       // createProjectForm: 'createProjectForm',
@@ -152,6 +163,15 @@ export default {
     },
     async logout() {
       await this.$auth.logout();
+    },
+    async getCategoryProjects(id) {
+      try {
+        const projects = await this.$axios.get(`s/projects/${id}/`)
+        console.log(projects.data)
+        this.addProjects(projects.data)
+      } catch (err){
+        console.log(err)
+      }
     },
   }
 }

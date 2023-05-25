@@ -1,8 +1,14 @@
 <template>
 
   <div class="">
+    <div class="flex items-center justify-center py-1 bg-red-500">
+      <p class="text-white font-semibold text-sm">
+        Просмотр и.т.п. доступен только авторизованным пользователям
+      </p>
+    </div>
     <div class="relative">
       <div class="container mx-auto px-4">
+        
         <transition name="fade">
           <div v-if="showCreateProject" id="create-project" class="fixed z-10 my-2">
             <div class="bg-sky-900 w-[600px] px-4 py-4 rounded-lg shadow-lg shadow-gray-900">
@@ -29,7 +35,7 @@
         </transition>
       </div>
     </div>
-    <FilesList :projects-response="projects" />
+    <FilesList />
   </div>
 </template>
 
@@ -39,8 +45,9 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
-    const projects = await $axios.$get('s/projects/getall/')
-    return { projects }
+    const cts = await $axios.$get(`s/cts/`)
+    // const projects = await $axios.$get('s/projects/getall/')
+    return { cts }
   },
   data() {
     return {
@@ -50,12 +57,21 @@ export default {
   },
   computed: {
       ...mapState({
+        selectedCategory: (state) => state.selectedCategory,
         showCreateProject: (state) => state.showCreateProject,
       }),
     },
+  mounted() {
+    this.selectCategory(this.cts[0])
+    this.addCategory(this.cts)
+    
+  },
   methods: {
     ...mapActions({
+      selectCategory: 'selectCategory',
+      addCategory: 'addCategory',
       addToast: 'addToast',
+      addProjects: 'addProjects',
       createProjectForm: 'createProjectForm',
       updateProjects: 'updateProjects',
     }),
@@ -68,12 +84,13 @@ export default {
           try {
 
             const response = await this.$axios.post('s/projects/create-or-update/', {
+              category: this.selectedCategory,
               name: this.name,
               description: this.description,
             })
 
             this.addToast(response.data)
-            this.updateProjects()
+            this.updateProjects(this.selectedCategory)
             this.createProjectForm()
 
           } catch (error) {

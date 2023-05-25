@@ -29,7 +29,7 @@
         </transition>
       </div>
     </div>
-    <FilesList :projects-response="projects" />
+    <FilesList />
   </div>
 </template>
 
@@ -40,8 +40,8 @@ export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
     const cts = await $axios.$get(`s/cts/`)
-    const projects = await $axios.$get('s/projects/getall/')
-    return { cts, projects }
+    // const projects = await $axios.$get('s/projects/getall/')
+    return { cts }
   },
   data() {
     return {
@@ -58,12 +58,14 @@ export default {
   mounted() {
     this.selectCategory(this.cts[0])
     this.addCategory(this.cts)
+    
   },
   methods: {
     ...mapActions({
       selectCategory: 'selectCategory',
       addCategory: 'addCategory',
       addToast: 'addToast',
+      addProjects: 'addProjects',
       createProjectForm: 'createProjectForm',
       updateProjects: 'updateProjects',
     }),
@@ -82,7 +84,7 @@ export default {
             })
 
             this.addToast(response.data)
-            this.updateProjects()
+            this.updateProjects(this.selectedCategory)
             this.createProjectForm()
 
           } catch (error) {

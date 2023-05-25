@@ -85,8 +85,9 @@ export const state = () => ({
         }, project * 50)
       }
     },
-    updateProjects({ commit }, location) {
-      this.$axios.$get('s/projects/getall/').then((resp) => {
+    updateProjects({ commit }, id) {
+      commit('cleanListProjects')
+      this.$axios.$get(`s/projects/${id}/`).then((resp) => {
         commit('cleanListProjects')
         for (const project in resp) {
           setTimeout(function() {

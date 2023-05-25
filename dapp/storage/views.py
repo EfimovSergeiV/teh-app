@@ -76,10 +76,9 @@ class GetOneProject(APIView):
 class GetallProjectArchiveView(APIView):
     """ Список всех проектов со всеми архивами """
 
-    def get(self, request):
-        qs = ProjectArchiveModel.objects.all()
+    def get(self, request, pk):
+        qs = ProjectArchiveModel.objects.filter(category_id=pk)
         sr = ProjectArchiveSerializer(qs, many=True, context={'request':request})
-
         return Response(sr.data)
 
 

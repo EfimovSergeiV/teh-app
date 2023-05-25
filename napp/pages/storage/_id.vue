@@ -4,7 +4,7 @@
     <div class="bg-white">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
-          <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Вернуться на главную</nuxt-link>
+          <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Список проектов</nuxt-link>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProject($route.params.id)"> Обновить</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
         </div>

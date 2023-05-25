@@ -7,7 +7,7 @@
           <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ projects.length }}</span></p></div> 
           <button class="text-sky-900 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProjectForm"> Создать проект</button>
-          <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProjects"> Обновить</button>
+          <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProjects(selectedCategory)"> Обновить</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
         </div>      
@@ -24,7 +24,7 @@
           <div class="text-center text-xs"><p class=""> Действия</p></div>
         </div> -->
 
-        <transition-group v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" name="left-emergence">
+        <transition-group v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" name="left-emergence">
           <div v-for="fileResp in projects" :key="fileResp.id">
             <div class=" border-b border-sky-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-start text-sky-800 hover:text-sky-900 transition-all duration-700">
 
@@ -102,16 +102,16 @@ import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'FilesList',
-  props: {
-    projectsResponse: {
-      type: Array,
-      default: Array,
-    },
-    filesResponse: {
-      type: Array,
-      default: Array,
-    },
-  },
+  // props: {
+  //   projectsResponse: {
+  //     type: Array,
+  //     default: Array,
+  //   },
+  //   filesResponse: {
+  //     type: Array,
+  //     default: Array,
+  //   },
+  // },
   data() {
     return {
       // resp: [
@@ -133,6 +133,7 @@ export default {
   },
   computed: {
     ...mapState({
+      selectedCategory: (state) => state.selectedCategory,
       projects: (state) => state.projects,
       files: (state) => state.files,
     }),
