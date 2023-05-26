@@ -265,7 +265,7 @@
 
 
 
-        <div v-if="files.length > 0">
+        <div v-if="files.length > 0" class="min-h-[300px]">
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
 
             <div v-for="project_file in files" :key="project_file.id" class="">
@@ -288,9 +288,9 @@
                 </div>
 
                 <div class="my-2">
-                  <div class="grid grid-cols-1 gap-1">
-                    <p class="text-sm mdi mdi-account font-semibold text-gray-700"> {{ project_file.author }}</p>
-                    <p class="text-sm mdi mdi-update font-semibold text-gray-700"> {{ project_file.created_date }}</p>
+                  <div class="grid grid-cols-1 gap-0.5">
+                    <p class="text-xs mdi mdi-account font-semibold text-gray-600"> {{ project_file.author }}</p>
+                    <p class="text-xs mdi mdi-update font-semibold text-gray-600"> {{ project_file.created_date }}</p>
                     <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
                   </div>
                 </div>
@@ -331,16 +331,16 @@
               </div>
             </div>
           </transition-group>
-          <div class="flex items-center justify-end my-4">
-            <p class="text-sky-800 text-base font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
-          </div>
+
         </div>
-        <div v-else class="py-28">
-          <div class="flex items-center justify-center h-full">
+        <div v-else class="">
+          <div class="flex items-center justify-center min-h-[300px]">
             <p class="mdi mdi-package-variant-remove text-gray-700 font-semibold"> Нет архивов</p>
           </div>
         </div>
-
+        <div class="flex items-center justify-end my-4">
+          <p class="text-sky-800 text-base font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
+        </div>
       </div>
 
     </div>
