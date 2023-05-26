@@ -3,10 +3,8 @@
     
     <!-- <p class="text-xs text-gray-900">
       {{ project }}
-    </p>
-    <p class="text-xs text-gray-900">
-      {{ project_assembly}}
     </p> -->
+
 
     <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
@@ -62,7 +60,7 @@
       <div class="my-4">
 
         <div class="flex items-center justify-end">
-          <span class="text-xs mdi mdi-pencil cursor-pointer mx-1" @click="editProjectDataForm = true"></span>
+          <span class="text-base mdi mdi-pencil-outline cursor-pointer mx-1 text-gray-600 hover:text-gray-800 transition-all" @click="editProjectDataForm = true"></span>
         </div>
 
 
@@ -105,18 +103,18 @@
         
         
         <div class="my-2 relative">
-          <p class="text-base text-sky-800">{{ project.description }}</p>
+          <p class="text-base text-gray-800">{{ project.description }}</p>
         </div>
 
         <div class="flex items-center justify-end gap-4 py-4">
           <div class="grid gap-1 grid-cols-1">
             <div class="flex justify-between gap-4">
-              <p class="text-right text-xs text-sky-700 font-semibold">Создан: </p>
-              <p class="text-right text-xs text-sky-800 font-semibold">{{ project.created_date }}</p>
+              <p class="text-right text-xs text-gray-500 font-semibold">Создан: </p>
+              <p class="text-right text-xs text-gray-600 font-semibold">{{ project.created_date }}</p>
             </div>
             <div class="flex justify-between gap-4">
-              <p class="text-right text-xs text-sky-700 font-semibold">Обновлён: </p>
-              <p class="text-right text-xs text-sky-800 font-semibold">{{ project.updated_date }}</p>
+              <p class="text-right text-xs text-gray-500 font-semibold">Обновлён: </p>
+              <p class="text-right text-xs text-gray-600 font-semibold">{{ project.updated_date }}</p>
             </div>
           </div>
         </div>        
@@ -171,7 +169,7 @@
             <transition-group tag="div" name="left-emergence"  class="grid grid-cols-4 my-4 gap-4">
 
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
-                <button class="border-b border-gray-300 w-full" @click="selectAssembly(assembly)">
+                <button class="border-b border-gray-300 w-full" @click="selectAssembly(assembly);addFiles(assembly.assembly_files)">
                   <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
                 </button>
               </div>
@@ -272,8 +270,8 @@
 
             <div v-for="project_file in files" :key="project_file.id" class="">
 
-              <div class="border-b text-sky-900 border-gray-200 bg-white rounded-sm py-2">
-                <p class="border-b text-sky-900 border-gray-200">{{ project_file.name }}</p>
+              <div class="border-b text-gray-900 border-gray-200 bg-white rounded-sm py-2">
+                <p class="border-b text-gray-900 border-gray-200">{{ project_file.name }}</p>
                 
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
@@ -284,16 +282,16 @@
                   </div>
                   <a :href="project_file.file" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-sky-900 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
+                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
                   </div>                
                 
                 </div>
 
                 <div class="my-2">
                   <div class="grid grid-cols-1 gap-1">
-                    <p class="text-sm mdi mdi-account font-semibold text-sky-800"> {{ project_file.author }}</p>
-                    <p class="text-sm mdi mdi-update font-semibold text-sky-800"> {{ project_file.created_date }}</p>
-                    <p class="text-xs text-sky-900">md5: {{ project_file.md5 }}</p>                               
+                    <p class="text-sm mdi mdi-account font-semibold text-gray-700"> {{ project_file.author }}</p>
+                    <p class="text-sm mdi mdi-update font-semibold text-gray-700"> {{ project_file.created_date }}</p>
+                    <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
                   </div>
                 </div>
 
@@ -499,7 +497,7 @@ export default {
     this.description = this.project.description
     this.addCategory(this.cts)
     this.selectCategory(this.project.category)
-    this.addFiles(this.project.project_files)
+    // this.addFiles(this.project.project_files)
     this.addAssembly(this.project.project_assembly)
   },
   methods: {
@@ -582,6 +580,10 @@ export default {
         this.addToast({ "id": 1, "msg": "Что то пошло не так!", "type": "error" })
       }
     },
+
+    // AssemblyFilesView(id) {
+    //   this.addFiles(this.project.project_files)
+    // },
 
     async uploadFile(id, latestId) {
       const IndexUploadFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))

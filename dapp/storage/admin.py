@@ -26,12 +26,14 @@ class FileArchiveAdmin(admin.TabularInline):
 
     model = FileArchiveModel
     readonly_fields = ('created_date', 'md5')
+    # fk_name = 'project'
 
     fieldsets = (
-        (None, {'fields': (('name', 'md5', 'file', 'created_date'),)}),
+        (None, {'fields': (('name', 'assembly', 'file', ),)}),
         (None, {'fields': (('author'),)}),
     )
-    extra = 0
+    extra = 1
+
 
 
 class ProjectArchiveAdmin(admin.ModelAdmin):
@@ -39,7 +41,7 @@ class ProjectArchiveAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'name', 'created_date')
     list_display_links = ('id', 'name', 'created_date')
-    readonly_fields = ('created_date', )
+    readonly_fields = ('created_date', 'updated_date',)
     inlines = (FileArchiveAdmin,)
 
 

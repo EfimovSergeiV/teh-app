@@ -152,6 +152,7 @@ export const state = () => ({
 
     /// Файлы\Архивы
     addFiles({ commit }, files ) {
+      console.log(files)
       commit('cleanListFiles')
       for (const file in files) {
         setTimeout(function() {

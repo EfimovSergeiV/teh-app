@@ -10,12 +10,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AssemblySerializer(serializers.ModelSerializer):
-    """ Узлы/сборки проекта """
-
-    class Meta:
-        model = AssemblyModel
-        fields = '__all__'
 
 
 class FileHistorySerializer(serializers.ModelSerializer):
@@ -36,6 +30,15 @@ class FileArchiveSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AssemblySerializer(serializers.ModelSerializer):
+    """ Узлы/сборки проекта """
+    assembly_files = FileArchiveSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AssemblyModel
+        fields = '__all__'        
+
+
 # class ProjectCreateSerializer(serializers.ModelSerializer):
 #     """ Сериализатор представления моделей """
     
@@ -46,7 +49,7 @@ class FileArchiveSerializer(serializers.ModelSerializer):
 
 class ProjectArchiveSerializer(serializers.ModelSerializer):
     """ Сериализатор представления моделей """
-    project_files = FileArchiveSerializer(many=True, read_only=True)
+    # project_files = FileArchiveSerializer(many=True, read_only=True)
     project_assembly = AssemblySerializer(many=True, read_only=True)
     
     class Meta:

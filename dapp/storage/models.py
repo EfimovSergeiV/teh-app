@@ -19,7 +19,7 @@ class CategoryModel(models.Model):
 class ProjectArchiveModel(models.Model):
     """ Модели архивы """
 
-    category = models.ForeignKey(CategoryModel, related_name="project_category", on_delete=models.CASCADE)
+    category = models.ForeignKey(CategoryModel, verbose_name="Категория", related_name="project_category", on_delete=models.CASCADE)
     name = models.CharField(verbose_name="Название", max_length=120)
     description = models.TextField(verbose_name="Описание", max_length=5000, null=True, blank=True, default="Не описано")
     created_date = models.DateTimeField(verbose_name="Дата создания", default=timezone.now)
