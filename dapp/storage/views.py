@@ -118,6 +118,7 @@ class AssemblyView(APIView):
             serializer.save()
         else:
             print(serializer.errors)
+            return Response(data={'id': 1, 'msg': f'Нада название сборки', 'type': 'error'})
 
 
         return Response(data={'id': 1, 'msg': f'Cборка добавлена', 'type': 'success'})

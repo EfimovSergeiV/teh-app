@@ -138,26 +138,37 @@
               <div class="">
                 <p class="text-sky-800">Узлы/сборки пректа:</p>
               </div>
-              <div class="flex gap-2">
-
-                <div class="">
-                  <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки"/>
+              <div class="grid grid-cols-1 gap-2">
+                <div class="flex items-center justify-end">
+                  <p class="text-xs text-gray-700 mdi mdi-plus">Добавить новый узел/сборку</p>
                 </div>
-                <div class="">
-                  <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="addAssembly"> Добавить узел/сборку</button>
+                <div class="flex gap-2">
 
-                </div>
+                  <div class="">
+                    <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки"/>
+                  </div>
+                  <div class="">
+                    <button class="text-center text-sm cursor-pointer text-white disabled:text-gray-400 bg-sky-900 px-2 py-0.5 rounded" @click="addAssembly"> Добавить</button>
+
+                  </div>
+                </div>                
               </div>
+
             </div>
 
 
           </div>
 
-          <div class="grid grid-cols-5 my-4 gap-4">
+          <div v-if="project.project_assembly.length > 0" class="grid grid-cols-4 my-4 gap-4">
             <div v-for="assembly in project.project_assembly" :key="assembly.id" class="">
-              <div class="">
-                <button class="text-xs">{{ assembly.name }}</button>
+              <div class="border-b border-gray-300">
+                <button class="text-xs text-left">{{ assembly.name }}</button>
               </div>
+            </div>
+          </div>
+          <div v-else class="py-28">
+            <div class="flex items-center justify-center h-full">
+              <p class="mdi mdi-folder-remove text-gray-700 font-semibold"> Нет сборок</p>
             </div>
           </div>
 
@@ -232,7 +243,7 @@
             </div>
 
 
-            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Добавить архив</button>
+            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-package-variant-plus text-sky-900 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Добавить архив</button>
 
           </transition>
         </div>
@@ -309,9 +320,9 @@
             <p class="text-sky-800 text-base font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
           </div>
         </div>
-        <div v-else class="">
-          <div class="flex items-center justify-center">
-            <p class="">Нет архивов</p>
+        <div v-else class="py-28">
+          <div class="flex items-center justify-center h-full">
+            <p class="mdi mdi-package-variant-remove text-gray-700 font-semibold"> Нет архивов</p>
           </div>
         </div>
 
