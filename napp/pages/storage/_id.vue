@@ -1,5 +1,12 @@
 <template>
   <div class="relative">
+    
+    <!-- <p class="text-xs text-gray-900">
+      {{ project }}
+    </p>
+    <p class="text-xs text-gray-900">
+      {{ project_assembly}}
+    </p> -->
 
     <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
@@ -148,7 +155,7 @@
                     <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки"/>
                   </div>
                   <div class="">
-                    <button class="text-center text-sm cursor-pointer text-white disabled:text-gray-400 bg-sky-900 px-2 py-0.5 rounded" @click="addAssembly"> Добавить</button>
+                    <button class="text-center text-sm cursor-pointer text-white disabled:text-gray-400 bg-sky-900 px-2 py-0.5 rounded" @click="addNewAssembly"> Добавить</button>
 
                   </div>
                 </div>                
@@ -159,12 +166,18 @@
 
           </div>
 
-          <div v-if="project.project_assembly.length > 0" class="grid grid-cols-4 my-4 gap-4 min-h-[12rem]">
-            <div v-for="assembly in project.project_assembly" :key="assembly.id" class="">
-              <div class="border-b border-gray-300">
-                <button class="text-xs text-left">{{ assembly.name }}</button>
+          <div v-if="project.project_assembly.length > 0" class=" min-h-[12rem]">
+            
+            <transition-group tag="div" name="left-emergence"  class="grid grid-cols-4 my-4 gap-4">
+
+              <div v-for="assembly in project_assembly" :key="assembly.id" class="">
+                <button class="border-b border-gray-300 w-full" @click="selectAssembly(assembly)">
+                  <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
+                </button>
               </div>
-            </div>
+
+            </transition-group>
+
           </div>
           <div v-else class="py-28">
             <div class="flex items-center justify-center h-full">
@@ -180,7 +193,11 @@
 
 
         <div class="my-2 border-b border-sky-400">
-          <p class="text-sky-800">Архивы узла/сборки: Сюда вывести название чего отображаем</p>
+          <p class="text-sky-800">Архивы сборки: 
+            <transition name="fade">
+              <span v-if="selectedAssembly">{{ selectedAssembly.name }}</span>
+            </transition>
+          </p>
         </div>
 
 
@@ -466,9 +483,11 @@ export default {
   computed: {
     ...mapState({
       projects: (state) => state.projects,
+      project_assembly: (state) => state.project_assembly,
       files: (state) => state.files,
       selectedCategory: (state) => state.selectedCategory,
-      historical_files: (state) => state.historical_files
+      historical_files: (state) => state.historical_files,
+      selectedAssembly: (state) => state.selectedAssembly,
     }),
     getNowCategoryName() {
       const id = this.cts.findIndex((item) => item.id === this.selectedCategory)
@@ -481,6 +500,7 @@ export default {
     this.addCategory(this.cts)
     this.selectCategory(this.project.category)
     this.addFiles(this.project.project_files)
+    this.addAssembly(this.project.project_assembly)
   },
   methods: {
     ...mapActions({
@@ -490,6 +510,9 @@ export default {
       createProject: 'createProject',
       updateProject: 'updateProject',
       updateProjects: 'updateProjects',
+      addAssembly: 'addAssembly',
+      updateAssembly: 'updateAssembly',
+      selectAssembly: 'selectAssembly',
       addFiles: 'addFiles',
       addHistoryFiles: 'addHistoryFiles',
     }),
@@ -539,14 +562,15 @@ export default {
       this.loadingID = 0
     },
 
-    async addAssembly() {
+    async addNewAssembly() {
       try {
         const response = await this.$axios.post('s/assembly/create/',{
           project: this.project.id,
           name: this.assemblyName
         })
         this.addToast(response.data)
-
+        this.assemblyName = null
+        this.updateAssembly(this.project.id)
         // if (response.data.type === 'success') {
         //   this.uploadform = false
         //   setTimeout(() => {

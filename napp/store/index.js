@@ -9,10 +9,10 @@ export const state = () => ({
     historical_files: [],
     showCreateProject: false,
     showSearchForm: false,
-    // auth: {
-    //   loggedIn: false,
-    //   user: undefined,
-    // }
+
+    selectedAssembly: null,
+    project_assembly: [],
+
   })
   
   export const getters = {
@@ -25,18 +25,32 @@ export const state = () => ({
   }
 
   export const mutations = {
+    /// Категории
     selectCategory(state, id) {
       state.selectedCategory = id
     },
     addCategory(state, cts) {
       state.cts = cts
     },
+    /// Проекты
     addProject(state, project) {
       state.projects.push(project)
     },
     cleanListProjects(state) {
       state.projects = []
     },
+    /// Сборки
+    cleanListAssembly(state) {
+      state.project_assembly = []
+    },
+    addAssembly(state, assembly) {
+      state.project_assembly.push(assembly)
+    },
+    selectAssembly(state, assembly) {
+      state.selectedAssembly = assembly
+    },
+
+    /// Файлы и архивы
     addFile(state, file) {
       state.files.push(file)
     },
@@ -49,6 +63,7 @@ export const state = () => ({
     addHistoryFile(state, file) {
       state.historical_files.push(file)
     },
+    /// Уведомления
     addToast(state, toast) {
       state.toasts.push(toast)
     },
@@ -59,6 +74,7 @@ export const state = () => ({
     clearToast(state) {
       state.toasts.shift()
     },
+    /// Формочки (отображение)
     createProjectForm(state) {
       state.showCreateProject = !state.showCreateProject
     },
@@ -71,12 +87,15 @@ export const state = () => ({
   }
   
   export const actions = {
+    // Категории
     addCategory({commit}, cts) {
       commit('addCategory', cts)
     },
     selectCategory({commit}, id) {
       commit('selectCategory', id )
     },
+
+    /// Проекты
     addProjects({ commit }, projects) {
       commit('cleanListProjects')
       for (const project in projects) {
@@ -106,6 +125,32 @@ export const state = () => ({
         }  
       }).catch(() => {})
     },
+
+    /// Сборки и узлы
+    addAssembly({ commit }, files ) {
+      commit('cleanListAssembly')
+      for (const file in files) {
+        setTimeout(function() {
+          commit('addAssembly', files[file])
+        }, file * 100);
+      }  
+    },
+    updateAssembly({commit}, id){
+      // commit('cleanListAssembly')
+      this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
+        commit('addAssembly', resp.project_assembly.at(-1))
+        // for (const file in resp.project_assembly) {
+        //   setTimeout(function() {
+        //     commit('addAssembly', resp.project_assembly[file])
+        //   }, file * 100);
+        // }  
+      }).catch(() => {})
+    },
+    selectAssembly({commit}, assembly) {
+      commit('selectAssembly', assembly )
+    },
+
+    /// Файлы\Архивы
     addFiles({ commit }, files ) {
       commit('cleanListFiles')
       for (const file in files) {
@@ -122,6 +167,8 @@ export const state = () => ({
         }, file * 0);
       }
     },
+
+    /// Уведомления
     addToast({ commit }, toast ) {
       /// Сделать присваивание ID
       commit('addToast', toast)
