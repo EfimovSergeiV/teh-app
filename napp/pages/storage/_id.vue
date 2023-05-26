@@ -134,7 +134,7 @@
               </div>
             </div> -->
 
-            <div class="flex items-center justify-between my-2">
+            <div class="flex items-end justify-between my-2">
               <div class="">
                 <p class="text-sky-800">Узлы/сборки пректа:</p>
               </div>
@@ -159,7 +159,7 @@
 
           </div>
 
-          <div v-if="project.project_assembly.length > 0" class="grid grid-cols-4 my-4 gap-4">
+          <div v-if="project.project_assembly.length > 0" class="grid grid-cols-4 my-4 gap-4 min-h-[12rem]">
             <div v-for="assembly in project.project_assembly" :key="assembly.id" class="">
               <div class="border-b border-gray-300">
                 <button class="text-xs text-left">{{ assembly.name }}</button>
