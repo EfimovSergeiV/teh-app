@@ -8,6 +8,8 @@ from storage.views import (
     AssemblyView,
     CreateOrUpdateFilesView,
     SearchView,
+
+    UploadFolderView,
     # CreateProjectArchiveView, 
     # AppendProjectArchiveView,
 )
@@ -21,6 +23,9 @@ urlpatterns = [
     path('assembly/create/', AssemblyView.as_view()),
     # path('projects/update/<int:pk>/', CreateOrUpdateProjectView.as_view()),
     path('files/create-or-update/', CreateOrUpdateFilesView.as_view()),
+
+    path('files/upload-folder/', UploadFolderView.as_view()),
+
     path('search/', SearchView.as_view()),
 
     # path('projects/create/', CreateProjectArchiveView.as_view()),

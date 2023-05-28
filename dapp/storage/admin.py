@@ -19,6 +19,8 @@ class AssemblyAdmin(admin.ModelAdmin):
     """ Сборки/узлы проекта """
     list_display = ('id', 'name',)
     list_display_links = ('id',)
+    list_filter = ('project',)
+
 
 
 class FileArchiveAdmin(admin.TabularInline):

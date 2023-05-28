@@ -186,10 +186,6 @@
         </div>
 
 
-
-
-
-
         <div class="my-2 border-b border-sky-400">
           <p class="text-sky-800">Архивы сборки: 
             <transition name="fade">
@@ -566,9 +562,11 @@ export default {
           project: this.project.id,
           name: this.assemblyName
         })
+        if (response.data.type === 'success') {
+          this.assemblyName = null
+          this.updateAssembly(this.project.id)          
+        }
         this.addToast(response.data)
-        this.assemblyName = null
-        this.updateAssembly(this.project.id)
         // if (response.data.type === 'success') {
         //   this.uploadform = false
         //   setTimeout(() => {

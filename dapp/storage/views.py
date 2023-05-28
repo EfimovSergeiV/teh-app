@@ -234,6 +234,14 @@ class CreateOrUpdateFilesView(APIView):
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
+# Upload file and dirs logic
+
+class UploadFolderView(APIView):
+    """ Upload folder view """
+    def post(self, request):
+        print(request.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
