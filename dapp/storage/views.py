@@ -278,35 +278,37 @@ class UploadFolderView(APIView):
         created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
 
-        data = {
-            "project": project.id,
-            "assembly": request.data["assembly_id"],
-            "md5": 'get_md5_summ(file.read())',
-            "file": zip_file,
-            "author": author,
-            "created_date": created_data
-        }
 
-        try:
-            data['name'] = request.data["name"]
-        except KeyError:
-            pass
+        with open('/home/anon/Загрузки/sadas.png', "r") as file:
+            data = {
+                "project": project.id,
+                "assembly": request.data["assembly_id"],
+                "md5": 'get_md5_summ(file.read())',
+                "file": file.read(),
+                "author": author,
+                "created_date": created_data
+            }
 
-        print(data)
+            try:
+                data['name'] = request.data["name"]
+            except KeyError:
+                pass
+
+            print(data)
 
 
-        # # Сохраняем или обновляем архив
-        if "file_id" in request.data.keys():
-            pass
-        else:
-            # print("создаём новую запись, добавляем файл / заносим в историю")
-            serializer_data = serializer(data=data)
-
-            if serializer_data.is_valid():
-                print("SAVING")
-                saved_data = serializer_data.save()
+            # # Сохраняем или обновляем архив
+            if "file_id" in request.data.keys():
+                pass
             else:
-                print(serializer_data.errors)
+                # print("создаём новую запись, добавляем файл / заносим в историю")
+                serializer_data = serializer(data=data)
+
+                if serializer_data.is_valid():
+                    print("SAVING")
+                    # saved_data = serializer_data.save()
+                else:
+                    print(serializer_data.errors)
 
 
         # print(request.data)
