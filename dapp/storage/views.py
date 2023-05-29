@@ -172,8 +172,6 @@ class CreateOrUpdateFilesView(APIView):
 
         profile = User.objects.get(username=request.user)
         uploader = f'{profile.first_name} {profile.last_name}'
-
-
         author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
         created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
@@ -234,10 +232,91 @@ class CreateOrUpdateFilesView(APIView):
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
+
 # Upload file and dirs logic
 
+import os, shutil
+import zipfile
+from django.conf import settings
+BASE_DIR = settings.BASE_DIR
 class UploadFolderView(APIView):
-    """ Upload folder view """
+    """ Выгрузка директории и упаковка """
+
+    def post(self, request):
+
+        # Запаковка файлов в архив
+        tmp_dir = f'{BASE_DIR}/files/tmp/'
+        os.makedirs(tmp_dir, exist_ok=True)
+        uploaded_files = request.FILES.getlist('files')
+
+        for uploaded_file in uploaded_files:
+            file_path = os.path.join(tmp_dir, uploaded_file.name)
+            with open(file_path, 'wb') as destination_file:
+                for chunk in uploaded_file.chunks():
+                    destination_file.write(chunk)
+
+        zip_file_path = f'{BASE_DIR}/files/arhive.zip'
+        with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
+            for root, _, files in os.walk(tmp_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    arcname = os.path.relpath(file_path, tmp_dir)
+                    zip_file.write(file_path, arcname)
+
+        shutil.rmtree(tmp_dir)
+
+
+        # Формируем данные о файле
+        md5_summ = '71127d380fcf537df071cea23bcf3d70'
+
+        serializer = FileArchiveSerializer
+        project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
+
+        profile = User.objects.get(username=request.user)
+        uploader = f'{profile.first_name} {profile.last_name}'
+        author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
+        created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
+
+
+        data = {
+            "project": project.id,
+            "assembly": request.data["assembly_id"],
+            "md5": 'get_md5_summ(file.read())',
+            "file": zip_file,
+            "author": author,
+            "created_date": created_data
+        }
+
+        try:
+            data['name'] = request.data["name"]
+        except KeyError:
+            pass
+
+        print(data)
+
+
+        # # Сохраняем или обновляем архив
+        if "file_id" in request.data.keys():
+            pass
+        else:
+            # print("создаём новую запись, добавляем файл / заносим в историю")
+            serializer_data = serializer(data=data)
+
+            if serializer_data.is_valid():
+                print("SAVING")
+                saved_data = serializer_data.save()
+            else:
+                print(serializer_data.errors)
+
+
+        # print(request.data)
+        return Response(status=status.HTTP_200_OK)
+
+
+
+
+class UnbuilderProjectView(APIView):
+    """ Попробывать реализовать unbuilder, что бы загружать и раскладывать проект целиком, а не по одному архиву """
     def post(self, request):
         print(request.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)

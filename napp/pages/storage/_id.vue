@@ -1,9 +1,10 @@
 <template>
   <div class="relative">
     
-    <!-- <p class="text-xs text-gray-900">
+    <p class="text-xs text-gray-900">
       {{ project }}
-    </p> -->
+    </p>
+    <p class="text-xs text-gray-900">{{ selectedAssembly }}</p>
 
 
     <div class="bg-sky-700">
@@ -212,16 +213,24 @@
             
               <div class="relative">
                 <div class="flex items-center justify-center">
-                  <form class="flex items-center space-x-6">
-                    <label class="block">
+
+                  <form class="flex items-center space-x-4">
+                    <label for="newfile" class="block">
+                      <div class="flex items-center gap-4">
+                        <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите директорию</p>
+                        <p class="text-sm text-gray-600">Файлов: <span>{{ uploadDirFiles.length }}</span></p>
+                      </div>
+                      
                       <input
-                        id="newfile" type="file" webkitdirectory class="block w-full text-sm text-slate-500
+                        id="newfile" type="file" webkitdirectory placeholder="Выберите директорию"
+                        style="visibility:hidden;"
+                        class="block w-full text-sm text-slate-500
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold
                         file:bg-white file:text-sky-700
                         hover:file:bg-white
-                      " @change="onFileChange"/>
+                      " @change="uploadDirChange"/>
                     </label>
                   </form>
                 </div>
@@ -234,7 +243,7 @@
                     </label>
                   </div>
 
-                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="uploadFile('newfile')"> Загрузить</button>
+                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="sendUploadDir('newfile')"> Загрузить</button>
 
                 </div>
 
@@ -254,7 +263,8 @@
             </div>
 
 
-            <button class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-package-variant-plus text-sky-900 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Добавить архив</button>
+            <button v-if="selectedAssembly" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-package-variant-plus text-sky-900 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Создать архив</button>
+
 
           </transition>
         </div>
@@ -471,6 +481,8 @@ export default {
       dateFileHistory: null,
 
       assemblyName: null,
+      uploadDirFiles: [],
+
     }
   },
 
@@ -526,6 +538,45 @@ export default {
         this.uploadFiles[IndexFile].file = EventData.target.files[0]
       }
     },
+
+    /// Upload folder files/upload-folder/
+    uploadDirChange(event) {
+      this.uploadDirFiles = Array.from(event.target.files)
+    },
+
+    async sendUploadDir() {
+
+      const formData = new FormData();
+      this.uploadDirFiles.forEach((file) => {
+        formData.append('files', file);
+      })
+
+      formData.append("project_id", this.project.id)
+      formData.append("assembly_id", this.selectedAssembly.id)
+      if (this.newArchiveName) {
+          formData.append("name", this.newArchiveName)
+      }
+      if (this.authorFileHistory) {
+        formData.append("author_history", this.authorFileHistory)
+      }
+      if (this.dateFileHistory) {
+        formData.append("date_history", this.dateFileHistory)
+      }
+        // if (latestId) {
+        //   formData.append("latest_id", latestId)
+        // }
+
+      const response = await this.$axios.post('s/files/upload-folder/', formData, {
+        onUploadProgress: (progressEvent) => {
+          this.uploadProgress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+        },
+      })
+      console.log(response)
+    },
+
+
 
     async editProject() {
 
