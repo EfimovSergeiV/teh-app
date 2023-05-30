@@ -217,8 +217,8 @@
                   <form class="flex items-center space-x-4">
                     <label for="newfile" class="block">
                       <div class="flex items-center gap-4">
-                        <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите директорию</p>
-                        <p class="text-sm text-gray-600">Файлов: <span>{{ uploadDirFiles.length }}</span></p>
+                        <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку с файлами</p>
+                        <p class="text-sm text-gray-600">Файлов: <span class=" w-20">{{ uploadDirFiles.length }}</span></p>
                       </div>
                       
                       <input
@@ -235,11 +235,7 @@
                   </form>
                 </div>
 
-                <div class="flex items-center justify-center">
-                  <p class="text-xs font-semibold text-gray-700">{{ uploadProgress }} %</p>
-                </div>
-
-                <div class="flex items-center justify-center my-2 gap-2">
+                <div class="flex items-center justify-center gap-2">
 
                   <div>
                     <label class="flex items-center gap-2">
@@ -248,9 +244,23 @@
                     </label>
                   </div>
 
-                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="sendUploadDir('newfile')"> Загрузить</button>
+                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="sendLatestFile()"> Загрузить</button>
 
                 </div>
+
+                <div class="flex items-center justify-center">
+                  <div class="">
+                    <div class="text-center">
+                      <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+                    </div>                
+                    <div class=" flex items-center justify-center">
+                      <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                    </div>
+                  </div>
+                </div>
+
+
+
 
                 <div v-if="loadingID === 'newfile'" class="absolute top-0 w-full h-full">
                   <div class="w-full h-full flex items-center justify-center bg-white ">
@@ -302,7 +312,7 @@
                   <div class="grid grid-cols-1 gap-0.5">
                     <p class="text-xs mdi mdi-account font-semibold text-gray-600"> {{ project_file.author }}</p>
                     <p class="text-xs mdi mdi-update font-semibold text-gray-600"> {{ project_file.created_date }}</p>
-                    <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                               
+                    <!-- <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                                -->
                   </div>
                 </div>
 
@@ -426,9 +436,9 @@
                           <p class="text-xs font-semibold text-sky-800 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
                         </div>
 
-                        <div class="">
+                        <!-- <div class="">
                           <p class="text-xs text-sky-900">{{ historical_file.md5 }}</p>
-                        </div>
+                        </div> -->
 
                       </div>
 
@@ -544,7 +554,7 @@ export default {
         this.uploadFiles[IndexFile].file = EventData.target.files[0]
       }
     },
-    
+
     /// Выгрузка проекта
     uploadDirChange(event) {
       this.uploadDirFiles = Array.from(event.target.files)
@@ -559,7 +569,7 @@ export default {
       })
     },
 
-    async sendUploadDir() {
+    async sendLatestFile() {
 
       const formData = new FormData();
       const zip = new JSZip()
@@ -585,11 +595,8 @@ export default {
       if (this.dateFileHistory) {
         formData.append("date_history", this.dateFileHistory)
       }
-        // if (latestId) {
-        //   formData.append("latest_id", latestId)
-        // }
 
-      const response = await this.$axios.post('s/files/upload-folder/', formData, {
+      const response = await this.$axios.post('s/files/upload-latest-file/', formData, {
         onUploadProgress: (progressEvent) => {
           this.uploadProgress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total

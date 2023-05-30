@@ -233,16 +233,37 @@ class CreateOrUpdateFilesView(APIView):
 
 
 
-# Upload file and dirs logic
+# PRODUCTION
 
+def add_file_to_history(data):
+    """ Добавляем загруженный файл в историю """
 
-class UploadFolderView(APIView):
-    """ Выгрузка """
+    print(data)
+    serializer = FileHistorySerializer(data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+
+    # FileHistoryModel.objects.create(
+    #     latest_id = data["latest"],
+    #     assembly_id = data["assembly"],
+    #     author = data["author"],
+    #     created_date = data["created_date"],
+    #     name = data["name"],
+    #     md5 = data["md5"],
+    #     file = data["file"],
+    # )
+
+class UploadLatestFileView(APIView):
+    """ 
+        Выгрузка архива, который будет отображаться как последний 
+        и занесение его в историю версий файлов
+    """
 
     def post(self, request):
         file = request.FILES['file']
-
-        # Формируем данные о файле
         md5_summ = get_md5_summ(file)
 
         serializer = FileArchiveSerializer
@@ -256,36 +277,27 @@ class UploadFolderView(APIView):
         data = {
             "project": project.id,
             "assembly": request.data["assembly_id"],
+            "name": request.data["name"],
             "md5": md5_summ,
             "file": file,
             "author": author,
             "created_date": created_data
         }
 
-        try:
-            data['name'] = request.data["name"]
-        except KeyError:
-            pass
 
-        print(data)
+        serializer_data = serializer(data=data)
 
-
-        # # Сохраняем или обновляем архив
-        if "file_id" in request.data.keys():
-            pass
+        if serializer_data.is_valid():
+            saved_data = serializer_data.save()
+            data["latest"] = saved_data.id
+            data["file"] = str(saved_data.file)
         else:
-            # print("создаём новую запись, добавляем файл / заносим в историю")
-            serializer_data = serializer(data=data)
+            print(serializer_data.errors)
 
-            if serializer_data.is_valid():
-                print("SAVING")
-                saved_data = serializer_data.save()
-                print(saved_data.id)
-            else:
-                print(serializer_data.errors)
+        # Добавить этот файл в историю версий
+        print(data)
+        add_file_to_history(data=data)
 
-
-        # print(request.data)
         return Response(status=status.HTTP_200_OK)
 
 
