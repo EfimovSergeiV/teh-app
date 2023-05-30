@@ -1,10 +1,10 @@
 <template>
   <div class="relative">
     
-    <p class="text-xs text-gray-900">
+    <!-- <p class="text-xs text-gray-900">
       {{ project }}
     </p>
-    <p class="text-xs text-gray-900">{{ selectedAssembly }}</p>
+    <p class="text-xs text-gray-900">{{ selectedAssembly }}</p> -->
 
 
     <div class="bg-sky-700">
@@ -234,6 +234,11 @@
                     </label>
                   </form>
                 </div>
+
+                <div class="flex items-center justify-center">
+                  <p class="text-xs font-semibold text-gray-700">{{ uploadProgress }} %</p>
+                </div>
+
                 <div class="flex items-center justify-center my-2 gap-2">
 
                   <div>
@@ -539,9 +544,8 @@ export default {
         this.uploadFiles[IndexFile].file = EventData.target.files[0]
       }
     },
-
     
-    /// Upload folder files/upload-folder/
+    /// Выгрузка проекта
     uploadDirChange(event) {
       this.uploadDirFiles = Array.from(event.target.files)
     },
@@ -559,22 +563,14 @@ export default {
 
       const formData = new FormData();
       const zip = new JSZip()
-      
 
-      // Iterate over the files
       for (let i = 0; i < this.uploadDirFiles.length; i++) {
         const file = this.uploadDirFiles[i];
-
-        // Read the file content
         const fileContent = await this.readFileContent(file);
-
-        // Add the file to the ZIP archive
         zip.file(file.name, fileContent);
       }
 
-      // Generate the ZIP archive
       const zipContent = await zip.generateAsync({ type: 'blob' });
-
       const archiveName = 'archive.zip'
 
       formData.append("file", zipContent, archiveName)
