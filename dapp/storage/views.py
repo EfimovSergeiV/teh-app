@@ -238,23 +238,14 @@ class CreateOrUpdateFilesView(APIView):
 def add_file_to_history(data):
     """ Добавляем загруженный файл в историю """
 
-    print(data)
     serializer = FileHistorySerializer(data=data)
 
     if serializer.is_valid():
-        serializer.save()
+        qs = serializer.save()
+        return qs
     else:
-        print(serializer.errors)
+        print(f'ERR HISTORY: {serializer.errors}')
 
-    # FileHistoryModel.objects.create(
-    #     latest_id = data["latest"],
-    #     assembly_id = data["assembly"],
-    #     author = data["author"],
-    #     created_date = data["created_date"],
-    #     name = data["name"],
-    #     md5 = data["md5"],
-    #     file = data["file"],
-    # )
 
 class UploadLatestFileView(APIView):
     """ 
@@ -279,24 +270,25 @@ class UploadLatestFileView(APIView):
             "assembly": request.data["assembly_id"],
             "name": request.data["name"],
             "md5": md5_summ,
-            "file": file,
             "author": author,
             "created_date": created_data
         }
 
-
-        serializer_data = serializer(data=data)
+        serializer_data = serializer(data=data)        
 
         if serializer_data.is_valid():
-            saved_data = serializer_data.save()
+            saved_data =  serializer_data.save()
             data["latest"] = saved_data.id
-            data["file"] = str(saved_data.file)
-        else:
-            print(serializer_data.errors)
 
+        else:
+            print(f'ERR ARCHIVE: {serializer.errors}')
+        
+        data['file'] = file
         # Добавить этот файл в историю версий
-        print(data)
-        add_file_to_history(data=data)
+
+        qs = add_file_to_history(data=data)
+        latest = FileArchiveModel.objects.filter(id=saved_data.id)
+        latest.update(file=str(qs.file))
 
         return Response(status=status.HTTP_200_OK)
 

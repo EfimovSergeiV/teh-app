@@ -34,11 +34,7 @@ class ProjectArchiveModel(models.Model):
         return self.name
     
 
-def upload_file_to(instance, filename):
-    related_model_id = instance.project_id
-    directory_path = f"storage/models/{related_model_id}/"
-    file_path = os.path.join(directory_path, filename)
-    return file_path
+
 
 
 class AssemblyModel(models.Model):
@@ -56,14 +52,14 @@ class AssemblyModel(models.Model):
 
 
 class FileArchiveModel(models.Model):
-    """ Файлы """
+    """ Файлы ( не содержит самих файлов, а указывает, который является последним )"""
     
     project = models.ForeignKey(ProjectArchiveModel, verbose_name="Проект", related_name='project_files', on_delete=models.CASCADE)
     assembly = models.ForeignKey(AssemblyModel, verbose_name="Узел/Сборка", related_name='assembly_files', null=True, blank=True, on_delete=models.CASCADE)
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
-    file = models.FileField(verbose_name="Архив", upload_to=upload_file_to)
+    file = models.CharField(verbose_name="Путь к архиву", null=True, blank=True, max_length=500)
     created_date = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
 
     class Meta:
@@ -76,15 +72,23 @@ class FileArchiveModel(models.Model):
         return f"{self.project.name} - { self.name }"
     
 
-class FileHistoryModel(models.Model):
-    """ История файлов """
+def upload_file_to(instance, filename):
+    related_model_id = instance.project_id
+    directory_path = f"storage/models/{related_model_id}/"
+    file_path = os.path.join(directory_path, filename)
+    return file_path
 
+class FileHistoryModel(models.Model):
+    """ 
+        История файлов ( содержит сам файл, потому что их может быть несколько )
+    """
+    project = models.ForeignKey(ProjectArchiveModel, verbose_name="Проект", related_name='project_history_files', on_delete=models.CASCADE)
     assembly = models.ForeignKey(AssemblyModel, verbose_name="Узел/Сборка", related_name='assembly_history_files', null=True, blank=True, on_delete=models.CASCADE)
     latest = models.ForeignKey(FileArchiveModel, related_name='historical_files', on_delete=models.CASCADE)
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
-    file = models.CharField(verbose_name="Путь к архиву", max_length=500)
+    file = models.FileField(verbose_name="Архив", upload_to=upload_file_to) 
     created_date = models.DateTimeField(verbose_name="Дата создания")
     
     class Meta:
