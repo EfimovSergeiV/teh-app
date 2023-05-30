@@ -28,6 +28,7 @@ class FileArchiveSerializer(serializers.ModelSerializer):
     class Meta:
         model = FileArchiveModel
         fields = '__all__'
+        
 
 
 class AssemblySerializer(serializers.ModelSerializer):

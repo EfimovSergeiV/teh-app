@@ -449,6 +449,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import JSZip from 'jszip'
 
 export default {
   name: 'ProjectPage',
@@ -539,18 +540,44 @@ export default {
       }
     },
 
+    
     /// Upload folder files/upload-folder/
     uploadDirChange(event) {
       this.uploadDirFiles = Array.from(event.target.files)
     },
 
+    readFileContent(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsArrayBuffer(file);
+      })
+    },
+
     async sendUploadDir() {
 
       const formData = new FormData();
-      this.uploadDirFiles.forEach((file) => {
-        formData.append('files', file);
-      })
+      const zip = new JSZip()
+      
 
+      // Iterate over the files
+      for (let i = 0; i < this.uploadDirFiles.length; i++) {
+        const file = this.uploadDirFiles[i];
+
+        // Read the file content
+        const fileContent = await this.readFileContent(file);
+
+        // Add the file to the ZIP archive
+        zip.file(file.name, fileContent);
+      }
+
+      // Generate the ZIP archive
+      const zipContent = await zip.generateAsync({ type: 'blob' });
+
+      const archiveName = 'archive.zip'
+
+      formData.append("file", zipContent, archiveName)
       formData.append("project_id", this.project.id)
       formData.append("assembly_id", this.selectedAssembly.id)
       if (this.newArchiveName) {

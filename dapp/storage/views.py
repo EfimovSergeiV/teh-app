@@ -235,39 +235,15 @@ class CreateOrUpdateFilesView(APIView):
 
 # Upload file and dirs logic
 
-import os, shutil
-import zipfile
-from django.conf import settings
-BASE_DIR = settings.BASE_DIR
+
 class UploadFolderView(APIView):
-    """ Выгрузка директории и упаковка """
+    """ Выгрузка """
 
     def post(self, request):
-
-        # Запаковка файлов в архив
-        tmp_dir = f'{BASE_DIR}/files/tmp/'
-        os.makedirs(tmp_dir, exist_ok=True)
-        uploaded_files = request.FILES.getlist('files')
-
-        for uploaded_file in uploaded_files:
-            file_path = os.path.join(tmp_dir, uploaded_file.name)
-            with open(file_path, 'wb') as destination_file:
-                for chunk in uploaded_file.chunks():
-                    destination_file.write(chunk)
-
-        zip_file_path = f'{BASE_DIR}/files/arhive.zip'
-        with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
-            for root, _, files in os.walk(tmp_dir):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    arcname = os.path.relpath(file_path, tmp_dir)
-                    zip_file.write(file_path, arcname)
-
-        shutil.rmtree(tmp_dir)
-
+        file = request.FILES['file']
 
         # Формируем данные о файле
-        md5_summ = '71127d380fcf537df071cea23bcf3d70'
+        md5_summ = get_md5_summ(file)
 
         serializer = FileArchiveSerializer
         project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
@@ -277,38 +253,36 @@ class UploadFolderView(APIView):
         author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
         created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
+        data = {
+            "project": project.id,
+            "assembly": request.data["assembly_id"],
+            "md5": md5_summ,
+            "file": file,
+            "author": author,
+            "created_date": created_data
+        }
+
+        try:
+            data['name'] = request.data["name"]
+        except KeyError:
+            pass
+
+        print(data)
 
 
-        with open('/home/anon/Загрузки/sadas.png', "r") as file:
-            data = {
-                "project": project.id,
-                "assembly": request.data["assembly_id"],
-                "md5": 'get_md5_summ(file.read())',
-                "file": file.read(),
-                "author": author,
-                "created_date": created_data
-            }
+        # # Сохраняем или обновляем архив
+        if "file_id" in request.data.keys():
+            pass
+        else:
+            # print("создаём новую запись, добавляем файл / заносим в историю")
+            serializer_data = serializer(data=data)
 
-            try:
-                data['name'] = request.data["name"]
-            except KeyError:
-                pass
-
-            print(data)
-
-
-            # # Сохраняем или обновляем архив
-            if "file_id" in request.data.keys():
-                pass
+            if serializer_data.is_valid():
+                print("SAVING")
+                saved_data = serializer_data.save()
+                print(saved_data.id)
             else:
-                # print("создаём новую запись, добавляем файл / заносим в историю")
-                serializer_data = serializer(data=data)
-
-                if serializer_data.is_valid():
-                    print("SAVING")
-                    # saved_data = serializer_data.save()
-                else:
-                    print(serializer_data.errors)
+                print(serializer_data.errors)
 
 
         # print(request.data)
