@@ -47,7 +47,15 @@ export const state = () => ({
       state.project_assembly.push(assembly)
     },
     selectAssembly(state, assembly) {
-      state.selectedAssembly = assembly
+      /// Очистка отображений файлов и версий? потому что не выбрана сборка
+      if (assembly) {
+        state.selectedAssembly = assembly
+      } else {
+        state.selectedAssembly = assembly
+        state.files = []
+        state.historical_files = []
+      }
+        
     },
 
     /// Файлы и архивы

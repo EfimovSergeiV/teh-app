@@ -523,6 +523,7 @@ export default {
     this.selectCategory(this.project.category)
     // this.addFiles(this.project.project_files)
     this.addAssembly(this.project.project_assembly)
+    this.selectAssembly(null)
   },
   methods: {
     ...mapActions({
