@@ -423,7 +423,7 @@
                       <div class="border-b border-gray-300">
 
                         <div class="">
-                          <p class="text-xs text-sky-700">{{ historical_file.name }}</p>
+                          <p class="text-xs text-gray-600">{{ historical_file.name }}</p>
                         </div>
 
                         <div class="flex items-center justify-start gap-2 my-1">
@@ -436,8 +436,8 @@
                         </div>
 
                         <div class="my-2">
-                          <p class="text-xs font-semibold text-sky-800 mdi mdi-account"> {{ historical_file.author }}</p>
-                          <p class="text-xs font-semibold text-sky-800 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
+                          <p class="text-xs font-semibold text-gray-600 mdi mdi-account"> {{ historical_file.author }}</p>
+                          <p class="text-xs font-semibold text-gray-600 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
                         </div>
 
                         <!-- <div class="">
