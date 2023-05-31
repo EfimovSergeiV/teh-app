@@ -351,6 +351,7 @@ class CreateHistoryFileView(APIView):
     """
 
     def post(self, request, pk):
+        print(request.data)
         file = request.FILES['file']
         md5_summ = get_md5_summ(file)
 
@@ -366,7 +367,7 @@ class CreateHistoryFileView(APIView):
             "project": latest_file.project.id,
             "assembly": latest_file.assembly.id,
             "latest": latest_file.id,
-            "name": latest_file.name,
+            "name": request.data['name'],
             "md5": md5_summ,
             "author": author,
             "file": file,
@@ -377,14 +378,7 @@ class CreateHistoryFileView(APIView):
 
         if serializer_data.is_valid():
             print('Valided')
-            # created = serializer_data.save()
-            # FileArchiveModel.objects.filter(id=pk).update(
-            #     md5 = md5_summ,
-            #     author = author,
-            #     file = created.file,
-            #     created_date = created_date
-            # )
-            # return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
+            serializer_data.save()
 
         else:
             print(f'ERR : {serializer_data.errors}')

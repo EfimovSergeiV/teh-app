@@ -153,7 +153,7 @@
                 <div class="flex gap-2">
 
                   <div class="">
-                    <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки"/>
+                    <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки" @keyup.enter="addNewAssembly"/>
                   </div>
                   <div class="">
                     <button class="text-center text-sm cursor-pointer text-white disabled:text-gray-400 bg-sky-900 px-2 py-0.5 rounded" @click="addNewAssembly"> Добавить</button>
@@ -398,11 +398,11 @@
 
                 </div>
 
-                <div class="flex items-center">
+                <div class="flex gap-2 items-center justify-between">
                   <form class="flex items-center space-x-6">
                     <label class="block">
                       <input
-                          :id="historical_files[0].latest" type="file" class="block w-full text-sm text-slate-500
+                          id="history-file" type="file" class="block w-full text-sm text-slate-500
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
                           file:bg-gray-100 file:text-sky-700
@@ -674,7 +674,7 @@ export default {
       }
 
       try {
-        const response = await this.$axios.post('s/files/upload-latest-file/', formData, {
+        const response = await this.$axios.post(`s/files/create-history-file/${this.historical_files[0].latest}/`, formData, {
           onUploadProgress: (progressEvent) => {
             this.uploadProgress = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
