@@ -11,6 +11,7 @@ from storage.views import (
 
     UploadLatestFileView,
     UpdateLatestFileView,
+    CreateHistoryFileView,
 
 )
 
@@ -28,6 +29,7 @@ urlpatterns = [
 
     path('files/upload-latest-file/', UploadLatestFileView.as_view()),
     path('files/update-latest-file/<int:pk>/', UpdateLatestFileView.as_view()),
+    path('files/create-history-file/<int:pk>/', CreateHistoryFileView.as_view()),
     
 
     path('search/', SearchView.as_view()),

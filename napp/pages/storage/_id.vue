@@ -373,6 +373,8 @@
 
     </div>
 
+
+
     <transition name="top-emergence">
       <div v-if="historyFilesModal" class="fixed z-30 top-0 w-full">
         <div class="">
@@ -390,8 +392,9 @@
               <div v-if="historical_files.length > 0" class="grid grid-cols-1 gap-y-4">
                 <div class="flex gap-2 w-full">
 
-                  <input id="username" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов">
-                  <input id="username" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
+                  <input id="history-file-name" v-model="newArchiveName" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название">
+                  <input id="author" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов">
+                  <input id="date-time" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
 
                 </div>
 
@@ -402,13 +405,13 @@
                           :id="historical_files[0].latest" type="file" class="block w-full text-sm text-slate-500
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
-                          file:bg-white file:text-sky-700
-                          hover:file:bg-white
-                        " @change="onFileChange"/>
+                          file:bg-gray-100 file:text-sky-700
+                          hover:file:bg-gray-100
+                        " @change="uploadDirFiles"/>
                     </label>
                   </form>
                   <span class="flex items-center mdi mdi-upload cursor-pointer text-sky-700 font-semibold text-sm">
-                    <button :disabled="loadingNow" class="" @click="uploadFile(historical_files[0].latest);historyFilesModal = false">Загрузить в историю</button>
+                    <button :disabled="loadingNow" class="" @click="sendHistoryFile">Загрузить в историю</button>
                   </span>
 
                 </div>
@@ -418,7 +421,7 @@
             
 
             <div class="my-2">
-              <div class="overflow-y-auto h-[500px] py-1 border-b border-t border-sky-500/50">
+              <div class="overflow-y-auto h-[460px] py-1 border-b border-t border-sky-500/50">
                 <div class="">
 
                   <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
@@ -639,6 +642,63 @@ export default {
 
       this.loadingNow = false
     },
+
+
+    async sendHistoryFile() {
+
+      this.loadingNow = true /// Выключаем кнопку закгрузки
+
+      const formData = new FormData();
+      const zip = new JSZip()
+
+      for (let i = 0; i < this.uploadDirFiles.length; i++) {
+        const file = this.uploadDirFiles[i];
+        const fileContent = await this.readFileContent(file);
+        zip.file(file.name, fileContent);
+      }
+
+      const zipContent = await zip.generateAsync({ type: 'blob' });
+      const archiveName = 'archive.zip'
+
+      formData.append("file", zipContent, archiveName)
+      formData.append("project_id", this.project.id)
+      formData.append("assembly_id", this.selectedAssembly.id)
+      if (this.newArchiveName) {
+          formData.append("name", this.newArchiveName)
+      }
+      if (this.authorFileHistory) {
+        formData.append("author_history", this.authorFileHistory)
+      }
+      if (this.dateFileHistory) {
+        formData.append("date_history", this.dateFileHistory)
+      }
+
+      try {
+        const response = await this.$axios.post('s/files/upload-latest-file/', formData, {
+          onUploadProgress: (progressEvent) => {
+            this.uploadProgress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+          },
+        })
+
+          if (response.data.type === 'success') {
+            this.uploadform = false
+            this.newArchiveName = null
+            this.uploadProgress = 0
+            this.addToast(response.data)
+            setTimeout(() => {
+              this.updateFiles(this.project.id)
+              this.uploadDirFiles = []
+            }, "1500");
+          }
+
+        } catch (error) {
+          console.log(error)
+        }
+
+      this.loadingNow = false
+      },
 
 
 
