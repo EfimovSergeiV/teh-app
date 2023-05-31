@@ -367,7 +367,7 @@
           </div>
         </div>
         <div class="flex items-center justify-end my-4">
-          <p class="text-sky-800 text-base font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
+          <p class="text-sky-800 text-sm font-semibold cursor-pointer flex items-start"><span class="mdi mdi-download "></span> Собрать проект</p>
         </div>
       </div>
 
