@@ -10,8 +10,8 @@ from storage.views import (
     SearchView,
 
     UploadLatestFileView,
-    # CreateProjectArchiveView, 
-    # AppendProjectArchiveView,
+    UpdateLatestFileView,
+
 )
 
 
@@ -27,6 +27,8 @@ urlpatterns = [
 
 
     path('files/upload-latest-file/', UploadLatestFileView.as_view()),
+    path('files/update-latest-file/<int:pk>/', UpdateLatestFileView.as_view()),
+    
 
     path('search/', SearchView.as_view()),
 

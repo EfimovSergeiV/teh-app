@@ -219,7 +219,7 @@
                     <label for="newfile" class="block">
                       <div class="flex items-center gap-4">
                         <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку с файлами</p>
-                        <p class="text-sm text-gray-600">Файлов: <span class=" w-20">{{ uploadDirFiles.length }}</span></p>
+                        <p class="text-sm text-gray-600 md:w-32">Файлов: <span class="">{{ uploadDirFiles.length }}</span></p>
                       </div>
                       
                       <input
@@ -320,10 +320,28 @@
 
                 <div class="relative">
                   <div class="flex items-center justify-center">
-                    <form class="flex items-center space-x-6">
+                    <!-- <form class="flex items-center space-x-6">
                       <label class="block">
                         <input
                           :id="project_file.id" type="file" class="block w-full text-sm text-slate-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-full file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-white file:text-sky-700
+                          hover:file:bg-white
+                        " @change="onFileChange"/>
+                      </label>
+                    </form> -->
+                    <form class="flex items-center space-x-4">
+                      <label :for="project_file.id" class="block">
+                        <!-- <div class="flex items-center justify-center gap-4">
+                          <p class="py-0.5 px-2 text-xs text-white bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку</p>
+                          <p class="text-xs text-gray-600">Файлов: <span class=" w-20">{{ uploadDirFiles.length }}</span></p>
+                        </div> -->
+                        
+                        <input
+                          :id="project_file.id" type="file" webkitdirectory placeholder="Выберите директорию"
+                          class="block w-full text-sm text-slate-500
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
@@ -353,6 +371,8 @@
               </div>
             </div>
           </transition-group>
+
+          <p class="text xs">{{ uploadFiles }}</p>
 
         </div>
         <div v-else class="">
@@ -487,7 +507,7 @@ export default {
       uploadform: false,
 
       newArchiveName: null,
-      // uploadFiles: [],
+      
       uploadProgress: 0,
       loadingNow: false,   /// Выключаем кнопки загрузки
       loadingID: 0,
@@ -498,7 +518,8 @@ export default {
       dateFileHistory: null,
 
       assemblyName: null,
-      uploadDirFiles: [],
+      uploadDirFiles: [], /// Сюда скидывает новый один
+      uploadFiles: [],    /// Сюда скидывает обновлённый с id
 
     }
   },
@@ -542,6 +563,8 @@ export default {
 
       updateFiles: 'updateFiles'
     }),
+
+    /// Без ключа х3 как сделать поэтому
     onFileChange(event) {
       const EventData = event
       const EventID = EventData.target.id
@@ -551,19 +574,21 @@ export default {
         this.uploadFiles.push({
           "project_id": this.project.id,
           "file_id": EventID,
-          "file": EventData.target.files[0]
+          "files": Array.from(event.target.files)
         })
       } else {
 
-        this.uploadFiles[IndexFile].file = EventData.target.files[0]
+        this.uploadFiles[IndexFile].files = Array.from(event.target.files)
       }
     },
 
-    /// Выгрузка проекта
+    /// Выгрузка проекта одного
     uploadDirChange(event) {
       this.uploadDirFiles = Array.from(event.target.files)
     },
+    
 
+    /// Тут архивируются файлы
     readFileContent(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
