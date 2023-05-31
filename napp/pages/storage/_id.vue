@@ -172,12 +172,12 @@
             <transition-group tag="div" name="left-emergence"  class="grid grid-cols-4 my-4 gap-4">
 
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
-                <button v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="border-b border-gray-300 w-full h-full">
+                <button v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="border-b border-gray-400 w-full h-full">
                   <p class="text-xs text-left font-semibold text-gray-800">{{ assembly.name }}</p>
                 </button>
                 <button v-else class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);addFiles(assembly.assembly_files)">
                   <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
-                </button>
+                </button>                  
               </div>
 
             </transition-group>
@@ -194,7 +194,7 @@
         <div class="my-2 border-b border-sky-400">
           <p class="text-sky-800">Архивы сборки: 
             <transition name="fade">
-              <span v-if="selectedAssembly">{{ selectedAssembly.name }}</span>
+              <span v-if="selectedAssembly" class="px-2 text-gray-600">{{ selectedAssembly.name }}</span>
             </transition>
           </p>
         </div>
