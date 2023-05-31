@@ -186,7 +186,6 @@
 
         </div>
 
-
         <div class="my-2 border-b border-sky-400">
           <p class="text-sky-800">Архивы сборки: 
             <transition name="fade">
@@ -196,12 +195,14 @@
         </div>
 
 
+
+
         <div class=" h-full flex items-center justify-center">
 
           <transition name="fade" mode="out-in">
             <div v-if="uploadform" class=" w-full">
               <div class="flex items-center justify-end">
-                <button class="mdi mdi-close text-sm" @click="uploadform = !uploadform"></button>
+                <button class="mdi mdi-close text-sm" @click="uploadform = false"></button>
               </div>
 
               <div class="flex items-center justify-center">
@@ -237,14 +238,14 @@
 
                 <div class="flex items-center justify-center gap-2">
 
-                  <div>
+                  <!-- <div>
                     <label class="flex items-center gap-2">
                       <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
                       <p class="text-gray-700 text-sm font-semibold">Добавить ко всем проектам</p>
                     </label>
-                  </div>
+                  </div> -->
 
-                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-sky-400" @click="sendLatestFile()"> Загрузить</button>
+                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-600" @click="sendLatestFile"> Загрузить</button>
 
                 </div>
 
@@ -486,9 +487,9 @@ export default {
       uploadform: false,
 
       newArchiveName: null,
-      uploadFiles: [],
+      // uploadFiles: [],
       uploadProgress: 0,
-      loadingNow: false,
+      loadingNow: false,   /// Выключаем кнопки загрузки
       loadingID: 0,
       changeProjectForm: true,
       editProjectDataForm: false,
@@ -538,6 +539,8 @@ export default {
       selectAssembly: 'selectAssembly',
       addFiles: 'addFiles',
       addHistoryFiles: 'addHistoryFiles',
+
+      updateFiles: 'updateFiles'
     }),
     onFileChange(event) {
       const EventData = event
@@ -572,6 +575,8 @@ export default {
 
     async sendLatestFile() {
 
+      this.loadingNow = true /// Выключаем кнопку закгрузки
+
       const formData = new FormData();
       const zip = new JSZip()
 
@@ -597,14 +602,31 @@ export default {
         formData.append("date_history", this.dateFileHistory)
       }
 
-      const response = await this.$axios.post('s/files/upload-latest-file/', formData, {
-        onUploadProgress: (progressEvent) => {
-          this.uploadProgress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-        },
-      })
-      console.log(response)
+      try {
+        const response = await this.$axios.post('s/files/upload-latest-file/', formData, {
+          onUploadProgress: (progressEvent) => {
+            this.uploadProgress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+          },
+        })
+
+          if (response.data.type === 'success') {
+            this.uploadform = false
+            this.newArchiveName = null
+            this.uploadProgress = 0
+            this.addToast(response.data)
+            setTimeout(() => {
+              this.updateFiles(this.project.id)
+              this.uploadDirFiles = []
+            }, "1500");
+          }
+
+        } catch (error) {
+          console.log(error)
+        }
+
+      this.loadingNow = false
     },
 
 
@@ -665,6 +687,8 @@ export default {
     //   this.addFiles(this.project.project_files)
     // },
 
+
+/// УСТАРЕВШИЕ МЕТОДЫ !!!!!!!!!
     async uploadFile(id, latestId) {
       const IndexUploadFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))
 
@@ -701,16 +725,16 @@ export default {
               );
             },
           })
-          this.addToast(response.data)
 
           if (response.data.type === 'success') {
             this.uploadform = false
+            this.newArchiveName = null
+            this.uploadFiles = []
+            this.addToast(response.data)
             setTimeout(() => {
               this.updateProject(fileData.project_id)
             }, "1500");
           }
-
-
 
         } catch (error) {
           this.addToast({ "id": 1, "msg": "Что то пошло не так!", "type": "error" })

@@ -100,8 +100,6 @@ export default {
     },
     async getCategoryProjects(id) {
       try {
-
-        console.log('BUG ', this.projects.length)
         const projects = await this.$axios.get(`s/projects/${id}/`)
         this.addProjects(projects.data)          
 

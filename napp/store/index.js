@@ -143,15 +143,13 @@ export const state = () => ({
         }, file * 100);
       }  
     },
+
+    /// Добавление отображения последнего добавленного сборки
+    /// МБ переименовать как Latest
     updateAssembly({commit}, id){
       // commit('cleanListAssembly')
       this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
-        commit('addAssembly', resp.project_assembly.at(-1))
-        // for (const file in resp.project_assembly) {
-        //   setTimeout(function() {
-        //     commit('addAssembly', resp.project_assembly[file])
-        //   }, file * 100);
-        // }  
+        commit('addAssembly', resp.project_assembly.at(-1)) 
       }).catch(() => {})
     },
     selectAssembly({commit}, assembly) {
@@ -159,8 +157,22 @@ export const state = () => ({
     },
 
     /// Файлы\Архивы
+    updateFiles({ commit, state }, id) {
+      commit('cleanListFiles')
+      this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
+        if (state.selectedAssembly) {
+          const Index = resp.project_assembly.findIndex((item) => item.id === state.selectedAssembly.id )
+          for (const file in resp.project_assembly[Index].assembly_files) {
+            setTimeout(function() {
+              commit('addFile', resp.project_assembly[Index].assembly_files[file])
+            }, file * 100);
+          }  
+        }
+      }).catch(() => {})
+    },
+
+
     addFiles({ commit }, files ) {
-      console.log(files)
       commit('cleanListFiles')
       for (const file in files) {
         setTimeout(function() {

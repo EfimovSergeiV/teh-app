@@ -290,7 +290,7 @@ class UploadLatestFileView(APIView):
         latest = FileArchiveModel.objects.filter(id=saved_data.id)
         latest.update(file=str(qs.file))
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
 

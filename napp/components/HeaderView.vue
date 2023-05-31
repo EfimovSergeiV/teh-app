@@ -163,7 +163,6 @@ export default {
     async getCategoryProjects(id) {
       try {
         const projects = await this.$axios.get(`s/projects/${id}/`)
-        console.log(projects.data)
         this.addProjects(projects.data)
       } catch (err){
         console.log(err)
