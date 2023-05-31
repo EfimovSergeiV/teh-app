@@ -12,7 +12,9 @@
 
         <div class="flex items-center gap-4 py-2 px-4">
 
-          <p v-if="getNowCategoryName" class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
+          <div v-if="getNowCategoryName">
+            <p class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
+          </div>
 
           <!-- <div v-for="ct in cts" :key="ct.id" class="">
             
@@ -320,25 +322,8 @@
 
                 <div class="relative">
                   <div class="flex items-center justify-center">
-                    <!-- <form class="flex items-center space-x-6">
-                      <label class="block">
-                        <input
-                          :id="project_file.id" type="file" class="block w-full text-sm text-slate-500
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-full file:border-0
-                          file:text-sm file:font-semibold
-                          file:bg-white file:text-sky-700
-                          hover:file:bg-white
-                        " @change="onFileChange"/>
-                      </label>
-                    </form> -->
                     <form class="flex items-center space-x-4">
-                      <label :for="project_file.id" class="block">
-                        <!-- <div class="flex items-center justify-center gap-4">
-                          <p class="py-0.5 px-2 text-xs text-white bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку</p>
-                          <p class="text-xs text-gray-600">Файлов: <span class=" w-20">{{ uploadDirFiles.length }}</span></p>
-                        </div> -->
-                        
+                      <label :for="project_file.id" class="block">                        
                         <input
                           :id="project_file.id" type="file" webkitdirectory placeholder="Выберите директорию"
                           class="block w-full text-sm text-slate-500
@@ -371,10 +356,8 @@
               </div>
             </div>
           </transition-group>
-
-          <p class="text xs">{{ uploadFiles }}</p>
-
         </div>
+
         <div v-else class="">
           <div class="flex items-center justify-center min-h-[300px]">
             <p class="mdi mdi-package-variant-remove text-gray-700 font-semibold"> Нет архивов</p>
@@ -713,7 +696,6 @@ export default {
     // },
 
 
-/// УСТАРЕВШИЕ МЕТОДЫ !!!!!!!!!
     async uploadFile(id, latestId) {
       const IndexUploadFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))
 
@@ -723,7 +705,26 @@ export default {
 
         formData.append("project_id", fileData.project_id)
         formData.append("file_id", fileData.file_id)
-        formData.append("file", fileData.file)
+
+
+        const zip = new JSZip()
+
+        for (let i = 0; i < fileData.files.length; i++) {
+          const file = fileData.files[i];
+          const fileContent = await this.readFileContent(file);
+          zip.file(file.name, fileContent);
+        }
+
+        const zipContent = await zip.generateAsync({ type: 'blob' });
+        const archiveName = 'archive.zip'
+
+        formData.append("file", zipContent, archiveName)
+
+
+        // formData.append("file", fileData.file)
+
+
+
 
         if (this.newArchiveName) {
           formData.append("name", this.newArchiveName)
@@ -743,7 +744,7 @@ export default {
           this.loadingNow = true
           this.loadingID = fileData.file_id
 
-          const response = await this.$axios.post('s/files/create-or-update/', formData, {
+          const response = await this.$axios.post(`s/files/update-latest-file/${fileData.file_id}/`, formData, {
             onUploadProgress: (progressEvent) => {
               this.uploadProgress = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total

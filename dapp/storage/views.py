@@ -254,6 +254,7 @@ class UploadLatestFileView(APIView):
     """
 
     def post(self, request):
+
         file = request.FILES['file']
         md5_summ = get_md5_summ(file)
 
@@ -292,6 +293,7 @@ class UploadLatestFileView(APIView):
 
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
+
 class UpdateLatestFileView(APIView):
     """ 
         Обновление архива, который будет отображаться как последний 
@@ -304,45 +306,43 @@ class UpdateLatestFileView(APIView):
         file = request.FILES['file']
         md5_summ = get_md5_summ(file)
 
-        serializer = FileArchiveSerializer
-        project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
+        
+        latest_file = FileArchiveModel.objects.get(id=pk)
 
         profile = User.objects.get(username=request.user)
         uploader = f'{profile.first_name} {profile.last_name}'
         author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
-        created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
+        created_date = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
         data = {
-            "project": project.id,
-            "assembly": request.data["assembly_id"],
-            "name": request.data["name"],
+            "project": latest_file.project.id,
+            "assembly": latest_file.assembly.id,
+            "latest": latest_file.id,
+            "name": latest_file.name,
             "md5": md5_summ,
             "author": author,
-            "created_date": created_data
+            "file": file,
+            "created_date": created_date
         }
 
-        serializer_data = serializer(data=data)        
+        serializer_data = FileHistorySerializer(data=data)
 
         if serializer_data.is_valid():
-            print('VALIDED')
-            # saved_data =  serializer_data.save()
-            # data["latest"] = saved_data.id
+            created = serializer_data.save()
+            FileArchiveModel.objects.filter(id=pk).update(
+                md5 = md5_summ,
+                author = author,
+                file = created.file,
+                created_date = created_date
+            )
+            return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
         else:
-            print(f'ERR ARCHIVE: {serializer.errors}')
+            print(f'ERR : {serializer_data.errors}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
         
-        # data['file'] = file
-        # # Добавить этот файл в историю версий
-
-        # qs = add_file_to_history(data=data)
-        # latest = FileArchiveModel.objects.filter(id=saved_data.id)
-        # latest.update(file=str(qs.file))
-
-        # return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
-
-        return Response(status=status.HTTP_200_OK)
-
-
 
 
 
