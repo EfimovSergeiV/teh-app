@@ -1,7 +1,7 @@
 <template>
   <div class="">
 
-    <div class="bg-gray-100">
+    <div class="bg-gray-200">
       <div class="container mx-auto py-2 px-4">
         <div class="flex gap-4 items-center ">
           <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ projects.length }}</span></p></div> 
