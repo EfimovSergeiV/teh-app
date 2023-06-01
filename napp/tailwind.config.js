@@ -17,8 +17,8 @@ module.exports = {
         'body': ['Proxima-Regular',],
       },
       backgroundImage: {
-        'hero-pattern': "url('/images/pngwing.combg.png')",
-        'footer-texture': "url('/images/pngwing.combg.png')",
+        'hero-pattern': "url('/images/bg.webp')",
+        'footer-texture': "url('/images/bg.webp')",
       }
     },
   },
