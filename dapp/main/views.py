@@ -5,10 +5,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-from rest_framework.authentication import TokenAuthentication
 
-class BearerTokenAuthentication(TokenAuthentication):
-    keyword = 'Bearer'
 
 class AuthView(ObtainAuthToken):
 
@@ -21,11 +18,8 @@ class AuthView(ObtainAuthToken):
         print(f'\nreturn token: {type(token)}\n')
         return Response({"token": str(token) })
 
-
     
 class UserView(APIView):
-    permission_classes = [IsAuthenticated,]
-    authentication_classes = [BearerTokenAuthentication]
 
     def get(self, request):
         print(f'\nrequest.headers\n{request.headers}')

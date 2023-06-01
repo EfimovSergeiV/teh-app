@@ -129,11 +129,12 @@ USE_I18N = True
 
 USE_TZ = False
 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        # 'main.models.BearerAuthentication',
+        'main.models.BearerAuthentication',
     ],
     'DATETIME_FORMAT': "%d.%m.%Y %H:%M:%S",
 }
