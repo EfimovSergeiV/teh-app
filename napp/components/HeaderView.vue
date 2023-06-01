@@ -18,7 +18,7 @@
               <div v-if="isAuthenticated" id="isAuthenticated" class="flex items-center justify-end gap-2">
                 <div class="flex gap-6">
                   <p class="text-white">{{ loggedInUser }}</p>
-                  <button class="py-0.5 px-2 bg-white shadow rounded text-gray-700 text-sm" @click="logout">
+                  <button class="py-0.5 px-6 bg-white shadow rounded text-gray-700 text-sm" @click="logout">
                     выйти
                   </button>
                 </div>
@@ -32,7 +32,7 @@
                   <input id="username" v-model="login.password" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="password" placeholder="Пароль" @keyup.enter="userLogin">
                 </div>
                 <div class="">
-                  <button class="py-0.5 px-2 bg-white text-gray-700 shadow rounded text-sm" @click="userLogin">
+                  <button class="py-0.5 px-6 bg-white text-gray-700 shadow rounded text-sm" @click="userLogin">
                     войти
                   </button>
                 </div>
