@@ -234,6 +234,14 @@ class CreateOrUpdateFilesView(APIView):
 
 
 # PRODUCTION
+class GetLatestView(APIView):
+
+    def get(self, request, pk):
+        qs = FileArchiveModel.objects.filter(assembly_id=pk)
+        serializer = FileArchiveSerializer(qs, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
 class GetHistoryView(APIView):
 
     def get(self, request, pk):

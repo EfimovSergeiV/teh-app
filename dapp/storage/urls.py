@@ -9,6 +9,7 @@ from storage.views import (
     CreateOrUpdateFilesView,
     SearchView,
 
+    GetLatestView,
     GetHistoryView,
 
     UploadLatestFileView,
@@ -30,7 +31,7 @@ urlpatterns = [
     path('projects/getone/<int:pk>/', GetOneProject.as_view()),
     
     # path('projects/getone/<int:pk>/', GetOneProject.as_view()),
-    # path('projects/get-latest/<int:pk>/', GetOneProject.as_view()),
+    path('projects/get-latest-files/<int:pk>/', GetLatestView.as_view()),
     path('projects/get-history/<int:pk>/', GetHistoryView.as_view()),
 
     path('files/upload-latest-file/', UploadLatestFileView.as_view()),

@@ -16,6 +16,10 @@ module.exports = {
         'display': ['Proxima-Regular',],
         'body': ['Proxima-Regular',],
       },
+      backgroundImage: {
+        'hero-pattern': "url('/images/pngwing.combg.png')",
+        'footer-texture': "url('/images/pngwing.combg.png')",
+      }
     },
   },
   plugins: [
