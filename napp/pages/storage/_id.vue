@@ -304,7 +304,7 @@
             <div v-for="project_file in files" :key="project_file.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
 
               <div class="text-gray-900 rounded-sm py-2">
-                <p class="border-b text-gray-900 border-sky-300">{{ project_file.id }}. {{ project_file.name }}</p>
+                <p class="border-b text-gray-900 border-sky-300">{{ project_file.name }}</p>
                 
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
