@@ -211,14 +211,14 @@
               </div>
 
               <div class="flex items-center justify-center">
-                <div class="min-w-[400px] md:min-w-[560px] my-2">
+                <div class="min-w-[400px] md:min-w-[560px] my-4">
                   <label for="archiveName" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ newArchiveName }}</span></label>
                   <input id="archiveName" v-model="newArchiveName" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
                 </div>
               </div>
             
-              <div class="relative">
-                <div class="flex items-center justify-center">
+              <div class="mb-4">
+                <div class="flex items-start justify-center gap-4">
 
                   <form class="flex items-center space-x-4">
                     <label for="newfile" class="block">
@@ -226,20 +226,35 @@
                         <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку с файлами</p>
                         <p class="text-sm text-gray-600 md:w-32">Файлов: <span class="">{{ uploadDirFiles.length }}</span></p>
                       </div>
-                      
-                      <input
-                        id="newfile" type="file" webkitdirectory placeholder="Выберите директорию"
-                        style="visibility:hidden;"
+                      <!-- 
+                        INPUT CLASS
                         class="block w-full text-sm text-slate-500
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold
                         file:bg-white file:text-sky-700
-                        hover:file:bg-white
-                      " @change="uploadDirChange"/>
+                        hover:file:bg-white"
+                       -->
+                      <input
+                        id="newfile" type="file" webkitdirectory placeholder="Выберите директорию"
+                        style="visibility:hidden;" @change="uploadDirChange"/>
                     </label>
                   </form>
+
+                  <div class="flex items-center justify-center">
+                    <div class="">
+                      <div class="text-center">
+                        <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+                      </div>                
+                      <div class=" flex items-center justify-center">
+                        <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+
+
 
                 <div class="flex items-center justify-center gap-2">
 
@@ -254,16 +269,7 @@
 
                 </div>
 
-                <div class="flex items-center justify-center">
-                  <div class="">
-                    <div class="text-center">
-                      <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
-                    </div>                
-                    <div class=" flex items-center justify-center">
-                      <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
-                    </div>
-                  </div>
-                </div>
+
 
 
 
@@ -339,6 +345,7 @@
                       </label>
                     </form>
                   </div>
+                  
                   <div class="flex items-center justify-center">
                     <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
                   </div>
