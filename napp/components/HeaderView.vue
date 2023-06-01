@@ -14,7 +14,6 @@
           </div> -->
 
           <div class="grid grid-cols-1 gap-2">
-
             <transition name="fade">
               <div v-if="isAuthenticated" id="isAuthenticated" class="flex items-center justify-end gap-2">
                 <div class="flex gap-6">

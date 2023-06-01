@@ -42,7 +42,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // '@nuxtjs/auth',
-    '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
   ],
 
   colorMode: {
@@ -80,26 +80,24 @@ export default {
   },
 
   auth: {
-    watchLoggedIn: true,
-    cookie: true,
     strategies: {
       local: {
         endpoints: {
           login: {
             url: 'auth/',
             method: 'post',
-            propertyName: 'data.token',
+            propertyName: 'token',
           },
           user: {
             url: 'user/',
             method: 'get',
-            propertyName: 'data',
-          },
-          token: {
-            maxAge: 60 * 180 * 320 ,
-            global: true,
+            propertyName: 'user',
           },
           logout: false,
+          token: {
+            maxAge: 1800 * 60
+          },
+          
         },
       },
     },
