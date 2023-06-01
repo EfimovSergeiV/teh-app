@@ -295,10 +295,10 @@
         <div v-if="files.length > 0" class="min-h-[300px]">
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
 
-            <div v-for="project_file in files" :key="project_file.id" class="">
+            <div v-for="project_file in files" :key="project_file.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
 
-              <div class="border-b text-gray-900 border-gray-200 bg-white rounded-sm py-2">
-                <p class="border-b text-gray-900 border-gray-200">{{ project_file.name }}</p>
+              <div class="text-gray-900 rounded-sm py-2">
+                <p class="border-b text-gray-900 border-sky-300">{{ project_file.name }}</p>
                 
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
@@ -333,7 +333,7 @@
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
-                          file:bg-white file:text-sky-700
+                          file:bg-white/0 file:text-sky-700
                           hover:file:bg-white
                         " @change="onFileChange"/>
                       </label>
@@ -367,7 +367,7 @@
           </div>
         </div>
         <div class="flex items-center justify-end my-4">
-          <p class="text-sky-800 text-sm font-semibold cursor-pointer flex items-start"><span class="mdi mdi-download "></span> Собрать проект</p>
+          <button class="text-center text-sm text-white disabled:text-gray-400 bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start"><span class="mdi mdi-download "></span> Собрать проект</button>
         </div>
       </div>
 

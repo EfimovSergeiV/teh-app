@@ -54,7 +54,9 @@
         </transition>
       </div>
     </div>
+
     <FilesList />
+    
   </div>
 </template>
 

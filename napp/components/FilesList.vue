@@ -25,12 +25,12 @@
         </div> -->
 
         <transition-group v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" name="left-emergence">
-          <div v-for="fileResp in projects" :key="fileResp.id">
-            <div class=" border-b border-sky-300 my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-start text-sky-800 hover:text-sky-900 transition-all duration-700">
+          <div v-for="fileResp in projects" :key="fileResp.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
+            <div class=" my-2 grid gap-1 xl:flex xl:gap-4 items-center justify-start text-sky-800 hover:text-sky-900 transition-all duration-700">
 
               <nuxt-link :to="{ name: 'storage-id', params: { id: fileResp.id }}" class="w-full">
                 <div class="">
-                  <div class=""><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
+                  <div class=" border-b border-sky-300 py-1"><p class="text-sm font-semibold">{{ fileResp.name }}</p></div>
                   <div class="grid grid-cols-1">
 
                     <div class="flex items-center justify-start gap-4 py-1">
