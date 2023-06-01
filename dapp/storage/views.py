@@ -277,7 +277,6 @@ class UploadLatestFileView(APIView):
         file = request.FILES['file']
         md5_summ = get_md5_summ(file)
 
-        serializer = FileArchiveSerializer
         project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
 
         profile = User.objects.get(username=request.user)
@@ -294,19 +293,21 @@ class UploadLatestFileView(APIView):
             "created_date": created_data
         }
 
-        serializer_data = serializer(data=data)        
+
+        serializer_data = FileArchiveSerializer(data=data)      
 
         if serializer_data.is_valid():
-            saved_data =  serializer_data.save()
+            print(f'ser valid {serializer_data.validated_data}')
+            saved_data = serializer_data.save()
             data["latest"] = saved_data.id
 
         else:
-            print(f'ERR ARCHIVE: {serializer.errors}')
+            print(f'ERR ARCHIVE: {serializer_data.errors}')
         
         data['file'] = file
-        # Добавить этот файл в историю версий
 
         qs = add_file_to_history(data=data)
+
         latest = FileArchiveModel.objects.filter(id=saved_data.id)
         latest.update(file=str(qs.file))
 

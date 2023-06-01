@@ -30,10 +30,11 @@ class UserView(APIView):
             profile = User.objects.get(username=user)
 
             user = f'{ profile.first_name } { profile.last_name }'
+            username = user if len(user) > 1 else profile.username
 
             return Response({
                 'id': profile.id,
-                'user': user,
+                'user': username,
                 'first_name': profile.first_name,
                 'last_name': profile.last_name,
                 'email': profile.email,

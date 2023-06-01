@@ -86,8 +86,8 @@
           </div>      
         </transition-group>
 
-        <div v-else class=" flex justify-center items-center py-12">
-          <p class="mdi mdi-close"> Нет файлов </p>
+        <div v-else class=" flex justify-center items-center py-12 h-full">
+          <p class="mdi mdi-close-thick font-semibold text-gray-600"> Проекты не найдены </p>
         </div>
 
       </div>
