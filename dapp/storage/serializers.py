@@ -23,7 +23,7 @@ class FileHistorySerializer(serializers.ModelSerializer):
 
 class FileArchiveSerializer(serializers.ModelSerializer):
     """ Файлы """
-    historical_files = FileHistorySerializer(many=True, read_only=True)
+    # historical_files = FileHistorySerializer(many=True, read_only=True)
 
     class Meta:
         model = FileArchiveModel
@@ -33,7 +33,7 @@ class FileArchiveSerializer(serializers.ModelSerializer):
 
 class AssemblySerializer(serializers.ModelSerializer):
     """ Узлы/сборки проекта """
-    assembly_files = FileArchiveSerializer(many=True, read_only=True)
+    # assembly_files = FileArchiveSerializer(many=True, read_only=True)
 
     class Meta:
         model = AssemblyModel

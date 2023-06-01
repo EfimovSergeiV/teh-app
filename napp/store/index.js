@@ -159,14 +159,11 @@ export const state = () => ({
     /// Файлы\Архивы
     updateFiles({ commit, state }, id) {
       commit('cleanListFiles')
-      this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
-        if (state.selectedAssembly) {
-          const Index = resp.project_assembly.findIndex((item) => item.id === state.selectedAssembly.id )
-          for (const file in resp.project_assembly[Index].assembly_files) {
-            setTimeout(function() {
-              commit('addFile', resp.project_assembly[Index].assembly_files[file])
-            }, file * 100);
-          }  
+      this.$axios.$get(`s/projects/get-latest-files/${state.selectedAssembly.id}/`).then((resp) => {
+        for (const file in resp) {
+          setTimeout(function() {
+            commit('addFile', resp[file])
+          }, file * 100);
         }
       }).catch(() => {})
     },
@@ -182,7 +179,6 @@ export const state = () => ({
     },
 
     addHistoryFiles({ commit }, files) {
-      console.log('ADD HISTORY')
       commit('cleanHistoryFiles')
       for (const file in files) {
         setTimeout(function() {
@@ -192,14 +188,13 @@ export const state = () => ({
     },
 
     updateHistoryFiles({ commit }, id) {
-      console.log('clean')
       commit('cleanHistoryFiles')
-      this.$axios.$get(`s/projects/get-history/${id}/`).then((resp) => {
+      this.$axios.$get(`s/projects/get-history-files/${id}/`).then((resp) => {
 
         for (const file in resp) {
           setTimeout(function() {
             commit('addHistoryFile', resp[file])
-          }, file * 50);
+          }, file * 200);
         }  
 
       }).catch(() => {})

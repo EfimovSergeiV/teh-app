@@ -175,7 +175,7 @@
                 <button v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="border-b border-gray-400 w-full h-full">
                   <p class="text-xs text-left font-semibold text-gray-800">{{ assembly.name }}</p>
                 </button>
-                <button v-else class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);addFiles(assembly.assembly_files)">
+                <button v-else class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);updateFiles(assembly.id)">
                   <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
                 </button>                  
               </div>
@@ -298,7 +298,7 @@
             <div v-for="project_file in files" :key="project_file.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
 
               <div class="text-gray-900 rounded-sm py-2">
-                <p class="border-b text-gray-900 border-sky-300">{{ project_file.name }}</p>
+                <p class="border-b text-gray-900 border-sky-300">{{ project_file.id }}. {{ project_file.name }}</p>
                 
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
@@ -309,7 +309,7 @@
                   </div>
                   <a :href="project_file.file" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; addHistoryFiles(project_file.historical_files); historyFilesActived = project_file.id">История версий</button>
+                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id">История версий</button>
                   </div>                
                 
                 </div>
@@ -545,7 +545,7 @@ export default {
       updateProject: 'updateProject',
       updateProjects: 'updateProjects',
       addAssembly: 'addAssembly',
-      updateAssembly: 'updateAssembly',
+      updateAssembly: 'updateAssembly', ///
       selectAssembly: 'selectAssembly',
       addFiles: 'addFiles',
       addHistoryFiles: 'addHistoryFiles',
@@ -609,12 +609,12 @@ export default {
       if (this.newArchiveName) {
           formData.append("name", this.newArchiveName)
       }
-      if (this.authorFileHistory) {
-        formData.append("author_history", this.authorFileHistory)
-      }
-      if (this.dateFileHistory) {
-        formData.append("date_history", this.dateFileHistory)
-      }
+      // if (this.authorFileHistory) {
+      //   formData.append("author_history", this.authorFileHistory)
+      // }
+      // if (this.dateFileHistory) {
+      //   formData.append("date_history", this.dateFileHistory)
+      // }
 
       try {
         const response = await this.$axios.post('s/files/upload-latest-file/', formData, {
@@ -689,7 +689,7 @@ export default {
             this.updateHistoryFiles(this.historyFilesActived)
             // this.addToast(response.data)
             setTimeout(() => {
-              this.updateFiles(this.project.id)
+              // this.updateFiles(this.project.id)
               this.uploadDirFiles = []
             }, "1500");
           }

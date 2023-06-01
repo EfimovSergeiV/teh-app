@@ -9,6 +9,7 @@ from storage.views import (
     CreateOrUpdateFilesView,
     SearchView,
 
+    GetAssemblyView,
     GetLatestView,
     GetHistoryView,
 
@@ -30,9 +31,10 @@ urlpatterns = [
     path('cts/', CategoryView.as_view()),
     path('projects/getone/<int:pk>/', GetOneProject.as_view()),
     
-    # path('projects/getone/<int:pk>/', GetOneProject.as_view()),
+
+    path('projects/get-assembly/<int:pk>/', GetAssemblyView.as_view()),
     path('projects/get-latest-files/<int:pk>/', GetLatestView.as_view()),
-    path('projects/get-history/<int:pk>/', GetHistoryView.as_view()),
+    path('projects/get-history-files/<int:pk>/', GetHistoryView.as_view()),
 
     path('files/upload-latest-file/', UploadLatestFileView.as_view()),
     path('files/update-latest-file/<int:pk>/', UpdateLatestFileView.as_view()),
@@ -41,7 +43,5 @@ urlpatterns = [
 
     path('search/', SearchView.as_view()),
 
-    # path('projects/create/', CreateProjectArchiveView.as_view()),
-    # path('projects/append/', AppendProjectArchiveView.as_view()),
 ]
 
