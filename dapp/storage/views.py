@@ -234,6 +234,14 @@ class CreateOrUpdateFilesView(APIView):
 
 
 # PRODUCTION
+class GetHistoryView(APIView):
+
+    def get(self, request, pk):
+        qs = FileHistoryModel.objects.filter(latest_id=pk)
+        serializer = FileHistorySerializer(qs, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
 
 def add_file_to_history(data):
     """ Добавляем загруженный файл в историю """
@@ -384,7 +392,7 @@ class CreateHistoryFileView(APIView):
             print(f'ERR : {serializer_data.errors}')
             # return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
 

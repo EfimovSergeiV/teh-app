@@ -180,14 +180,31 @@ export const state = () => ({
         }, file * 100);
       }  
     },
+
     addHistoryFiles({ commit }, files) {
+      console.log('ADD HISTORY')
       commit('cleanHistoryFiles')
       for (const file in files) {
         setTimeout(function() {
           commit('addHistoryFile', files[file])
-        }, file * 0);
+        }, file * 100);
       }
     },
+
+    updateHistoryFiles({ commit }, id) {
+      console.log('clean')
+      commit('cleanHistoryFiles')
+      this.$axios.$get(`s/projects/get-history/${id}/`).then((resp) => {
+
+        for (const file in resp) {
+          setTimeout(function() {
+            commit('addHistoryFile', resp[file])
+          }, file * 50);
+        }  
+
+      }).catch(() => {})
+    },
+
 
     /// Уведомления
     addToast({ commit }, toast ) {

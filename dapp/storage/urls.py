@@ -9,6 +9,8 @@ from storage.views import (
     CreateOrUpdateFilesView,
     SearchView,
 
+    GetHistoryView,
+
     UploadLatestFileView,
     UpdateLatestFileView,
     CreateHistoryFileView,
@@ -17,8 +19,6 @@ from storage.views import (
 
 
 urlpatterns = [
-    path('cts/', CategoryView.as_view()),
-    path('projects/getone/<int:pk>/', GetOneProject.as_view()),
     path('projects/<int:pk>/', GetallProjectArchiveView.as_view()),
     path('projects/create-or-update/', CreateOrUpdateProjectView.as_view()),
     path('assembly/create/', AssemblyView.as_view()),
@@ -26,6 +26,12 @@ urlpatterns = [
     path('files/create-or-update/', CreateOrUpdateFilesView.as_view()),
 
 
+    path('cts/', CategoryView.as_view()),
+    path('projects/getone/<int:pk>/', GetOneProject.as_view()),
+    
+    # path('projects/getone/<int:pk>/', GetOneProject.as_view()),
+    # path('projects/get-latest/<int:pk>/', GetOneProject.as_view()),
+    path('projects/get-history/<int:pk>/', GetHistoryView.as_view()),
 
     path('files/upload-latest-file/', UploadLatestFileView.as_view()),
     path('files/update-latest-file/<int:pk>/', UpdateLatestFileView.as_view()),

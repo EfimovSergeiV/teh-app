@@ -309,7 +309,7 @@
                   </div>
                   <a :href="project_file.file" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true && addHistoryFiles(project_file.historical_files)">История версий</button>
+                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; addHistoryFiles(project_file.historical_files); historyFilesActived = project_file.id">История версий</button>
                   </div>                
                 
                 </div>
@@ -390,19 +390,18 @@
               <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
               
               <div v-if="historical_files.length > 0" class="grid grid-cols-1 gap-y-4">
+                
                 <div class="flex gap-2 w-full">
-
                   <input id="history-file-name" v-model="newArchiveName" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название">
                   <input id="author" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов">
                   <input id="date-time" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
-
                 </div>
 
                 <div class="flex gap-2 items-center justify-between">
                   <form class="flex items-center space-x-6">
                     <label class="block">
                       <input
-                          id="history-file" type="file" class="block w-full text-sm text-slate-500
+                          id="history-file" type="file" webkitdirectory class="block w-full text-sm text-slate-500
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
                           file:bg-gray-100 file:text-sky-700
@@ -509,6 +508,7 @@ export default {
       assemblyName: null,
       uploadDirFiles: [], /// Сюда скидывает новый один
       uploadFiles: [],    /// Сюда скидывает обновлённый с id
+      historyFilesActived: null, /// Идентификатор файлов версий, которые отображаются
 
     }
   },
@@ -549,7 +549,7 @@ export default {
       selectAssembly: 'selectAssembly',
       addFiles: 'addFiles',
       addHistoryFiles: 'addHistoryFiles',
-
+      updateHistoryFiles: 'updateHistoryFiles',
       updateFiles: 'updateFiles'
     }),
 
@@ -686,7 +686,8 @@ export default {
             this.uploadform = false
             this.newArchiveName = null
             this.uploadProgress = 0
-            this.addToast(response.data)
+            this.updateHistoryFiles(this.historyFilesActived)
+            // this.addToast(response.data)
             setTimeout(() => {
               this.updateFiles(this.project.id)
               this.uploadDirFiles = []
@@ -783,11 +784,7 @@ export default {
 
         formData.append("file", zipContent, archiveName)
 
-
         // formData.append("file", fileData.file)
-
-
-
 
         if (this.newArchiveName) {
           formData.append("name", this.newArchiveName)
