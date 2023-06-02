@@ -408,12 +408,12 @@
                   <form class="flex items-center space-x-6">
                     <label class="block">
                       <input
-                          id="history-file" type="file" webkitdirectory class="block w-full text-sm text-slate-500
+                          id="historyfile" type="file" webkitdirectory class="block w-full text-sm text-slate-500
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
                           file:bg-gray-100 file:text-sky-700
                           hover:file:bg-gray-100
-                        " @change="uploadDirFiles"/>
+                        " @change="uploadDirChange"/>
                     </label>
                   </form>
                   <span class="flex items-center mdi mdi-upload cursor-pointer text-sky-700 font-semibold text-sm">
@@ -509,7 +509,7 @@ export default {
       changeProjectForm: true,
       editProjectDataForm: false,
       historyFilesModal: false,
-      authorFileHistory: null,
+      authorFileHistory: this.$auth.user,
       dateFileHistory: null,
 
       assemblyName: null,
@@ -652,7 +652,7 @@ export default {
 
 
     async sendHistoryFile() {
-
+      
       this.loadingNow = true /// Выключаем кнопку закгрузки
 
       const formData = new FormData();
