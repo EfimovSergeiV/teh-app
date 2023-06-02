@@ -289,6 +289,8 @@ class UploadLatestFileView(APIView):
         file = request.FILES['file']
         md5_summ = get_md5_summ(file)
 
+        print(file.name)
+
         project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
 
         profile = User.objects.get(username=request.user)
@@ -422,11 +424,33 @@ class CreateHistoryFileView(APIView):
 
 
 
+import os, zipfile
 
 class UnbuilderProjectView(APIView):
     """ Попробывать реализовать unbuilder, что бы загружать и раскладывать проект целиком, а не по одному архиву """
     def post(self, request):
         print(request.data)
+
+
+        # for root, dirs, files in os.walk("."):  
+        #     for filename in files:
+        #         print(filename)
+
+
+        # Unpacking
+        # archive = 'Привет_мир_Cel3VZM.zip'
+        # with zipfile.ZipFile(archive, 'r') as zip_file:
+        #     zip_file.extractall('./directory_to_extract_to')
+
+
+        # Packing
+        # fantasy_zip = zipfile.ZipFile('C:\\Stories\\Fantasy\\archive.zip', 'w')
+        # for folder, subfolders, files in os.walk('C:\\Stories\\Fantasy'):
+        #     for file in files:
+        #         if file.endswith('.pdf'):
+        #             fantasy_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), 'C:\\Stories\\Fantasy'), compress_type = zipfile.ZIP_DEFLATED)
+        # fantasy_zip.close()
+
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

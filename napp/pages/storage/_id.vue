@@ -313,7 +313,7 @@
                       <p class="text-gray-700 text-sm font-semibold"></p>
                     </label>
                   </div>
-                  <a :href="project_file.file" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
+                  <a :href="`http://192.168.60.201:8080/files/${project_file.file}`" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
                     <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id">История версий</button>
                   </div>                
@@ -608,7 +608,7 @@ export default {
       }
 
       const zipContent = await zip.generateAsync({ type: 'blob' });
-      const archiveName = 'archive.zip'
+      const archiveName = `${this.newArchiveName}.zip`
 
       formData.append("file", zipContent, archiveName)
       formData.append("project_id", this.project.id)
