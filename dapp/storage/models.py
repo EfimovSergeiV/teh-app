@@ -70,11 +70,21 @@ class FileArchiveModel(models.Model):
 
     def __str__(self) -> str:
         return f"{self.project.name} - { self.name }"
-    
 
+
+from transliterate import slugify
 def upload_file_to(instance, filename):
     related_model_id = instance.project_id
-    directory_path = f"storage/models/{related_model_id}/"
+
+    project, assembly = str(instance.project.name), str(instance.assembly.name)
+    project_translate, assembly_translate = slugify(project), slugify(assembly)
+
+    project_path = project_translate if project_translate else project.replace(' ', '-').lower()
+    assembly_path = assembly_translate if assembly_translate else assembly.replace(' ', '-').lower()
+
+    print(f'Path: {project_path}/{assembly_path}/{filename}')
+
+    directory_path = f"storage/models/{project_path}/{assembly_path}/"
     file_path = os.path.join(directory_path, filename)
     return file_path
 

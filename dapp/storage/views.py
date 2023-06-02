@@ -265,6 +265,18 @@ def add_file_to_history(data):
     else:
         print(f'ERR HISTORY: {serializer.errors}')
 
+from transliterate import slugify
+def rename_archive(filename):
+
+    # project, assembly = str(instance.project.name), str(instance.assembly.name)
+    # project_translate, assembly_translate = slugify(project), slugify(assembly)
+
+    # project_path = project_translate if project_translate else project.replace(' ', '-').lower()
+    # assembly_path = assembly_translate if assembly_translate else assembly.replace(' ', '-').lower()
+
+    # print(f'Path: {project_path}/{assembly_path}/{filename}')
+    return filename
+
 
 class UploadLatestFileView(APIView):
     """ 
