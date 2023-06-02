@@ -315,7 +315,7 @@
                   </div>
                   <a :href="`http://192.168.60.201:8080/files/${project_file.file}`" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id">История версий</button>
+                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id"> История версий</button>
                   </div>                
                 
                 </div>
@@ -825,7 +825,7 @@ export default {
             this.uploadFiles = []
             this.addToast(response.data)
             setTimeout(() => {
-              this.updateProject(fileData.project_id)
+              this.updateFiles(fileData.file_id)
             }, "1500");
           }
 
