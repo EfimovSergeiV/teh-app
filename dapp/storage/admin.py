@@ -34,7 +34,7 @@ class FileArchiveAdmin(admin.TabularInline):
         (None, {'fields': (('name', 'assembly', 'file', ),)}),
         (None, {'fields': (('author'),)}),
     )
-    extra = 1
+    extra = 0
 
 
 

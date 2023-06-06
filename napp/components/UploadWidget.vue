@@ -7,14 +7,44 @@
 
     <!-- <dropzone id="foo" ref="el" :options="options" :destroy-dropzone="true" placeholder="">Перетащите файлы для загрузки</dropzone> -->
 
-    <dropzone
-      id="my-dropzone"
-      :options="dropzoneOptions"
-      @vdropzone-s3-upload-error="s3UploadError"
-      @vdropzone-s3-upload-success="s3UploadSuccess"
-    >
-      <div class="dz-message">Перетащите файлы сюда или щелкните для загрузки.</div>
-    </dropzone>
+    <div class="">
+      <div class="flex items-start justify-center gap-4">
+
+        <form class="flex items-center space-x-4">
+          <label for="newfile" class="block">
+            <!-- <div class="flex items-center gap-4">
+              <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку с файлами</p>
+              <p class="text-sm text-gray-600 md:w-32">Файлов: <span class="">{{ uploadDirFiles.length }}</span></p>
+            </div> -->
+            <!-- 
+              INPUT CLASS
+
+            -->
+            <input
+              id="newfile" type="file" multiple
+              class="block w-full text-sm text-slate-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-sky-700 file:text-white
+              hover:file:bg-sky-800 transition-all duration-700"
+              @change="uploadDirChange"/>
+          </label>
+        </form>
+
+        <div class="flex items-center justify-center">
+          <div class="">
+            <div class="text-center">
+              <span class="text-gray-800 text-xs font-semibold w-full text-center"> {{ uploadProgress }}% </span>
+            </div>                
+            <div class=" flex items-center justify-center my-2">
+              <progress class="h-4 text-green-400 border border-white rounded-sm" :value="uploadProgress" max="100">{{ uploadProgress }}%</progress>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
   </div>
 </template>
@@ -25,7 +55,7 @@ import { mapActions, mapState } from 'vuex';
 // import 'nuxt-dropzone/dropzone.css'
 
 export default {
-  name: 'FilesList',
+  name: 'UploadWidget',
   // props: {
   //   projectsResponse: {
   //     type: Array,
@@ -41,22 +71,7 @@ export default {
   // },
   data() {
     return {
-      // See https://rowanwins.github.io/vue-dropzone/docs/dist/index.html#/props
-      // options: {
-      //   url: "http://127.0.0.1:8000/s/upload-wiget/"
-      //   // url: "http://httpbin.org/anything"
-      // }
-      dropzoneOptions: {
-        url: 'http://127.0.0.1:8000/s/files/upload-latest-file/', // Замените URL на адрес вашего DRF API для загрузки файлов
-        // url: 'https://httpbin.org/post',
-        // paramName: 'file',
-        // maxFilesize: 10, // Максимальный размер файла (в МБ)
-        // acceptedFiles: 'image/*', // Типы принимаемых файлов
-        headers: {
-          'Authorization': 'Bearer e224ef33ffa49005bdc3c3c7a26915a62f25bf2d' // Замените 'your-token' на ваш токен авторизации для доступа к DRF API
-        }
-      }
-
+      uploadProgress: 0,
     }
   },
   computed: {

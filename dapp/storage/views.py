@@ -425,33 +425,55 @@ class CreateHistoryFileView(APIView):
 
 
 import os, zipfile
-
-class UnbuilderProjectView(APIView):
+from django.conf import settings
+from pathlib import Path
+class BuilderProjectView(APIView):
     """ Попробывать реализовать unbuilder, что бы загружать и раскладывать проект целиком, а не по одному архиву """
-    def post(self, request):
-        print(request.data)
+    def post(self, request, pk):
+        print(request.data, pk)
+        path = f'{settings.BASE_DIR}/files/tmp/'
+
+        project_qs = ProjectArchiveModel.objects.get(id=pk)
+        assemplys_qs = project_qs.project_assembly.all()
+
+        for assemply_qs in assemplys_qs:
+            print(assemply_qs.name)
+
+            # Создаём директории
+            create_path = f'{path}{assemply_qs.name}'
+            Path(create_path).mkdir(parents=True, exist_ok=True)
+
+            # ПОСЛЕДНЯЯ ВЕРСИЯ ФАЙЛОВ
+            files = assemply_qs.assembly_files.all()
+            for file in files:
+                zip_path = f'{ settings.BASE_DIR }/files/{file.file}'
+                print(file.file)
+
+                with zipfile.ZipFile(zip_path, 'r') as zip_file:
+                    zip_file.extractall(create_path)
+
+
 
 
         # for root, dirs, files in os.walk("."):  
         #     for filename in files:
         #         print(filename)
 
-
         # Unpacking
         # archive = 'Привет_мир_Cel3VZM.zip'
-        # with zipfile.ZipFile(archive, 'r') as zip_file:
-        #     zip_file.extractall('./directory_to_extract_to')
 
 
-        # Packing
-        # fantasy_zip = zipfile.ZipFile('C:\\Stories\\Fantasy\\archive.zip', 'w')
-        # for folder, subfolders, files in os.walk('C:\\Stories\\Fantasy'):
-        #     for file in files:
-        #         if file.endswith('.pdf'):
-        #             fantasy_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), 'C:\\Stories\\Fantasy'), compress_type = zipfile.ZIP_DEFLATED)
-        # fantasy_zip.close()
+        print(f'{settings.BASE_DIR}/files/tmp/{project_qs.name}-latest-version.zip')
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        # Запаковываем во временный архив
+        archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{project_qs.name}-latest-version.zip', 'w')
+        for folder, subfolders, files in os.walk(f'{settings.BASE_DIR}/files/tmp/'):
+            for file in files:
+                archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{settings.BASE_DIR}/files/tmp/'), compress_type = zipfile.ZIP_DEFLATED)
+        archive_zip.close()
+
+        print(f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip')
+        return Response(status=status.HTTP_200_OK)
 
 
 

@@ -231,13 +231,13 @@
 
                        -->
                       <input
-                        id="newfile" type="file" webkitdirectory placeholder="Выберите директорию"
+                        id="newfile" type="file" multiple
                         class="block w-full text-sm text-slate-500
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold
-                        file:bg-white file:text-sky-700
-                        hover:file:bg-white"
+                        file:bg-sky-700 file:text-white
+                        hover:file:bg-sky-800 transition-all duration-700"
                         @change="uploadDirChange"/>
                     </label>
                   </form>
@@ -375,7 +375,7 @@
           </div>
         </div>
         <div class="flex items-center justify-end my-4">
-          <button class="text-center text-sm text-white disabled:text-gray-400 bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start"><span class="mdi mdi-download "></span> Собрать проект</button>
+          <button class="text-center text-sm text-white disabled:text-gray-400 bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start" @click="BuildProject"><span class="mdi mdi-download"></span> Собрать проект</button>
         </div>
       </div>
 
@@ -472,6 +472,11 @@
       </div>
     </transition>
 
+
+    <div class="py-1 container mx-auto hidden">
+      <UploadWidget />
+    </div>
+
       
     
 
@@ -480,11 +485,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import JSZip from 'jszip'
+import { mapActions, mapState } from 'vuex'
+import JSZip from 'jszip';
+import UploadWidget from '~/components/UploadWidget.vue'
 
 export default {
   name: 'ProjectPage',
+  components: {
+    UploadWidget
+  },
   middleware: ['auth'],
   async asyncData({ params, $axios }) {
     const cts = await $axios.$get(`s/cts/`)
@@ -841,6 +850,11 @@ export default {
       this.loadingNow = false
       this.loadingID = 0
       
+    },
+
+    async BuildProject() {
+      const response = await this.$axios.post(`s/projects/builderproject/${this.project.id}/`)
+      console.log(response)
     },
 
   },
