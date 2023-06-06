@@ -335,7 +335,7 @@
                     <form class="flex items-center space-x-4">
                       <label :for="project_file.id" class="block">                        
                         <input
-                          :id="project_file.id" type="file" webkitdirectory placeholder="Выберите директорию"
+                          :id="project_file.id" type="file" multiple
                           class="block w-full text-sm text-slate-500
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-full file:border-0
