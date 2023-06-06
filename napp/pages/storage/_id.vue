@@ -144,7 +144,7 @@
 
             <div class="flex items-end justify-between my-2">
               <div class="">
-                <p class="text-sky-800">Узлы/сборки пректа:</p>
+                <p class="text-sky-800">Узлы/сборки пректа: {{ project.project_assembly.length }}</p>
               </div>
               <div class="grid grid-cols-1 gap-2">
                 <div class="flex items-center justify-end">
@@ -375,7 +375,10 @@
           </div>
         </div>
         <div class="flex items-center justify-end my-4">
-          <button class="text-center text-sm text-white disabled:text-gray-400 bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start" @click="BuildProject"><span class="mdi mdi-download"></span> Собрать проект</button>
+          <div v-if="latest_file" class="">
+            <a :href="latest_file" class="text-center text-sm text-white disabled:text-gray-400 bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
+          </div>
+          <button v-else :disabled="build_latest_file" class="transition-all text-center text-sm text-white disabled:text-white disabled:bg-sky-600  bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
         </div>
       </div>
 
@@ -526,6 +529,9 @@ export default {
       uploadDirFiles: [], /// Сюда скидывает новый один
       uploadFiles: [],    /// Сюда скидывает обновлённый с id
       historyFilesActived: null, /// Идентификатор файлов версий, которые отображаются
+
+      latest_file: null, /// Адрес архива
+      build_latest_file: false /// Сборка проекта
 
     }
   },
@@ -853,8 +859,15 @@ export default {
     },
 
     async BuildProject() {
-      const response = await this.$axios.post(`s/projects/builderproject/${this.project.id}/`)
-      console.log(response)
+      this.build_latest_file = true
+      try {
+        const response = await this.$axios.post(`s/projects/builderproject/${this.project.id}/`) 
+        this.latest_file = response.data.file
+        this.build_latest_file = false
+      } catch (err) {
+        console.log(err)
+      }
+
     },
 
   },

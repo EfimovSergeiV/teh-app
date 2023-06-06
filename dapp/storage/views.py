@@ -427,8 +427,10 @@ class CreateHistoryFileView(APIView):
 import os, zipfile
 from django.conf import settings
 from pathlib import Path
+
 class BuilderProjectView(APIView):
     """ Попробывать реализовать unbuilder, что бы загружать и раскладывать проект целиком, а не по одному архиву """
+
     def post(self, request, pk):
         print(request.data, pk)
         path = f'{settings.BASE_DIR}/files/tmp/'
@@ -436,36 +438,34 @@ class BuilderProjectView(APIView):
         project_qs = ProjectArchiveModel.objects.get(id=pk)
         assemplys_qs = project_qs.project_assembly.all()
 
+        count = 0
+        assemply = []
         for assemply_qs in assemplys_qs:
-            print(assemply_qs.name)
-
-            # Создаём директории
-            create_path = f'{path}{assemply_qs.name}'
-            Path(create_path).mkdir(parents=True, exist_ok=True)
+            count += 1
 
             # ПОСЛЕДНЯЯ ВЕРСИЯ ФАЙЛОВ
-            files = assemply_qs.assembly_files.all()
-            for file in files:
-                zip_path = f'{ settings.BASE_DIR }/files/{file.file}'
-                print(file.file)
+            # Создаём директории если файл один, бросаем в корень, иначе доздаём вложенную директорию
 
+            files = assemply_qs.assembly_files.all()
+            if len(files) == 1:
+                create_path = f'{path}{assemply_qs.name}'
+                Path(create_path).mkdir(parents=True, exist_ok=True)
+                zip_path = f'{ settings.BASE_DIR }/files/{files[0].file}'
                 with zipfile.ZipFile(zip_path, 'r') as zip_file:
                     zip_file.extractall(create_path)
 
+                print(f"Кидаем в корень: {create_path}")
 
+            elif len(files) > 1:
+                for file in files:
+                    create_path = f'{path}{assemply_qs.name}/{file.name}'
+                    Path(create_path).mkdir(parents=True, exist_ok=True)
+                    zip_path = f'{ settings.BASE_DIR }/files/{file.file}'
+                    with zipfile.ZipFile(zip_path, 'r') as zip_file:
+                        zip_file.extractall(create_path)
 
+                    print(f'Создаём вложенные директории: { create_path }')
 
-        # for root, dirs, files in os.walk("."):  
-        #     for filename in files:
-        #         print(filename)
-
-        # Unpacking
-        # archive = 'Привет_мир_Cel3VZM.zip'
-
-
-        print(f'{settings.BASE_DIR}/files/tmp/{project_qs.name}-latest-version.zip')
-
-        # Запаковываем во временный архив
         archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{project_qs.name}-latest-version.zip', 'w')
         for folder, subfolders, files in os.walk(f'{settings.BASE_DIR}/files/tmp/'):
             for file in files:
@@ -473,8 +473,10 @@ class BuilderProjectView(APIView):
         archive_zip.close()
 
         print(f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip')
-        return Response(status=status.HTTP_200_OK)
 
+        
+        # return Response(status=status.HTTP_200_OK)
+        return Response({'file': f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip'})
 
 
 
