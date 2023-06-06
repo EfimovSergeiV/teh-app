@@ -13,7 +13,7 @@
                 <button class="text-white font-semibold text-sm border-white">{{ ct.name }}</button>
               </div>
 
-              <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct.id); getCategoryProjects(ct.id)">{{ ct.name }}</button>              
+              <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct.id); updateProjects(ct.id)">{{ ct.name }}</button>              
               
             </div>
           </div>
@@ -54,8 +54,15 @@
         </transition>
       </div>
     </div>
+    <nuxt-link :to="{name: 'storage-id', params: { id: 4 } }">Storage 4</nuxt-link>
 
-    <FilesList />
+    <div class="my-4">
+      <p class="text-xs text-gray-800">sel: {{ selectedCategory }}, {{ cts }}</p>
+    </div>
+
+    <div class="my-4">
+      <p class="text-xs text-gray-500">{{ projects }}</p>
+    </div>
     
   </div>
 </template>
@@ -67,7 +74,6 @@ export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
     const cts = await $axios.$get(`s/cts/`)
-    // const projects = await $axios.$get('s/projects/getall/')
     return { cts }
   },
   data() {
@@ -84,9 +90,15 @@ export default {
       }),
     },
   mounted() {
-    this.selectCategory(this.cts[0].id)
-    this.addCategory(this.cts)
-    this.getCategoryProjects(this.selectedCategory)
+    if (this.selectedCategory) {
+      this.updateProjects(this.selectedCategory)
+    } else {
+      this.selectCategory(this.cts[0].id)
+      this.updateProjects(this.cts[0].id)
+    }
+    
+    // this.addCategory(this.cts)
+    // this.getCategoryProjects(this.selectedCategory)
   },
   methods: {
     ...mapActions({
@@ -97,18 +109,18 @@ export default {
       createProjectForm: 'createProjectForm',
       updateProjects: 'updateProjects',
     }),
-    onFileChange(event) {
-      this.file = event.target.files[0];
-    },
-    async getCategoryProjects(id) {
-      try {
-        const projects = await this.$axios.get(`s/projects/${id}/`)
-        this.addProjects(projects.data)          
+    // onFileChange(event) {
+    //   this.file = event.target.files[0];
+    // },
+    // async getCategoryProjects(id) {
+    //   // try {
+    //   //   const projects = await this.$axios.get(`s/projects/${id}/`)
+    //   //   this.addProjects(projects.data)          
 
-      } catch (err){
-        console.log(err)
-      }
-    },
+    //   // } catch (err){
+    //   //   console.log(err)
+    //   // }
+    // },
     async createProject() {
 
         if (this.name) {

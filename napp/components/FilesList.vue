@@ -140,7 +140,7 @@ export default {
 
   },
   mounted() {
-    this.addProjects(this.projectsResponse)
+    // this.addProjects(this.projectsResponse)
   },
   methods: {
     ...mapActions({

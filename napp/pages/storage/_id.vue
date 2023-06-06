@@ -1,31 +1,22 @@
 <template>
   <div class="relative">
-    
-    <!-- <p class="text-xs text-gray-900">
-      {{ project }}
-    </p>
-    <p class="text-xs text-gray-900">{{ selectedAssembly }}</p> -->
+    <nuxt-link :to="{name: 'index'}">Главная</nuxt-link>
 
+    <div class="my-4">
+      <p class="text-xs text-gray-800">{{ cts }}</p>
+    </div>
 
-    <div class="bg-sky-700">
+    <div class="my-4">
+      <p class="text-xs text-gray-700">{{ project }}</p>
+    </div>
+
+    <!-- <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
-
         <div class="flex items-center gap-4 py-2 px-4">
-
           <div v-if="getNowCategoryName">
             <p class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
           </div>
-
-          <!-- <div v-for="ct in cts" :key="ct.id" class="">
-            
-            <div v-if="ct.id === selectedCategory" class="border-b border-white">
-              <nuxt-link :to="{name: 'index'}" class="text-white font-semibold text-sm border-white">{{ ct.name }}</nuxt-link>
-            </div>
-            
-          </div> -->
         </div>
-
-
       </div>
     </div>
 
@@ -39,42 +30,13 @@
       </div>
     </div>
 
-
-    <div class="relative pt-1 pb-4">
-      <!-- <div class="container mx-auto px-4">
-
-        <transition name="fade">
-          <div v-if="changeProjectForm" class="bg-white">
-            <div class="absolute">
-              <div class="flex gap-4 items-center ">
-                <button class="text-green-600 font-semibold text-sm mdi mdi-check-bold" @click="changeProjectForm = false"> Обновить проект</button>
-                <button class="text-red-600 font-semibold text-sm mdi mdi-close-thick"> Отменить изменения</button>
-              </div>
-            </div>
-          </div>
-        </transition>
-
-      </div> -->
-    </div>
-
-
     <div class="container min-h-screen mx-auto px-4">
-
       <div class="my-4">
-
         <div class="flex items-center justify-end">
           <span class="text-base mdi mdi-pencil-outline cursor-pointer mx-1 text-gray-600 hover:text-gray-800 transition-all" @click="editProjectDataForm = true"></span>
         </div>
-
-
         <div class="relative">
           <p class="text-lg font-semibold text-sky-900">{{ project.name }} </p>
-          
-          <!-- <div class="my-2">
-            <p class="text-sky-800 text-sm font-semibold mdi mdi-download cursor-pointer"> Собрать проект</p>
-          </div> -->
-          
-        
           <transition name="fade">
             <div v-if="editProjectDataForm" class="absolute top-0 w-full z-20">
               <div class="bg-sky-800 min-h-[220px] w-full p-4  rounded-lg shadow-lg shadow-gray-900">
@@ -99,16 +61,12 @@
                   </div>
                 </div>
               </div>
-
             </div>            
           </transition>
         </div>
-        
-        
         <div class="my-2 relative">
           <p class="text-base text-gray-800">{{ project.description }}</p>
         </div>
-
         <div class="flex items-center justify-end gap-4 py-4">
           <div class="grid gap-1 grid-cols-1">
             <div class="flex justify-between gap-4">
@@ -123,25 +81,9 @@
         </div>        
       </div>
 
-
       <div>
-
         <div class="my-6">
           <div class="my-2 border-b border-sky-400">
-
-
-            <!-- <div class="flex items-center justify-between">
-              <p class="text-sky-800">Узлы пректа:</p>
-              <div class="flex my-2 gap-2 w-[320px]">
-                <div class="w-full">
-                  <input id="username" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла">
-                </div>
-                <div class="w-full">
-                  <button class="text-center text-sm font-semibold cursor-pointer mdi mdi-plus-thick text-sky-900 disabled:text-gray-400" @click="uploadform = !uploadform"> Добавить узел</button>
-                </div>
-              </div>
-            </div> -->
-
             <div class="flex items-end justify-between my-2">
               <div class="">
                 <p class="text-sky-800">Узлы/сборки пректа: {{ project.project_assembly.length }}</p>
@@ -151,26 +93,18 @@
                   <p class="text-xs text-gray-700 mdi mdi-plus">Добавить новый узел/сборку</p>
                 </div>
                 <div class="flex gap-2">
-
                   <div class="">
                     <input id="username" v-model="assemblyName" class="shadow text-xs appearance-none font-semibold rounded w-[200px] py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название узла/сборки" @keyup.enter="addNewAssembly"/>
                   </div>
                   <div class="">
                     <button class="text-center text-sm cursor-pointer text-white disabled:text-gray-400 bg-sky-900 px-2 py-0.5 rounded" @click="addNewAssembly"> Добавить</button>
-
                   </div>
                 </div>                
               </div>
-
             </div>
-
-
           </div>
-
           <div v-if="project.project_assembly.length > 0" class=" min-h-[12rem]">
-            
             <transition-group tag="div" name="left-emergence"  class="grid grid-cols-4 my-4 gap-4">
-
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
                 <button v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="border-b border-gray-400 w-full h-full">
                   <p class="text-xs text-left font-semibold text-gray-800">{{ assembly.name }}</p>
@@ -179,18 +113,14 @@
                   <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
                 </button>                  
               </div>
-
             </transition-group>
-
           </div>
           <div v-else class="py-28">
             <div class="flex items-center justify-center h-full">
               <p class="mdi mdi-folder-remove text-gray-700 font-semibold"> Нет сборок</p>
             </div>
           </div>
-
         </div>
-
         <div class="my-2 border-b border-sky-400">
           <p class="text-sky-800">Архивы сборки: 
             <transition name="fade">
@@ -198,38 +128,22 @@
             </transition>
           </p>
         </div>
-
-
-
-
         <div class=" h-full flex items-center justify-center">
-
           <transition name="fade" mode="out-in">
             <div v-if="uploadform" class=" w-full">
               <div class="flex items-center justify-end">
                 <button class="mdi mdi-close text-sm" @click="uploadform = false"></button>
               </div>
-
               <div class="flex items-center justify-center">
                 <div class="min-w-[400px] md:min-w-[560px] my-4">
                   <label for="archiveName" class="block mt-2 mb-1 text-xs font-medium text-gray-700">Название архива: <span class="font-semibold">{{ newArchiveName }}</span></label>
                   <input id="archiveName" v-model="newArchiveName" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Конструкторская документация">
                 </div>
               </div>
-            
               <div class="mb-4">
                 <div class="flex items-start justify-center gap-4">
-
                   <form class="flex items-center space-x-4">
                     <label for="newfile" class="block">
-                      <!-- <div class="flex items-center gap-4">
-                        <p class="py-2 px-6 text-sm text-white font-semibold bg-sky-900 hover:bg-sky-800 transition-all cursor-pointer rounded">Выберите папку с файлами</p>
-                        <p class="text-sm text-gray-600 md:w-32">Файлов: <span class="">{{ uploadDirFiles.length }}</span></p>
-                      </div> -->
-                      <!-- 
-                        INPUT CLASS
-
-                       -->
                       <input
                         id="newfile" type="file" multiple
                         class="block w-full text-sm text-slate-500
@@ -241,7 +155,6 @@
                         @change="uploadDirChange"/>
                     </label>
                   </form>
-
                   <div class="flex items-center justify-center">
                     <div class="">
                       <div class="text-center">
@@ -252,28 +165,11 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
-
-
 
                 <div class="flex items-center justify-center gap-2">
-
-                  <!-- <div>
-                    <label class="flex items-center gap-2">
-                      <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
-                      <p class="text-gray-700 text-sm font-semibold">Добавить ко всем проектам</p>
-                    </label>
-                  </div> -->
-
                   <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-600" @click="sendLatestFile"> Загрузить</button>
-
                 </div>
-
-
-
-
-
 
                 <div v-if="loadingID === 'newfile'" class="absolute top-0 w-full h-full">
                   <div class="w-full h-full flex items-center justify-center bg-white ">
@@ -290,9 +186,7 @@
               </div>
             </div>
 
-
             <button v-if="selectedAssembly" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-package-variant-plus text-sky-900 disabled:text-gray-400 my-2" @click="uploadform = !uploadform"> Создать архив</button>
-
 
           </transition>
         </div>
@@ -301,12 +195,9 @@
 
         <div v-if="files.length > 0" class="min-h-[300px]">
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
-
             <div v-for="project_file in files" :key="project_file.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
-
               <div class="text-gray-900 rounded-sm py-2">
                 <p class="border-b text-gray-900 border-sky-300">{{ project_file.name }}</p>
-                
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
                     <label class="flex items-center">
@@ -318,18 +209,13 @@
                   <div class="">
                     <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id"> История версий</button>
                   </div>                
-                
                 </div>
-
                 <div class="my-2">
                   <div class="grid grid-cols-1 gap-0.5">
                     <p class="text-xs mdi mdi-account font-semibold text-gray-600"> {{ project_file.author }}</p>
                     <p class="text-xs mdi mdi-update font-semibold text-gray-600"> {{ project_file.created_date }}</p>
-                    <!-- <p class="text-xs text-gray-900">md5: {{ project_file.md5 }}</p>                                -->
                   </div>
                 </div>
-
-
                 <div class="relative">
                   <div class="flex items-center justify-center">
                     <form class="flex items-center space-x-4">
@@ -346,11 +232,9 @@
                       </label>
                     </form>
                   </div>
-                  
                   <div class="flex items-center justify-center">
                     <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
                   </div>
-
                   <div v-if="loadingID === String(project_file.id)" class="absolute top-0 w-full h-full">
                     <div class="w-full h-full flex items-center justify-center bg-white">
                       <div class="">
@@ -368,7 +252,6 @@
             </div>
           </transition-group>
         </div>
-
         <div v-else class="">
           <div class="flex items-center justify-center min-h-[300px]">
             <p class="mdi mdi-package-variant-remove text-gray-700 font-semibold"> Нет архивов</p>
@@ -381,27 +264,19 @@
           <button v-else :disabled="build_latest_file" class="transition-all text-center text-sm text-white disabled:text-white disabled:bg-sky-600  bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
         </div>
       </div>
-
     </div>
-
-
 
     <transition name="top-emergence">
       <div v-if="historyFilesModal" class="fixed z-30 top-0 w-full">
         <div class="">
-
           <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
-
             <div class="flex justify-between my-2">
               <div class=""><p class="font-semibold text-sky-800 text-sm">История версий</p></div>
               <div class=""><button class="text-sm mdi mdi-close text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
             </div>
-            
             <div class="flex items-center justify-between gap-2">
               <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
-              
               <div v-if="historical_files.length > 0" class="grid grid-cols-1 gap-y-4">
-                
                 <div class="flex gap-2 w-full">
                   <input id="history-file-name" v-model="newArchiveName" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название">
                   <input id="author" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов">
@@ -423,25 +298,20 @@
                   <span class="flex items-center mdi mdi-upload cursor-pointer text-sky-700 font-semibold text-sm">
                     <button :disabled="loadingNow" class="" @click="sendHistoryFile">Загрузить в историю</button>
                   </span>
-
                 </div>
               </div>
-              
             </div>
             
 
             <div class="my-2">
               <div class="overflow-y-auto h-[460px] py-1 border-b border-t border-sky-500/50">
                 <div class="">
-
                   <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
                     <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
                       <div class="border-b border-gray-300">
-
                         <div class="">
                           <p class="text-xs text-gray-600">{{ historical_file.name }}</p>
                         </div>
-
                         <div class="flex items-center justify-start gap-2 my-1">
                           <div>
                             <label class="flex items-center gap-2">
@@ -450,39 +320,24 @@
                           </div>
                           <a :href="historical_file.file" class=" text-sm text-sky-900">Скачать</a>
                         </div>
-
                         <div class="my-2">
                           <p class="text-xs font-semibold text-gray-600 mdi mdi-account"> {{ historical_file.author }}</p>
                           <p class="text-xs font-semibold text-gray-600 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
                         </div>
-
-                        <!-- <div class="">
-                          <p class="text-xs text-sky-900">{{ historical_file.md5 }}</p>
-                        </div> -->
-
                       </div>
-
                     </div>
                   </transition-group>
-
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
     </transition>
 
-
     <div class="py-1 container mx-auto hidden">
       <UploadWidget />
-    </div>
-
-      
-    
-
+    </div> -->
 
   </div>
 </template>
@@ -490,13 +345,13 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import JSZip from 'jszip';
-import UploadWidget from '~/components/UploadWidget.vue'
+// import UploadWidget from '~/components/UploadWidget.vue'
 
 export default {
   name: 'ProjectPage',
-  components: {
-    UploadWidget
-  },
+  // components: {
+  //   UploadWidget
+  // },
   middleware: ['auth'],
   async asyncData({ params, $axios }) {
     const cts = await $axios.$get(`s/cts/`)
@@ -541,7 +396,7 @@ export default {
       projects: (state) => state.projects,
       project_assembly: (state) => state.project_assembly,
       files: (state) => state.files,
-      selectedCategory: (state) => state.selectedCategory,
+      // selectedCategory: (state) => state.selectedCategory,
       historical_files: (state) => state.historical_files,
       selectedAssembly: (state) => state.selectedAssembly,
     }),
@@ -554,15 +409,15 @@ export default {
     this.name = this.project.name
     this.description = this.project.description
     this.addCategory(this.cts)
-    this.selectCategory(this.project.category)
-    // this.addFiles(this.project.project_files)
+    // this.selectCategory(this.project.category)
+    // this.addFiles(this.project.project_files) /// REMOVE
     this.addAssembly(this.project.project_assembly)
     this.selectAssembly(null)
   },
   methods: {
     ...mapActions({
       addCategory: 'addCategory',
-      selectCategory: 'selectCategory',
+      // selectCategory: 'selectCategory',
       addToast: 'addToast',
       createProject: 'createProject',
       updateProject: 'updateProject',
