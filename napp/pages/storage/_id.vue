@@ -1,5 +1,9 @@
 <template>
-  <div class="relative">
+  <div class="">
+
+
+
+
     <!-- <nuxt-link :to="{name: 'index'}">Главная</nuxt-link>
 
     <div class="my-4">
@@ -197,7 +201,10 @@
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
             <div v-for="project_file in files" :key="project_file.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
               <div class="text-gray-900 rounded-sm py-2">
-                <p class="border-b text-gray-900 border-sky-300">{{ project_file.name }}</p>
+                <div class="flex items-center min-h-[50px] border-b border-sky-300">
+                  <p class="text-sm text-gray-800 text-end">{{ project_file.name }}</p>
+                </div>
+                
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
                     <label class="flex items-center">
@@ -205,9 +212,9 @@
                       <p class="text-gray-700 text-sm font-semibold"></p>
                     </label>
                   </div>
-                  <a :href="`http://192.168.60.201:8080/files/${project_file.file}`" class="font-semibold text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
+                  <a :href="`http://192.168.60.201:8080/files/${project_file.file}`" class="text-sky-800 hover:text-sky-900 text-sm">Скачать</a>
                   <div class="">
-                    <button class="text-sm text-sky-800 font-semibold" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id"> История версий</button>
+                    <button class="text-sm text-sky-800" @click="historyFilesModal = true; updateHistoryFiles(project_file.id); historyFilesActived = project_file.id"> История версий</button>
                   </div>                
                 </div>
                 <div class="my-2">
@@ -225,7 +232,7 @@
                           class="block w-full text-sm text-slate-500
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-full file:border-0
-                          file:text-sm file:font-semibold
+                          file:text-sm
                           file:bg-white/0 file:text-sky-700
                           hover:file:bg-white
                         " @change="onFileChange"/>
@@ -233,7 +240,7 @@
                     </form>
                   </div>
                   <div class="flex items-center justify-center">
-                    <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
+                    <button :disabled="loadingNow" class="w-40 text-center text-sm cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
                   </div>
                   <div v-if="loadingID === String(project_file.id)" class="absolute top-0 w-full h-full">
                     <div class="w-full h-full flex items-center justify-center bg-white">
@@ -257,12 +264,12 @@
             <p class="mdi mdi-package-variant-remove text-gray-700 font-semibold"> Нет архивов</p>
           </div>
         </div>
-        <div class="flex items-center justify-end my-4">
+        <!-- <div class="flex items-center justify-end my-4">
           <div v-if="latest_file" class="">
             <a :href="latest_file" class="text-center text-sm text-white disabled:text-gray-400 bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
           </div>
           <button v-else :disabled="build_latest_file" class="transition-all text-center text-sm text-white disabled:text-white disabled:bg-sky-600  bg-sky-900 px-4 py-1 rounded cursor-pointer flex gap-1 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -335,9 +342,30 @@
       </div>
     </transition>
 
+
+    <div class="">
+      <div class="fixed bottom-56 left-0 w-0">
+        <div class=" rotate-90">
+          <div class="">
+
+            <div class="">
+              <div class=" w-[220px] h-16">
+                <div v-if="latest_file" class="">
+                  <a :href="latest_file" class="w-[190px] text-center text-sm font-semibold text-white disabled:text-gray-400 bg-sky-900 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
+                </div>  
+                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-white disabled:text-white disabled:bg-sky-600  bg-sky-900 rounded cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- <div class="py-1 container mx-auto hidden">
       <UploadWidget />
     </div> -->
+
 
   </div>
 </template>

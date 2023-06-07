@@ -3,6 +3,7 @@
   <div class="bg-gradient-to-r from-gray-100 to-gray-50">
     <div class="bg-fixed bg-no-repeat bg-right-bottom bg- cover bg-contain bg-[url('/images/bg.webp')]">
 
+
       <div class="">
         <div class="relative">
           
