@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <nuxt-link :to="{name: 'index'}">Главная</nuxt-link>
+    <!-- <nuxt-link :to="{name: 'index'}">Главная</nuxt-link>
 
     <div class="my-4">
       <p class="text-xs text-gray-800">{{ cts }}</p>
@@ -8,9 +8,9 @@
 
     <div class="my-4">
       <p class="text-xs text-gray-700">{{ project }}</p>
-    </div>
+    </div> -->
 
-    <!-- <div class="bg-sky-700">
+    <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
         <div class="flex items-center gap-4 py-2 px-4">
           <div v-if="getNowCategoryName">
@@ -335,7 +335,7 @@
       </div>
     </transition>
 
-    <div class="py-1 container mx-auto hidden">
+    <!-- <div class="py-1 container mx-auto hidden">
       <UploadWidget />
     </div> -->
 
