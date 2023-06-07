@@ -5,7 +5,7 @@
 
         <div class="flex items-center justify-end h-full">
           <div class="grid grid-cols-1 justify-center items-center gap-1">
-            <div class="text-xs font-semibold text-white">Место на диске: {{ storageSpace.total_space }} / {{ storageSpace.used_space }} ( {{ storageSpace.total_space - storageSpace.used_space }} ) GB</div>
+            <div class="text-xs font-semibold text-gray-100">Место на диске: {{ storageSpace.total_space }} / {{ storageSpace.used_space }} ( {{ Math.round(storageSpace.total_space - storageSpace.used_space) }} ) GB</div>
             <progress class="w-full text-green-400 border border-white rounded-sm" :value="storageSpace.used_space" :max="storageSpace.total_space" />
           </div>
         </div>

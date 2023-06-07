@@ -1,7 +1,7 @@
 <template>
 
   <div class="bg-gradient-to-r from-gray-100 to-gray-50">
-    <div class="bg-fixed bg-no-repeat bg-right-bottom bg- cover bg-contain bg-[url('/images/bg.webp')]">
+    <div id="background" class="bg-fixed bg-no-repeat bg-right-bottom bg- cover bg-contain bg-[url('/images/bg.webp')]">
 
       <div class="">
         <div class="relative">
@@ -106,8 +106,6 @@
 
       <HeaderView />
 
-
-    
       <transition name="fade" mode="out-in">
         <Nuxt id="page" class="" />
       </transition>
@@ -135,6 +133,7 @@
         showWriteUs: true,
         latitude: null,
         longitude: null,
+        scrollPosition: 0,
       }
     },
     computed: {
@@ -142,6 +141,12 @@
         toasts: (state) => state.toasts,
         showSearchForm: (state) => state.showSearchForm,
       }),
+    },
+    beforeMount () {
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    beforeDestroy () {
+      window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
       // ...mapMutations({
@@ -151,6 +156,12 @@
       //   displayForm: 'displayForm',
       //   sendCoordinates: 'sendCoordinates',
       // }),
+      // handleScroll() {
+      //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      //   console.log('Вертикальная прокрутка:', scrollTop);
+
+      //   this.scrollPosition = scrollTop
+      // }
     },
   };
 </script>

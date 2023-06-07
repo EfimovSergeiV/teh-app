@@ -345,9 +345,9 @@
             <div class="">
               <div class=" w-[220px] h-16">
                 <div v-if="latest_file" class="">
-                  <a :href="latest_file" class="w-[190px] border border-green-500 text-center text-sm font-semibold text-white bg-green-600 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
+                  <a :href="latest_file" class="w-[190px] border border-green-500 text-center text-sm font-semibold text-gray-100 bg-green-600 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
                 </div>  
-                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-white disabled:text-white disabled:bg-sky-600 bg-sky-800 border border-sky-700 disabled:border-sky-500 rounded-lg cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
+                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-gray-100 disabled:text-gray-100 disabled:bg-sky-600 bg-sky-800 border border-sky-700 disabled:border-sky-500 rounded-lg cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
               </div>
             </div>
           
