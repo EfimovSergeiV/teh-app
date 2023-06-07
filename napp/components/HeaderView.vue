@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'HeaderView',
@@ -113,13 +113,13 @@ export default {
       }
     }
   },
-  // computed: {
-  //   ...mapState({
-  //       selectedCategory: (state) => state.selectedCategory,
-  //       cts: (state) => state.cts,
-  //     }),
-  //   ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  // },  
+  computed: {
+    // ...mapState({
+    //     selectedCategory: (state) => state.selectedCategory,
+    //     cts: (state) => state.cts,
+    //   }),
+    ...mapGetters(['isAuthenticated', 'loggedInUser'])
+  },  
   // watch: {
   //   selectedCategory() {
   //     this.getCategoryProjects(this.selectedCategory)
