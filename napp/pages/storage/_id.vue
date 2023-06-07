@@ -98,12 +98,18 @@
           <div v-if="project.project_assembly.length > 0" class=" min-h-[12rem]">
             <transition-group tag="div" name="left-emergence"  class="grid grid-cols-4 my-4 gap-4">
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
-                <button v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="border-b border-gray-400 w-full h-full">
-                  <p class="text-xs text-left font-semibold text-gray-800">{{ assembly.name }}</p>
-                </button>
-                <button v-else class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);updateFiles(assembly.id)">
-                  <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
-                </button>                  
+                <div v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="flex items-center gap-1">
+                  <input type="checkbox" class="rounded text-sky-700 focus:ring-0" />
+                  <button class="border-b border-gray-400 w-full h-full">
+                    <p class="text-xs text-left font-semibold text-gray-800">{{ assembly.name }}</p>                                      
+                  </button>
+                </div>
+                <div v-else class="flex items-center gap-1">
+                  <input type="checkbox" class="rounded text-sky-700 focus:ring-0" />
+                  <button class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);updateFiles(assembly.id)">                    
+                    <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
+                  </button> 
+                </div>              
               </div>
             </transition-group>
           </div>
@@ -190,7 +196,7 @@
             <div v-for="project_file in files" :key="project_file.id" class="bg-white/50 backdrop-blur-sm rounded-xl p-1">
               <div class="text-gray-900 rounded-sm py-2">
                 <div class="flex items-center min-h-[50px] border-b border-sky-300">
-                  <p class="text-sm text-gray-800 text-end">{{ project_file.name }}</p>
+                  <p class="text-sm text-gray-800">{{ project_file.name }}</p>
                 </div>
                 
                 <div class="flex items-center justify-start my-2 gap-2">

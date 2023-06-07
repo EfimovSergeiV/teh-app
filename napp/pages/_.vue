@@ -6,9 +6,9 @@
 
 
       <div class="bg-sky-700">
-        <div class="py-1 container mx-auto">
+        <div class="py-1 container mx-auto px-12">
 
-          <div class="flex items-center gap-4 py-2 px-4">
+          <div class="flex items-center gap-4 py-2">
             <div v-for="ct in cts" :key="ct.id" class="">
 
               <div v-if="ct.id === selectedCategory" class="border-b border-white">
