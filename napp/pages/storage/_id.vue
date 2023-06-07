@@ -338,7 +338,7 @@
 
 
     <div class="">
-      <div class="fixed bottom-60 left-0 w-0">
+      <div class="fixed bottom-56 left-0 w-0">
         <div class=" rotate-90">
           <div class="">
 
