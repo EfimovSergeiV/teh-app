@@ -12,7 +12,7 @@
 
     <div class="bg-sky-700">
       <div class="py-1 container mx-auto">
-        <div class="flex items-center gap-4 py-2 px-4">
+        <div class="flex items-center gap-4 py-2 px-4 min-h-[49px]">
           <div v-if="getNowCategoryName">
             <p class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
           </div>
@@ -396,7 +396,7 @@ export default {
       projects: (state) => state.projects,
       project_assembly: (state) => state.project_assembly,
       files: (state) => state.files,
-      // selectedCategory: (state) => state.selectedCategory,
+      selectedCategory: (state) => state.selectedCategory,
       historical_files: (state) => state.historical_files,
       selectedAssembly: (state) => state.selectedAssembly,
     }),
