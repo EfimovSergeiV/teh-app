@@ -424,7 +424,7 @@ class CreateHistoryFileView(APIView):
 
 
 
-import os, zipfile
+import os, zipfile, shutil
 from django.conf import settings
 from pathlib import Path
 
@@ -471,7 +471,7 @@ class BuilderProjectView(APIView):
             for file in files:
                 archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{settings.BASE_DIR}/files/tmp/'), compress_type = zipfile.ZIP_DEFLATED)
         archive_zip.close()
-
+        shutil. rmtree(f'{settings.BASE_DIR}/files/tmp/')
         print(f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip')
 
         
@@ -479,6 +479,17 @@ class BuilderProjectView(APIView):
         return Response({'file': f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip'})
 
 
+import psutil
+class GetDiskSpaceView(APIView):
+    """ Место на диске """
+    
+    def get(self, request):
+        # Получаем информацию о диске, на котором находится текущая директория
+        disk_usage = psutil.disk_usage('/')
+        total_space = disk_usage.total / (1024 * 1024 * 1024)
+        used_space = disk_usage.used / (1024 * 1024 * 1024)
+        
+        return Response({ "total_space": float(f"{total_space:.2f}"), 'used_space': float(f"{used_space:.2f}") })
 
 
 class SearchView(APIView):

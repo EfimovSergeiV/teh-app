@@ -12,6 +12,7 @@ export const state = () => ({
 
     selectedAssembly: null,
     project_assembly: [],
+    storageSpace: {},
 
   })
   
@@ -92,6 +93,9 @@ export const state = () => ({
     //   newFile.upload = file.name
 
     // },
+    updateStorageSpace(state, data) {
+      state.storageSpace = data
+    }
   }
   
   export const actions = {
@@ -198,6 +202,10 @@ export const state = () => ({
         }  
 
       }).catch(() => {})
+    },
+
+    updateStorageSpace({ commit }, data) {
+      commit('updateStorageSpace', data)
     },
 
 

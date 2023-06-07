@@ -67,7 +67,8 @@ export default {
   name: 'IndexPage',
   async asyncData({ $axios }) {
     const cts = await $axios.$get(`s/cts/`)
-    return { cts }
+    const space = await $axios.$get(`s/getspace/`)
+    return { cts, space }
   },
   data() {
     return {
@@ -89,6 +90,7 @@ export default {
       this.selectCategory(this.cts[0].id)
       this.updateProjects(this.cts[0].id)
     }
+    this.updateStorageSpace(this.space)
     
     // this.addCategory(this.cts)
     // this.getCategoryProjects(this.selectedCategory)
@@ -101,6 +103,7 @@ export default {
       addProjects: 'addProjects',
       createProjectForm: 'createProjectForm',
       updateProjects: 'updateProjects',
+      updateStorageSpace: 'updateStorageSpace',
     }),
     // onFileChange(event) {
     //   this.file = event.target.files[0];

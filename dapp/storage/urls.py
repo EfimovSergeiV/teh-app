@@ -19,6 +19,8 @@ from storage.views import (
 
     BuilderProjectView,
 
+    GetDiskSpaceView,
+
 )
 
 
@@ -44,7 +46,7 @@ urlpatterns = [
 
 
     path('projects/builderproject/<int:pk>/', BuilderProjectView.as_view()),
-    
+    path('getspace/', GetDiskSpaceView.as_view()),
 
     path('search/', SearchView.as_view()),
 

@@ -5,7 +5,7 @@
       <div class="container mx-auto py-2 px-12">
         <div class="flex gap-4 items-center">
           <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ projects.length }}</span></p></div> 
-          <button class="text-sky-900 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button>
+          <!-- <button class="text-sky-900 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button> -->
           <button class="text-sky-900 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProjectForm"> Создать проект</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProjects(selectedCategory)"> Обновить</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</button>

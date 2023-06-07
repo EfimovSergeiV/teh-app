@@ -288,7 +288,7 @@
                   <form class="flex items-center space-x-6">
                     <label class="block">
                       <input
-                          id="historyfile" type="file" webkitdirectory class="block w-full text-sm text-slate-500
+                          id="historyfile" type="file" multiple class="block w-full text-sm text-slate-500
                           file:rounded-full file:border-0
                           file:text-sm file:font-semibold
                           file:bg-gray-100 file:text-sky-700
@@ -338,16 +338,16 @@
 
 
     <div class="">
-      <div class="fixed bottom-56 left-0 w-0">
+      <div class="fixed bottom-60 left-0 w-0">
         <div class=" rotate-90">
           <div class="">
 
             <div class="">
               <div class=" w-[220px] h-16">
                 <div v-if="latest_file" class="">
-                  <a :href="latest_file" class="w-[190px] text-center text-sm font-semibold text-white disabled:text-gray-400 bg-green-600 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
+                  <a :href="latest_file" class="w-[190px] border border-green-500 text-center text-sm font-semibold text-white bg-green-600 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
                 </div>  
-                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-white disabled:text-white disabled:bg-sky-600  bg-sky-800 rounded cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
+                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-white disabled:text-white disabled:bg-sky-600 bg-sky-800 border border-sky-700 disabled:border-sky-500 rounded-lg cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
               </div>
             </div>
           
@@ -377,8 +377,9 @@ export default {
   middleware: ['auth'],
   async asyncData({ params, $axios }) {
     const cts = await $axios.$get(`s/cts/`)
+    const space = await $axios.$get(`s/getspace/`)
     const project = await $axios.$get(`s/projects/getone/${params.id}/`)
-    return { cts, project }
+    return { cts, space, project }
   },
   data() {
     return {
@@ -435,11 +436,12 @@ export default {
     // this.addFiles(this.project.project_files) /// REMOVE
     this.addAssembly(this.project.project_assembly)
     this.selectAssembly(null)
+    this.updateStorageSpace(this.space)
   },
   methods: {
     ...mapActions({
       addCategory: 'addCategory',
-      // selectCategory: 'selectCategory',
+      updateStorageSpace: 'updateStorageSpace',
       addToast: 'addToast',
       createProject: 'createProject',
       updateProject: 'updateProject',
