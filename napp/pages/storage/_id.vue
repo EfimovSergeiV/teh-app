@@ -96,7 +96,7 @@
             </div>
           </div>
           <div v-if="project.project_assembly.length > 0" class=" min-h-[12rem]">
-            <transition-group tag="div" name="left-emergence"  class="grid grid-cols-4 my-4 gap-4">
+            <transition-group tag="div" name="left-emergence"  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 my-4 gap-4">
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
                 <div v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="flex items-center gap-1">
                   <input type="checkbox" class="rounded text-sky-700 focus:ring-0" />
