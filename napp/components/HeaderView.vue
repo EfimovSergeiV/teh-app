@@ -2,7 +2,7 @@
   <div class="">
     
     <div class="bg-sky-800">
-      <div class=" container mx-auto py-8 px-4">
+      <div class=" container mx-auto py-8 px-12">
         <div class="flex items-center justify-between">
           <nuxt-link :to="{ name: 'index' }" class="">
             <img src="/logo.webp" class="h-[35px]" />

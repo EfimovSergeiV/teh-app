@@ -45,7 +45,7 @@
         <div v-if="showSearchForm" class="fixed z-30 top-0 w-full">
           <div class="">
 
-            <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
+            <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
               <div class="flex justify-between my-2">
                 <div class=""><p class="font-semibold text-gray-700 text-sm">История изменений</p></div>

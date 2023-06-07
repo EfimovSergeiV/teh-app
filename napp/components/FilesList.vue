@@ -2,8 +2,8 @@
   <div class="">
 
     <div class="bg-gray-200">
-      <div class="container mx-auto py-2 px-4">
-        <div class="flex gap-4 items-center ">
+      <div class="container mx-auto py-2 px-12">
+        <div class="flex gap-4 items-center">
           <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ projects.length }}</span></p></div> 
           <button class="text-sky-900 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProjectForm"> Создать проект</button>
@@ -15,7 +15,7 @@
     </div>
 
 
-    <div class="container mx-auto min-h-screen py-6 px-4">
+    <div class="container mx-auto min-h-screen py-6 px-12">
       
       <div>
 

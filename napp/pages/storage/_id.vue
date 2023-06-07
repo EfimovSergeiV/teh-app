@@ -2,21 +2,9 @@
   <div class="">
 
 
-
-
-    <!-- <nuxt-link :to="{name: 'index'}">Главная</nuxt-link>
-
-    <div class="my-4">
-      <p class="text-xs text-gray-800">{{ cts }}</p>
-    </div>
-
-    <div class="my-4">
-      <p class="text-xs text-gray-700">{{ project }}</p>
-    </div> -->
-
     <div class="bg-sky-700">
-      <div class="py-1 container mx-auto">
-        <div class="flex items-center gap-4 py-2 px-4 min-h-[49px]">
+      <div class="py-1 container mx-auto px-12">
+        <div class="flex items-center gap-4 py-2 min-h-[49px]">
           <div v-if="getNowCategoryName">
             <p class="text-white font-semibold text-sm border-white">{{ getNowCategoryName.name }}</p>
           </div>
@@ -25,7 +13,7 @@
     </div>
 
     <div class="bg-gray-200">
-      <div class="container mx-auto py-2 px-4">
+      <div class="container mx-auto py-2 px-12">
         <div class="flex gap-4 items-center ">
           <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Главная</nuxt-link>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProject($route.params.id)"> Обновить</button>
@@ -34,7 +22,7 @@
       </div>
     </div>
 
-    <div class="container min-h-screen mx-auto px-4">
+    <div class="container min-h-screen mx-auto px-12">
       <div class="my-4">
         <div class="flex items-center justify-end">
           <span class="text-base mdi mdi-pencil-outline cursor-pointer mx-1 text-gray-600 hover:text-gray-800 transition-all" @click="editProjectDataForm = true"></span>
@@ -276,7 +264,7 @@
     <transition name="top-emergence">
       <div v-if="historyFilesModal" class="fixed z-30 top-0 w-full">
         <div class="">
-          <div class="container mx-auto py-2 px-4 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
+          <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
             <div class="flex justify-between my-2">
               <div class=""><p class="font-semibold text-sky-800 text-sm">История версий</p></div>
               <div class=""><button class="text-sm mdi mdi-close text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
@@ -351,9 +339,9 @@
             <div class="">
               <div class=" w-[220px] h-16">
                 <div v-if="latest_file" class="">
-                  <a :href="latest_file" class="w-[190px] text-center text-sm font-semibold text-white disabled:text-gray-400 bg-sky-900 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
+                  <a :href="latest_file" class="w-[190px] text-center text-sm font-semibold text-white disabled:text-gray-400 bg-green-600 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
                 </div>  
-                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-white disabled:text-white disabled:bg-sky-600  bg-sky-900 rounded cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
+                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font-semibold text-white disabled:text-white disabled:bg-sky-600  bg-sky-800 rounded cursor-pointer flex gap-2 items-start" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
               </div>
             </div>
           

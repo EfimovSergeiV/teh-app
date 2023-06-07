@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="container mx-auto px-4">
+      <div class="container mx-auto px-12">
         <transition name="fade">
           <div v-if="showCreateProject" id="create-project" class="fixed z-10 my-2">
             <div class="bg-sky-900 w-[600px] px-4 py-4 rounded-lg shadow-lg shadow-gray-900">
