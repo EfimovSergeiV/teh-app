@@ -54,15 +54,8 @@
         </transition>
       </div>
     </div>
-    <nuxt-link :to="{name: 'storage-id', params: { id: 4 } }">Storage 4</nuxt-link>
 
-    <div class="my-4">
-      <p class="text-xs text-gray-800">sel: {{ selectedCategory }}, {{ cts }}</p>
-    </div>
-
-    <div class="my-4">
-      <p class="text-xs text-gray-500">{{ projects }}</p>
-    </div>
+    <FilesList />
     
   </div>
 </template>

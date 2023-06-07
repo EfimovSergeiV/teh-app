@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'HeaderView',
@@ -107,33 +107,19 @@ export default {
   },
   data() {
     return {
-      categories: [
-        { "id": 1, "name": "Сварочные машины и установки", "inserted": [ { "id": 2, "name": "Точечная переменным током" }, { "id": 3, "name": "Точечная постоянным током"}, { "id": 3, "name": "Точечная конденсаторная"}, { "id": 3, "name": "Шовная постоянным током"}, { "id": 3, "name": "Рельефная переменным током"}, { "id": 3, "name": "Стыковая"}, ] },
-        { "id": 2, "name": "Оборудование для сварки рельсов", "inserted": [ { "id": 2, "name": "Точечная переменным током" }, { "id": 3, "name": "Точечная постоянным током"}, { "id": 3, "name": "Точечная конденсаторная"}, { "id": 3, "name": "Шовная постоянным током"}, { "id": 3, "name": "Рельефная переменным током"}, { "id": 3, "name": "Стыковая"}, ] },
-        { "id": 3, "name": "Трансформаторы", "inserted": [ { "id": 2, "name": "Точечная переменным током" }, { "id": 3, "name": "Точечная постоянным током"}, { "id": 3, "name": "Точечная конденсаторная"}, { "id": 3, "name": "Шовная постоянным током"}, { "id": 3, "name": "Рельефная переменным током"}, { "id": 3, "name": "Стыковая"}, ] },
-        { "id": 4, "name": "Источники", "inserted": [ { "id": 2, "name": "Точечная переменным током" }, { "id": 3, "name": "Точечная постоянным током"}, { "id": 3, "name": "Точечная конденсаторная"}, { "id": 3, "name": "Шовная постоянным током"}, { "id": 3, "name": "Рельефная переменным током"}, { "id": 3, "name": "Стыковая"}, ] },
-      ],
-      inserteds: [
-        { "id": 2, "name": "Контактная сваарка" },
-        { "id": 2, "name": "Дуговая сваарка" },
-        { "id": 2, "name": "Диффузионная сваарка" },
-        { "id": 2, "name": "Микросварка сваарка" },
-        { "id": 2, "name": "Контактная пайка" },
-        { "id": 2, "name": "Специального назначения" },
-      ],
       login: {
         username: '',
         password: ''
       }
     }
   },
-  computed: {
-    ...mapState({
-        selectedCategory: (state) => state.selectedCategory,
-        cts: (state) => state.cts,
-      }),
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  },  
+  // computed: {
+  //   ...mapState({
+  //       selectedCategory: (state) => state.selectedCategory,
+  //       cts: (state) => state.cts,
+  //     }),
+  //   ...mapGetters(['isAuthenticated', 'loggedInUser'])
+  // },  
   // watch: {
   //   selectedCategory() {
   //     this.getCategoryProjects(this.selectedCategory)
@@ -142,8 +128,8 @@ export default {
 
   methods: {
     ...mapActions({
-      selectCategory: 'selectCategory',
-      addProjects: 'addProjects',
+      // selectCategory: 'selectCategory',
+      // addProjects: 'addProjects',
       // addCategory: 'addCategory',
       // addToast: 'addToast',
       // createProjectForm: 'createProjectForm',
