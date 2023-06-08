@@ -435,8 +435,8 @@ class BuilderProjectView(APIView):
     """ Попробывать реализовать unbuilder, что бы загружать и раскладывать проект целиком, а не по одному архиву """
 
     def post(self, request, pk):
-        print(request.data, pk)
-        path = f'{settings.BASE_DIR}/files/tmp/'
+        user = request.user
+        path = f'{settings.BASE_DIR}/files/{ user }/tmp/'
 
         project_qs = ProjectArchiveModel.objects.get(id=pk)
         assemplys_qs = project_qs.project_assembly.all()
@@ -448,7 +448,6 @@ class BuilderProjectView(APIView):
 
             # ПОСЛЕДНЯЯ ВЕРСИЯ ФАЙЛОВ
             # Создаём директории если файл один, бросаем в корень, иначе доздаём вложенную директорию
-
             files = assemply_qs.assembly_files.all()
             if len(files) == 1:
                 create_path = f'{path}{assemply_qs.name}'
@@ -469,17 +468,14 @@ class BuilderProjectView(APIView):
 
                     print(f'Создаём вложенные директории: { create_path }')
 
-        archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{project_qs.name}-latest-version.zip', 'w')
-        for folder, subfolders, files in os.walk(f'{settings.BASE_DIR}/files/tmp/'):
+        archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{user}/{project_qs.name}-latest-version.zip', 'w')
+        for folder, subfolders, files in os.walk(f'{settings.BASE_DIR}/files/{user}/tmp/'):
             for file in files:
-                archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{settings.BASE_DIR}/files/tmp/'), compress_type = zipfile.ZIP_DEFLATED)
+                archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{settings.BASE_DIR}/files/{user}/tmp/'), compress_type = zipfile.ZIP_DEFLATED)
         archive_zip.close()
-        shutil. rmtree(f'{settings.BASE_DIR}/files/tmp/')
-        print(f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip')
+        shutil. rmtree(f'{settings.BASE_DIR}/files/{user}/tmp/')
 
-        
-        # return Response(status=status.HTTP_200_OK)
-        return Response({'file': f'http://192.168.60.201:8080/files/{ project_qs.name }-latest-version.zip'})
+        return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-latest-version.zip'})
 
 
 import psutil

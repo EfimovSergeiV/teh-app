@@ -497,11 +497,13 @@ export default {
       
       if (this.uploadDirFiles.length > 0) {
         const zip = new JSZip()
+
         for (let i = 0; i < this.uploadDirFiles.length; i++) {
           const file = this.uploadDirFiles[i];
           const fileContent = await this.readFileContent(file);
           zip.file(file.name, fileContent);
         }
+
         const zipContent = await zip.generateAsync({ type: 'blob' });
         const archiveName = `${this.newArchiveName}.zip`
         formData.append("file", zipContent, archiveName)
@@ -686,15 +688,15 @@ export default {
 
 
 
-        if (this.newArchiveName) {
-          formData.append("name", this.newArchiveName)
-        }
-        if (this.authorFileHistory) {
-          formData.append("author_history", this.authorFileHistory)
-        }
-        if (this.dateFileHistory) {
-          formData.append("date_history", this.dateFileHistory)
-        }
+        // if (this.newArchiveName) {
+        //   formData.append("name", this.newArchiveName)
+        // }
+        // if (this.authorFileHistory) {
+        //   formData.append("author_history", this.authorFileHistory)
+        // }
+        // if (this.dateFileHistory) {
+        //   formData.append("date_history", this.dateFileHistory)
+        // }
         if (latestId) {
           formData.append("latest_id", latestId)
         }
