@@ -442,7 +442,6 @@ class BuilderProjectView(APIView):
         assemplys_qs = project_qs.project_assembly.all()
 
         count = 0
-        assemply = []
         for assemply_qs in assemplys_qs:
             count += 1
 
@@ -484,7 +483,26 @@ class CustomBuilderProjectView(APIView):
     """ Билдер по разным версиям """
     
     def get(self, request, pk):
-        print('hallo welt')
+                
+        user = request.user
+        path = f'{settings.BASE_DIR}/files/{ user }/tmp/'
+        project_qs = ProjectArchiveModel.objects.get(id=pk)
+
+        if 'archive_id' in request.data.keys():
+            #   Вытаскиваем архив из истории по id
+            
+            
+            pass
+        else:
+            #   Вытаскиваем последний архив
+            
+            
+            pass
+
+
+        assemplys_qs = project_qs.project_assembly.all()
+
+
         return Response(status=status.HTTP_200_OK)
 
 
