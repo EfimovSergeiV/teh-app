@@ -401,7 +401,7 @@ export default {
       editProjectDataForm: false,
       historyFilesModal: false,
       authorFileHistory: this.$auth.user,
-      dateFileHistory: null,
+      dateFileHistory: '2000-01-12T12:00',
 
       assemblyName: null,
       uploadDirFiles: [], /// Сюда скидывает новый один
@@ -494,18 +494,20 @@ export default {
       this.loadingNow = true /// Выключаем кнопку закгрузки
 
       const formData = new FormData();
-      const zip = new JSZip()
-
-      for (let i = 0; i < this.uploadDirFiles.length; i++) {
-        const file = this.uploadDirFiles[i];
-        const fileContent = await this.readFileContent(file);
-        zip.file(file.name, fileContent);
+      
+      if (this.uploadDirFiles.length > 0) {
+        const zip = new JSZip()
+        for (let i = 0; i < this.uploadDirFiles.length; i++) {
+          const file = this.uploadDirFiles[i];
+          const fileContent = await this.readFileContent(file);
+          zip.file(file.name, fileContent);
+        }
+        const zipContent = await zip.generateAsync({ type: 'blob' });
+        const archiveName = `${this.newArchiveName}.zip`
+        formData.append("file", zipContent, archiveName)
       }
 
-      const zipContent = await zip.generateAsync({ type: 'blob' });
-      const archiveName = `${this.newArchiveName}.zip`
 
-      formData.append("file", zipContent, archiveName)
       formData.append("project_id", this.project.id)
       formData.append("assembly_id", this.selectedAssembly.id)
       if (this.newArchiveName) {
@@ -549,20 +551,20 @@ export default {
     async sendHistoryFile() {
       
       this.loadingNow = true /// Выключаем кнопку закгрузки
-
       const formData = new FormData();
-      const zip = new JSZip()
 
-      for (let i = 0; i < this.uploadDirFiles.length; i++) {
-        const file = this.uploadDirFiles[i];
-        const fileContent = await this.readFileContent(file);
-        zip.file(file.name, fileContent);
+      if (this.uploadDirFiles.length > 0) {
+        const zip = new JSZip()
+        for (let i = 0; i < this.uploadDirFiles.length; i++) {
+          const file = this.uploadDirFiles[i];
+          const fileContent = await this.readFileContent(file);
+          zip.file(file.name, fileContent);
+        }
+        const zipContent = await zip.generateAsync({ type: 'blob' });
+        const archiveName = `${this.newArchiveName}.zip`
+        formData.append("file", zipContent, archiveName)        
       }
-
-      const zipContent = await zip.generateAsync({ type: 'blob' });
-      const archiveName = 'archive.zip'
-
-      formData.append("file", zipContent, archiveName)
+      
       formData.append("project_id", this.project.id)
       formData.append("assembly_id", this.selectedAssembly.id)
       if (this.newArchiveName) {
@@ -672,21 +674,17 @@ export default {
         formData.append("project_id", fileData.project_id)
         formData.append("file_id", fileData.file_id)
 
-
         const zip = new JSZip()
-
         for (let i = 0; i < fileData.files.length; i++) {
           const file = fileData.files[i];
           const fileContent = await this.readFileContent(file);
           zip.file(file.name, fileContent);
         }
-
         const zipContent = await zip.generateAsync({ type: 'blob' });
-        const archiveName = 'archive.zip'
-
+        const archiveName = `archive.zip` // <= Сделать сюда название архива
         formData.append("file", zipContent, archiveName)
 
-        // formData.append("file", fileData.file)
+
 
         if (this.newArchiveName) {
           formData.append("name", this.newArchiveName)

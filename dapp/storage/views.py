@@ -285,28 +285,29 @@ class UploadLatestFileView(APIView):
     """
 
     def post(self, request):
+        try:
+            file = request.FILES['file']
+            md5_summ = get_md5_summ(file)
 
-        file = request.FILES['file']
-        md5_summ = get_md5_summ(file)
+            print(file.name)
 
-        print(file.name)
+            project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
 
-        project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
+            profile = User.objects.get(username=request.user)
+            uploader = f'{profile.first_name} {profile.last_name}'
+            author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
+            created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
-        profile = User.objects.get(username=request.user)
-        uploader = f'{profile.first_name} {profile.last_name}'
-        author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
-        created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
-
-        data = {
-            "project": project.id,
-            "assembly": request.data["assembly_id"],
-            "name": request.data["name"],
-            "md5": md5_summ,
-            "author": author,
-            "created_date": created_data
-        }
-
+            data = {
+                "project": project.id,
+                "assembly": request.data["assembly_id"],
+                "name": request.data["name"],
+                "md5": md5_summ,
+                "author": author,
+                "created_date": created_data
+            }
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer_data = FileArchiveSerializer(data=data)      
 
@@ -337,27 +338,31 @@ class UpdateLatestFileView(APIView):
     """
 
     def post(self, request, pk):
-        file = request.FILES['file']
-        md5_summ = get_md5_summ(file)
 
-        
-        latest_file = FileArchiveModel.objects.get(id=pk)
+        try:
+            file = request.FILES['file']
+            md5_summ = get_md5_summ(file)
 
-        profile = User.objects.get(username=request.user)
-        uploader = f'{profile.first_name} {profile.last_name}'
-        author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
-        created_date = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
+            
+            latest_file = FileArchiveModel.objects.get(id=pk)
 
-        data = {
-            "project": latest_file.project.id,
-            "assembly": latest_file.assembly.id,
-            "latest": latest_file.id,
-            "name": latest_file.name,
-            "md5": md5_summ,
-            "author": author,
-            "file": file,
-            "created_date": created_date
-        }
+            profile = User.objects.get(username=request.user)
+            uploader = f'{profile.first_name} {profile.last_name}'
+            author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
+            created_date = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
+
+            data = {
+                "project": latest_file.project.id,
+                "assembly": latest_file.assembly.id,
+                "latest": latest_file.id,
+                "name": latest_file.name,
+                "md5": md5_summ,
+                "author": author,
+                "file": file,
+                "created_date": created_date
+            }
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer_data = FileHistorySerializer(data=data)
 
@@ -385,28 +390,27 @@ class CreateHistoryFileView(APIView):
     """
 
     def post(self, request, pk):
-        print(request.data)
-        file = request.FILES['file']
-        md5_summ = get_md5_summ(file)
+        try:
+            file = request.FILES['file']
+            md5_summ = get_md5_summ(file)
+            latest_file = FileArchiveModel.objects.get(id=pk)
+            profile = User.objects.get(username=request.user)
+            uploader = f'{profile.first_name} {profile.last_name}'
+            author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
+            created_date = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
-        
-        latest_file = FileArchiveModel.objects.get(id=pk)
-
-        profile = User.objects.get(username=request.user)
-        uploader = f'{profile.first_name} {profile.last_name}'
-        author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
-        created_date = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
-
-        data = {
-            "project": latest_file.project.id,
-            "assembly": latest_file.assembly.id,
-            "latest": latest_file.id,
-            "name": request.data['name'],
-            "md5": md5_summ,
-            "author": author,
-            "file": file,
-            "created_date": created_date
-        }
+            data = {
+                "project": latest_file.project.id,
+                "assembly": latest_file.assembly.id,
+                "latest": latest_file.id,
+                "name": request.data['name'],
+                "md5": md5_summ,
+                "author": author,
+                "file": file,
+                "created_date": created_date
+            }
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer_data = FileHistorySerializer(data=data)
 
@@ -415,8 +419,7 @@ class CreateHistoryFileView(APIView):
             serializer_data.save()
 
         else:
-            print(f'ERR : {serializer_data.errors}')
-            # return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
