@@ -478,6 +478,18 @@ class BuilderProjectView(APIView):
         return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-latest-version.zip'})
 
 
+
+
+class CustomBuilderProjectView(APIView):
+    """ Билдер по разным версиям """
+    
+    def get(self, request, pk):
+        print('hallo welt')
+        return Response(status=status.HTTP_200_OK)
+
+
+
+
 import psutil
 class GetDiskSpaceView(APIView):
     """ Место на диске """

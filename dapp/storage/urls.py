@@ -18,6 +18,7 @@ from storage.views import (
     CreateHistoryFileView,
 
     BuilderProjectView,
+    CustomBuilderProjectView,
 
     GetDiskSpaceView,
 
@@ -46,6 +47,8 @@ urlpatterns = [
 
 
     path('projects/builderproject/<int:pk>/', BuilderProjectView.as_view()),
+    path('projects/custombuilderproject/<int:pk>/', CustomBuilderProjectView.as_view()),
+
     path('getspace/', GetDiskSpaceView.as_view()),
 
     path('search/', SearchView.as_view()),
