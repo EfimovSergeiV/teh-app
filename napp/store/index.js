@@ -45,6 +45,7 @@ export const state = () => ({
       state.project_assembly = []
     },
     addAssembly(state, assembly) {
+      console.log('add ', assembly)
       state.project_assembly.push(assembly)
     },
     selectAssembly(state, assembly) {
@@ -153,7 +154,15 @@ export const state = () => ({
     updateAssembly({commit}, id){
       // commit('cleanListAssembly')
       this.$axios.$get(`s/projects/getone/${id}/`).then((resp) => {
-        commit('addAssembly', resp.project_assembly.at(-1)) 
+        console.log('update ',resp.project_assembly)
+        if (resp.project_assembly.length > 1) {
+          console.log('if work ', resp.project_assembly.length)
+          commit('addAssembly', resp.project_assembly.at(-1)) 
+        } else {
+          console.log('else work ', resp.project_assembly.length)
+          commit('addAssembly', resp.project_assembly[0]) 
+        }
+        
       }).catch(() => {})
     },
     selectAssembly({commit}, assembly) {

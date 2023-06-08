@@ -78,7 +78,7 @@
           <div class="my-2 border-b border-sky-400">
             <div class="flex items-end justify-between my-2">
               <div class="">
-                <p class="text-sky-800">Узлы/сборки пректа: {{ project.project_assembly.length }}</p>
+                <p class="text-sky-800">Узлы/сборки пректа: {{ project_assembly.length }}</p>
               </div>
               <div class="grid grid-cols-1 gap-2">
                 <div class="flex items-center justify-end">
@@ -95,7 +95,7 @@
               </div>
             </div>
           </div>
-          <div v-if="project.project_assembly.length > 0" class=" min-h-[12rem]">
+          <div v-if="project_assembly.length > 0" class=" min-h-[12rem]">
             <transition-group tag="div" name="left-emergence"  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 my-4 gap-4">
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
                 <div v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="flex items-center gap-1">
