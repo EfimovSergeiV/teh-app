@@ -431,6 +431,8 @@ import os, zipfile, shutil
 from django.conf import settings
 from pathlib import Path
 
+
+
 def custom_builder(project, user, data):
     print(project, user, data)
 
@@ -442,28 +444,51 @@ def custom_builder(project, user, data):
     latests_qs = FileArchiveModel.objects.filter(id__in=latest_ids)
     archives_qs = FileHistoryModel.objects.filter(id__in=archive_ids)
 
+    path_to_files = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/'
+    path_to_zip = f'{settings.BASE_DIR}/files/{user}/{project.name}-build.zip'
+
     print("\nAssembly:")
     for assembly_qs in assemblys_qs:
         files = assembly_qs.assembly_files.all()
-        for file_qs in files:
-            path_archive = f'{settings.BASE_DIR}/files/{file_qs.file}'
-            path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{assembly_qs.name}/{file_qs.name}'
-            print( f'from: {path_archive}\nto:{path_unpacking}\n',)
+        
+        if len(files) == 1:
+            path_archive = f'{settings.BASE_DIR}/files/{files[0].file}'
+            path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{assembly_qs.name}/'
+            Path(path_unpacking).mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(path_archive, 'r') as zip_file:
+                zip_file.extractall(path_unpacking)
+        elif len(files) > 1:
+            for file_qs in files:
+                path_archive = f'{settings.BASE_DIR}/files/{file_qs.file}'
+                path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{assembly_qs.name}/{file_qs.name}/'
+                Path(path_unpacking).mkdir(parents=True, exist_ok=True)
+                with zipfile.ZipFile(path_archive, 'r') as zip_file:
+                    zip_file.extractall(path_unpacking)
 
-
-    print("\nLatest:")
     for latest_qs in latests_qs:
         path_archive = f'{settings.BASE_DIR}/files/{latest_qs.file}'
         path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{latest_qs.assembly}/{latest_qs.name}'
-        print( f'from: {path_archive}\nto:{path_unpacking}\n',)
+        Path(path_unpacking).mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(path_archive, 'r') as zip_file:
+            zip_file.extractall(path_unpacking)
 
-    print("\nArchive:")
     for archive_qs in archives_qs:
         path_archive = f'{settings.BASE_DIR}/files/{archive_qs.file}'
         path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{archive_qs.assembly}/{archive_qs.name}_{archive_qs.created_date}'
-        print( f'from: {path_archive}\nto:{path_unpacking}\n',)
+        Path(path_unpacking).mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(path_archive, 'r') as zip_file:
+            zip_file.extractall(path_unpacking)
 
-    return "Hallo welt"
+    # Бежим по директория и пакуем в архив
+    archive_zip = zipfile.ZipFile(f'{path_to_zip}', 'w')
+    for folder, subfolders, files in os.walk(f'{path_to_files}'):
+        for file in files:
+            archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{path_to_files}'), compress_type = zipfile.ZIP_DEFLATED)
+    archive_zip.close()
+
+    url_to_zip = f'/files/{user}/tmp/{project.name}-build.zip'
+    shutil.rmtree(f'{settings.BASE_DIR}/files/{user}/tmp/')
+    return url_to_zip
 
 
 
@@ -484,8 +509,7 @@ class BuilderProjectView(APIView):
                 build_url = custom_builder(project=project_qs, user=request.user, data=request.data)
                 
                 
-                # return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
-                return Response(status=status.HTTP_200_OK)
+                return Response({'file': f'http://192.168.60.201:8080{build_url}'})
         except KeyError:
             pass
 
@@ -521,7 +545,7 @@ class BuilderProjectView(APIView):
             for file in files:
                 archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{settings.BASE_DIR}/files/{user}/tmp/'), compress_type = zipfile.ZIP_DEFLATED)
         archive_zip.close()
-        shutil. rmtree(f'{settings.BASE_DIR}/files/{user}/tmp/')
+        shutil.rmtree(f'{settings.BASE_DIR}/files/{user}/tmp/')
 
         return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
 
