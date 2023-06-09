@@ -105,7 +105,7 @@
                   </button>
                 </div>
                 <div v-else class="flex items-center gap-1">
-                  <input type="checkbox" class="rounded text-sky-700 focus:ring-0" />
+                  <input :id="assembly.id" v-model="customBuilderAssembly" :value="assembly.id" type="checkbox" class="rounded text-sky-700 focus:ring-0" />
                   <button class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);updateFiles(assembly.id)">                    
                     <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
                   </button> 
@@ -202,7 +202,7 @@
                 <div class="flex items-center justify-start my-2 gap-2">
                   <div>
                     <label class="flex items-center">
-                      <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                      <input :id="project_file.id" v-model="customBuilderLatest" :value="project_file.id" type="checkbox" class="rounded text-sky-700 focus:ring-0">
                       <p class="text-gray-700 text-sm font-semibold"></p>
                     </label>
                   </div>
@@ -316,7 +316,7 @@
                         <div class="flex items-center justify-start gap-2 my-1">
                           <div>
                             <label class="flex items-center gap-2">
-                              <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                              <input :id="historical_file.id" v-model="сustomBuilderArchive" :value="historical_file.id" type="checkbox" class="rounded text-sky-700 focus:ring-0">
                             </label>
                           </div>
                           <a :href="historical_file.file" class=" text-sm text-sky-900">Скачать</a>
@@ -359,7 +359,6 @@
     <!-- <div class="py-1 container mx-auto hidden">
       <UploadWidget />
     </div> -->
-
 
   </div>
 </template>
@@ -409,7 +408,11 @@ export default {
       historyFilesActived: null, /// Идентификатор файлов версий, которые отображаются
 
       latest_file: null, /// Адрес архива
-      build_latest_file: false /// Сборка проекта
+      build_latest_file: false, /// Сборка проекта
+
+      customBuilderAssembly: [], /// Данные для кастомной сборки (Сборки последняя версия)
+      customBuilderLatest: [], /// Данные для кастомной сборки (Сборки последняя версия)
+      сustomBuilderArchive: [],   /// Данные для кастомной сборки (Сборка выбранный архив)
 
     }
   },
@@ -740,7 +743,11 @@ export default {
     async BuildProject() {
       this.build_latest_file = true
       try {
-        const response = await this.$axios.post(`s/projects/builderproject/${this.project.id}/`) 
+        const response = await this.$axios.post(`s/projects/builderproject/${this.project.id}/`, {
+          assembly_id: this.customBuilderAssembly,
+          latest_id: this.customBuilderLatest,
+          archive_id: this.сustomBuilderArchive,
+        }) 
         this.latest_file = response.data.file
         this.build_latest_file = false
       } catch (err) {
