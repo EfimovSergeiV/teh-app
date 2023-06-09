@@ -8,7 +8,7 @@
           <!-- <button class="text-sky-900 font-semibold text-sm mdi mdi-plus-thick"> Создать категорию</button> -->
           <button class="text-sky-900 font-semibold text-sm mdi mdi-view-grid-plus cursor-pointer" @click="createProjectForm"> Создать проект</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProjects(selectedCategory)"> Обновить</button>
-          <button class="text-sky-900 font-semibold text-sm mdi mdi-cloud-search cursor-pointer"> Найти проект</button>
+          <button class="text-sky-900 font-semibold text-sm mdi mdi-cloud-search cursor-pointer" @click="searchForm"> Найти проект</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
         </div>      
       </div>      
@@ -145,7 +145,7 @@ export default {
   methods: {
     ...mapActions({
       addProjects: 'addProjects',
-      // addFiles: 'addFiles',
+      searchForm: 'searchForm',
       addNewUploadFile: 'addNewUploadFile',
       createProjectForm: 'createProjectForm',
       addToast: 'addToast',

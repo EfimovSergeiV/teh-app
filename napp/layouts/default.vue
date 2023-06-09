@@ -41,6 +41,81 @@
       </div>
 
 
+
+      <div class="">
+
+        <transition name="top-emergence">
+          <div v-if="showSearchForm" class="fixed z-30 top-0 w-full">
+            <div class="">
+              <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
+                <div class="flex justify-between my-2">
+                  <div class=""><p class="font-semibold text-sky-800 text-sm">Поиск</p></div>
+                  <div class=""><button class="text-sm mdi mdi-close text-sky-800" @click="searchModal = false"> Закрыть</button></div>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">0</span></p></div>
+                  <div v-if="false" class="grid grid-cols-1 gap-y-4">
+                    <div class="flex gap-2 w-full">
+                      <input id="history-file-name" v-model="newArchiveName" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Название">
+                      <input id="author" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов">
+                      <input id="date-time" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
+                    </div>
+
+                    <div class="flex gap-2 items-center justify-between">
+                      <form class="flex items-center space-x-6">
+                        <label class="block">
+                          <input
+                              id="historyfile" type="file" multiple class="block w-full text-sm text-slate-500
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-gray-100 file:text-sky-700
+                              hover:file:bg-gray-100
+                            " @change="uploadDirChange"/>
+                        </label>
+                      </form>
+                      <span class="flex items-center mdi mdi-upload cursor-pointer text-sky-700 font-semibold text-sm">
+                        <button :disabled="loadingNow" class="" @click="sendHistoryFile">Загрузить в историю</button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+
+                <div class="my-2">
+                  <div class="overflow-y-auto h-[460px] py-1 border-b border-t border-sky-500/50">
+                    <div class="">
+                      <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
+                        <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
+                          <div class="border-b border-gray-300">
+                            <div class="">
+                              <p class="text-xs text-gray-600">{{ historical_file.name }}</p>
+                            </div>
+                            <div class="flex items-center justify-start gap-2 my-1">
+                              <div>
+                                <label class="flex items-center gap-2">
+                                  <input :id="historical_file.id" v-model="сustomBuilderArchive" :value="historical_file.id" type="checkbox" class="rounded text-sky-700 focus:ring-0">
+                                </label>
+                              </div>
+                              <a :href="historical_file.file" class=" text-sm text-sky-900">Скачать</a>
+                            </div>
+                            <div class="my-2">
+                              <p class="text-xs font-semibold text-gray-600 mdi mdi-account"> {{ historical_file.author }}</p>
+                              <p class="text-xs font-semibold text-gray-600 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </transition-group>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+
+      </div>
+
+
       <transition name="top-emergence">
         <div v-if="showSearchForm" class="fixed z-30 top-0 w-full">
           <div class="">
@@ -48,13 +123,13 @@
             <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
               <div class="flex justify-between my-2">
-                <div class=""><p class="font-semibold text-gray-700 text-sm">История изменений</p></div>
-                <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-gray-700" @click="historyFilesModal = false"> Закрыть</button></div>
+                <div class=""><p class="font-semibold text-gray-700 text-sm">Поиск</p></div>
+                <div class=""><button class="text-sm mdi mdi-close-thick font-semibold text-gray-700" @click="searchForm"> Закрыть</button></div>
               </div>
               
               <div class="flex gap-4">
-                <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1"></span></p></div>
-                <button class="text-gray-600 font-semibold text-sm mdi mdi-upload cursor-pointer">Загрузить в историю</button>
+                <div class="w-32"><p class="text-gray-600 font-semibold text-sm mdi mdi-file cursor-pointer"> Найдено: <span class="mx-1">0</span></p></div>
+                <!-- <button class="text-gray-600 font-semibold text-sm mdi mdi-upload cursor-pointer">Загрузить в историю</button> -->
               </div>
               
 
@@ -118,7 +193,7 @@
 </template>
     
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import HeaderView from '~/components/HeaderView.vue';
   import FooterView from '~/components/FooterView.vue';
   
@@ -148,7 +223,11 @@
     beforeDestroy () {
       window.removeEventListener('scroll', this.handleScroll)
     },
+
     methods: {
+      ...mapActions({
+        searchForm: 'searchForm',
+    }),
       // ...mapMutations({
       //   toggle: 'todos/toggle'
       // }),

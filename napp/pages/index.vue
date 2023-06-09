@@ -5,27 +5,20 @@
 
       <div class="bg-sky-700">
         <div class="py-1 container mx-auto px-12">
-
           <div class="flex items-center gap-4 py-2">
             <div v-for="ct in cts" :key="ct.id" class="">
-
               <div v-if="ct.id === selectedCategory" class="border-b border-white">
                 <button class="text-white font-semibold text-sm border-white">{{ ct.name }}</button>
               </div>
-
               <button v-else class="text-white font-semibold text-sm border-white cursor-pointer" @click="selectCategory(ct.id); updateProjects(ct.id)">{{ ct.name }}</button>              
-              
             </div>
           </div>
-
-          <!-- <div class="flex gap-4 py-2 px-4">
-            <div v-for="inserted in inserteds" :key="inserted.id" class="">
-              <p class="text-white font-semibold text-xs border-b border-white cursor-pointer">{{ inserted.name }}</p>
-            </div>
-          </div> -->
-
         </div>
       </div>
+
+
+
+
 
       <div class="container mx-auto px-12">
         <transition name="fade">
@@ -74,6 +67,7 @@ export default {
     return {
       name: null,
       description: null,
+      searchModal: true,
     }
   },
   computed: {

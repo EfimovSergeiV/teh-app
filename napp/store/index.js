@@ -45,7 +45,6 @@ export const state = () => ({
       state.project_assembly = []
     },
     addAssembly(state, assembly) {
-      console.log('add ', assembly)
       state.project_assembly.push(assembly)
     },
     selectAssembly(state, assembly) {
@@ -87,6 +86,9 @@ export const state = () => ({
     /// Формочки (отображение)
     createProjectForm(state) {
       state.showCreateProject = !state.showCreateProject
+    },
+    searchForm(state) {
+      state.showSearchForm = !state.showSearchForm
     },
     // addNewUploadFile(state, { id, file }) {
     //   console.log(id, file)
@@ -228,9 +230,14 @@ export const state = () => ({
     hideToast({ commit }, toast ) {
       commit('hideToast', toast)
     },
+
+    /// Формочки
     createProjectForm({ commit }) {
       commit('createProjectForm')
     },
+    searchForm({ commit }) {
+      commit('searchForm')
+    }
     // addNewUploadFile({ commit }, data) {
     //   commit('addNewUploadFile', { id: data.id, file: data.file })
     // }

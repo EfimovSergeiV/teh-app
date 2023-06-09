@@ -17,6 +17,7 @@
         <div class="flex gap-4 items-center ">
           <nuxt-link :to="{ name: 'index' }" class="text-sky-900 font-semibold text-sm mdi mdi-home"> Главная</nuxt-link>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-update cursor-pointer" @click="updateProject($route.params.id)"> Обновить</button>
+          <button class="text-sky-900 font-semibold text-sm mdi mdi-cloud-search cursor-pointer" @click="searchForm"> Найти проект</button>
           <button class="text-sky-900 font-semibold text-sm mdi mdi-help-circle-outline"> Помощь</button>
         </div>
       </div>
@@ -445,6 +446,7 @@ export default {
   methods: {
     ...mapActions({
       addCategory: 'addCategory',
+      searchForm: 'searchForm',
       updateStorageSpace: 'updateStorageSpace',
       addToast: 'addToast',
       createProject: 'createProject',
