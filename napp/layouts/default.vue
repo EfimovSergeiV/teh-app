@@ -48,7 +48,7 @@
             <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
               <div class="flex justify-between my-4">
-                <div class=""><p class="font-semibold text-gray-700 text-sm">Поиск</p></div>
+                <div class=""><p class="font-semibold text-gray-700 text-sm">Поиск по архивам</p></div>
                 <div class=""><button class="text-sm mdi mdi-close text-gray-700" @click="searchForm"> Закрыть</button></div>
               </div>
               
