@@ -591,8 +591,6 @@ class SearchView(APIView):
         query = Q('multi_match', query=search_query,
                 fields=[
                     'name',
-                    'author',
-                    # 'created_date',
                 ], fuzziness='auto')
 
         search = self.document_class.search().query(query) #[0:30]
@@ -603,7 +601,12 @@ class SearchView(APIView):
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
         qs = FileHistoryModel.objects.filter(id__in=files).order_by(preserved)
 
-        serializer = self.serializer_class(qs, many=True, context={'request':request})
+        start_date = datetime(2022, 1, 1)
+        end_date = datetime(2022, 12, 31)
+        filtered_objects = qs.objects.filter(date_field__range=(start_date, end_date))
+
+
+        serializer = self.serializer_class(filtered_objects, many=True, context={'request':request})
         return Response(serializer.data)
 
 

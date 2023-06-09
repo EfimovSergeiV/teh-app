@@ -19,6 +19,4 @@ class FileDocument(Document):
         fields = [
             'id',
             'name',
-            'author',
-            'created_date',
         ]
