@@ -744,9 +744,9 @@ export default {
       this.build_latest_file = true
       try {
         const response = await this.$axios.post(`s/projects/builderproject/${this.project.id}/`, {
-          assembly_id: this.customBuilderAssembly,
-          latest_id: this.customBuilderLatest,
-          archive_id: this.сustomBuilderArchive,
+          assembly_ids: this.customBuilderAssembly,
+          latest_ids: this.customBuilderLatest,
+          archive_ids: this.сustomBuilderArchive,
         }) 
         this.latest_file = response.data.file
         this.build_latest_file = false

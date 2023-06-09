@@ -431,6 +431,13 @@ import os, zipfile, shutil
 from django.conf import settings
 from pathlib import Path
 
+def custom_builder(pk, user, data):
+    print(pk, user, data)
+    print('Custom builder worked')
+    return "Hallo welt"
+
+
+
 class BuilderProjectView(APIView):
     """ Попробывать реализовать unbuilder, что бы загружать и раскладывать проект целиком, а не по одному архиву """
 
@@ -438,8 +445,20 @@ class BuilderProjectView(APIView):
         user = request.user
         path = f'{settings.BASE_DIR}/files/{ user }/tmp/'
 
+        print(request.data)
+
         project_qs = ProjectArchiveModel.objects.get(id=pk)
         assemplys_qs = project_qs.project_assembly.all()
+
+        try:
+            if len(request.data['assembly_ids']) > 0 or len(request.data['latest_ids']) > 0 or len(request.data['archive_ids']) > 0:
+                build_url = custom_builder(pk=pk, user=request.user, data=request.data)
+                
+                
+                return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
+        except KeyError:
+            pass
+
 
         count = 0
         for assemply_qs in assemplys_qs:
@@ -467,43 +486,14 @@ class BuilderProjectView(APIView):
 
                     print(f'Создаём вложенные директории: { create_path }')
 
-        archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{user}/{project_qs.name}-latest-version.zip', 'w')
+        archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{user}/{project_qs.name}-build.zip', 'w')
         for folder, subfolders, files in os.walk(f'{settings.BASE_DIR}/files/{user}/tmp/'):
             for file in files:
                 archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{settings.BASE_DIR}/files/{user}/tmp/'), compress_type = zipfile.ZIP_DEFLATED)
         archive_zip.close()
         shutil. rmtree(f'{settings.BASE_DIR}/files/{user}/tmp/')
 
-        return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-latest-version.zip'})
-
-
-
-
-class CustomBuilderProjectView(APIView):
-    """ Билдер по разным версиям """
-    
-    def get(self, request, pk):
-                
-        user = request.user
-        path = f'{settings.BASE_DIR}/files/{ user }/tmp/'
-        project_qs = ProjectArchiveModel.objects.get(id=pk)
-
-        if 'archive_id' in request.data.keys():
-            #   Вытаскиваем архив из истории по id
-            
-            
-            pass
-        else:
-            #   Вытаскиваем последний архив
-            
-            
-            pass
-
-
-        assemplys_qs = project_qs.project_assembly.all()
-
-
-        return Response(status=status.HTTP_200_OK)
+        return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
 
 
 
