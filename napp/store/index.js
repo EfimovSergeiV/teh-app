@@ -9,7 +9,8 @@ export const state = () => ({
     historical_files: [],
     showCreateProject: false,
     showSearchForm: false,
-
+    projectAuthors: [],
+    searchResult: [],
     selectedAssembly: null,
     project_assembly: [],
     storageSpace: {},
@@ -90,6 +91,10 @@ export const state = () => ({
     searchForm(state) {
       state.showSearchForm = !state.showSearchForm
     },
+    addAllAuthors(state, authors) {
+      state.projectAuthors = authors
+    },
+    
     // addNewUploadFile(state, { id, file }) {
     //   console.log(id, file)
     //   const newFile = state.files.find((item) => item.id === id)
@@ -237,7 +242,15 @@ export const state = () => ({
     },
     searchForm({ commit }) {
       commit('searchForm')
-    }
+    },
+
+    addAllAuthors({ commit }) {
+      this.$axios.$get(`s/search/`).then((resp) => {
+
+            commit('addAllAuthors', resp)
+
+      }).catch(() => {})
+    },
     // addNewUploadFile({ commit }, data) {
     //   commit('addNewUploadFile', { id: data.id, file: data.file })
     // }
