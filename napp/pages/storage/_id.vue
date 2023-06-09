@@ -98,18 +98,20 @@
           <div v-if="project_assembly.length > 0" class=" min-h-[12rem]">
             <transition-group tag="div" name="left-emergence"  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 my-4 gap-4">
               <div v-for="assembly in project_assembly" :key="assembly.id" class="">
-                <div v-if="selectedAssembly && selectedAssembly.id === assembly.id" disabled class="flex items-center gap-1">
-                  <input type="checkbox" class="rounded text-sky-700 focus:ring-0" />
-                  <button class="border-b border-gray-400 w-full h-full">
+                
+                <div v-if="selectedAssembly && selectedAssembly.id === assembly.id" class="flex items-center gap-1">
+                  <input :id="assembly.id" :value="assembly.id" type="checkbox" class="rounded text-sky-700 focus:ring-0" />
+                  <button :id="assembly.name" class="border-b border-gray-400 w-full h-full">
                     <p class="text-xs text-left font-semibold text-gray-800">{{ assembly.name }}</p>                                      
                   </button>
                 </div>
                 <div v-else class="flex items-center gap-1">
                   <input :id="assembly.id" v-model="customBuilderAssembly" :value="assembly.id" type="checkbox" class="rounded text-sky-700 focus:ring-0" />
-                  <button class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);updateFiles(assembly.id)">                    
+                  <button :id="assembly.name" class="border-b border-gray-300 w-full h-full" @click="selectAssembly(assembly);updateFiles(assembly.id)">                    
                     <p class="text-xs text-left font-semibold text-gray-600 hover:text-gray-800 transition-all">{{ assembly.name }}</p>
                   </button> 
-                </div>              
+                </div>
+                
               </div>
             </transition-group>
           </div>

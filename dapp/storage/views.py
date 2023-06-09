@@ -431,9 +431,38 @@ import os, zipfile, shutil
 from django.conf import settings
 from pathlib import Path
 
-def custom_builder(pk, user, data):
-    print(pk, user, data)
-    print('Custom builder worked')
+def custom_builder(project, user, data):
+    print(project, user, data)
+
+    assembly_ids = data['assembly_ids']
+    latest_ids = data['latest_ids']
+    archive_ids = data['archive_ids']
+
+    assemblys_qs = AssemblyModel.objects.filter(id__in=assembly_ids)
+    latests_qs = FileArchiveModel.objects.filter(id__in=latest_ids)
+    archives_qs = FileHistoryModel.objects.filter(id__in=archive_ids)
+
+    print("\nAssembly:")
+    for assembly_qs in assemblys_qs:
+        files = assembly_qs.assembly_files.all()
+        for file_qs in files:
+            path_archive = f'{settings.BASE_DIR}/files/{file_qs.file}'
+            path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{assembly_qs.name}/{file_qs.name}'
+            print( f'from: {path_archive}\nto:{path_unpacking}\n',)
+
+
+    print("\nLatest:")
+    for latest_qs in latests_qs:
+        path_archive = f'{settings.BASE_DIR}/files/{latest_qs.file}'
+        path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{latest_qs.assembly}/{latest_qs.name}'
+        print( f'from: {path_archive}\nto:{path_unpacking}\n',)
+
+    print("\nArchive:")
+    for archive_qs in archives_qs:
+        path_archive = f'{settings.BASE_DIR}/files/{archive_qs.file}'
+        path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{archive_qs.assembly}/{archive_qs.name}_{archive_qs.created_date}'
+        print( f'from: {path_archive}\nto:{path_unpacking}\n',)
+
     return "Hallo welt"
 
 
@@ -452,7 +481,7 @@ class BuilderProjectView(APIView):
 
         try:
             if len(request.data['assembly_ids']) > 0 or len(request.data['latest_ids']) > 0 or len(request.data['archive_ids']) > 0:
-                build_url = custom_builder(pk=pk, user=request.user, data=request.data)
+                build_url = custom_builder(project=project_qs, user=request.user, data=request.data)
                 
                 
                 # return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
@@ -515,6 +544,23 @@ class GetDiskSpaceView(APIView):
 class SearchView(APIView):
     serializer_class = SearchSerializer
     document_class = FileDocument
+
+    def get(self, request):
+        """ Возвращает список всех авторов и крайние даты """
+
+        archives_qs = FileHistoryModel.objects.all()
+        authors = []
+
+        for archive_qs in archives_qs:
+            if archive_qs.author not in authors:
+                authors.append(archive_qs.author)
+
+        return Response({
+            "authors": authors,
+            "first_date": "",
+            "latest_date": "",
+        })
+
 
     def post(self, request):
         search_query = request.data['name']
