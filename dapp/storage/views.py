@@ -455,7 +455,8 @@ class BuilderProjectView(APIView):
                 build_url = custom_builder(pk=pk, user=request.user, data=request.data)
                 
                 
-                return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
+                # return Response({'file': f'http://192.168.60.201:8080/files/{user}/{ project_qs.name }-build.zip'})
+                return Response(status=status.HTTP_200_OK)
         except KeyError:
             pass
 
