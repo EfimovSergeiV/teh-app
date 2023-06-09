@@ -67,5 +67,6 @@ class SearchSerializer(serializers.ModelSerializer):
             'id', 
             'name',
             'author',
+            'file',
             'created_date',
             )

@@ -587,6 +587,7 @@ class SearchView(APIView):
 
 
     def post(self, request):
+        print(request.data)
         search_query = request.data['name']
         query = Q('multi_match', query=search_query,
                 fields=[
@@ -595,18 +596,18 @@ class SearchView(APIView):
 
         search = self.document_class.search().query(query) #[0:30]
         response = search.execute()
-        print(response)
 
         files = [file.id for file in response ]
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
-        qs = FileHistoryModel.objects.filter(id__in=files).order_by(preserved)
+        
+        start_date = datetime.fromisoformat(request.data['start_date'])
+        end_date = datetime.fromisoformat(request.data['end_date'])
+        author = request.data['author']
 
-        start_date = datetime(2022, 1, 1)
-        end_date = datetime(2022, 12, 31)
-        filtered_objects = qs.objects.filter(date_field__range=(start_date, end_date))
+        qs = FileHistoryModel.objects.filter(id__in=files).filter(created_date__range=(start_date, end_date)).filter(author=author).order_by(preserved)
 
+        serializer = self.serializer_class(qs, many=True, context={'request':request})
 
-        serializer = self.serializer_class(filtered_objects, many=True, context={'request':request})
         return Response(serializer.data)
 
 

@@ -94,6 +94,10 @@ export const state = () => ({
     addAllAuthors(state, authors) {
       state.projectAuthors = authors
     },
+    searchMutation(state, result) {
+      console.log(result)
+      state.searchResult = result
+    },
     
     // addNewUploadFile(state, { id, file }) {
     //   console.log(id, file)
@@ -246,9 +250,14 @@ export const state = () => ({
 
     addAllAuthors({ commit }) {
       this.$axios.$get(`s/search/`).then((resp) => {
-
-            commit('addAllAuthors', resp)
-
+        commit('addAllAuthors', resp)
+      }).catch(() => {})
+    },
+    searchAction({ commit }, data) {
+      
+      this.$axios.$post('s/search/', data ).then((resp) => {
+        console.log(resp)
+        commit('searchMutation', resp)
       }).catch(() => {})
     },
     // addNewUploadFile({ commit }, data) {

@@ -54,22 +54,21 @@
               
               <div class="flex items-center gap-4">
                 <div class="flex gap-2 w-full">
-                  <input id="history-file-name" v-model="newArchiveName" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Что будем искать?">
-                  <!-- <input id="author" v-model="authorFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Иван Иванов"> -->
+                  <input id="history-file-name" v-model="searchName" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Что будем искать?">
                   <select id="countries" v-model="selectAuthor" placeholder="ds,th" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none">
                     <option selected value="null">Выберите конструктора</option>
-                    <option v-for="(author, pk) in projectAuthors.authors" :key="pk" :value="pk" >{{ author }}</option>
+                    <option v-for="(author, pk) in projectAuthors.authors" :key="pk" :value="author" >{{ author }}</option>
                   </select>
                   
                   <div class="flex items-center gap-2">
-                    <input id="date" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
+                    <input id="date" v-model="startDateFile" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
                     <p class="text-base font-semibold text-gray-700"> - </p>
-                    <input id="date" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
+                    <input id="date" v-model="endDateFile" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
                   </div>
 
                 </div>
                 <div class="">
-                  <button class=" w-28 text-gray-600 font-semibold text-sm mdi mdi-database-search-outline cursor-pointer"> Искать</button>
+                  <button class=" w-28 text-gray-600 font-semibold text-sm mdi mdi-database-search-outline cursor-pointer" @click="searchSend()"> Искать</button>
                 </div>
               </div>
 
@@ -80,12 +79,12 @@
                   <div class="">
 
                     <div v-if="searchResult.length > 0" class="">
-                      <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
-                        <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
+                      <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
+                        <div v-for="result in searchResult" :key="result.id" class="">
                           <div class="border-b border-gray-300">
 
                             <div class="">
-                              <p class="text-sm text-gray-700">{{ historical_file.name }}</p>
+                              <p class="text-sm text-gray-700">{{ result.name }}</p>
                             </div>
 
                             <div class="flex items-center justify-start my-1">
@@ -95,16 +94,12 @@
                                   <p class="text-gray-700 text-sm font-semibold"></p>
                                 </label>
                               </div>
-                              <a :href="historical_file.file" class=" text-sm text-gray-900">Скачать</a>
+                              <a :href="result.file" class=" text-sm text-gray-900">Скачать</a>
                             </div>
 
                             <div class="my-1">
-                              <p class="text-xs font-semibold text-gray-800 mdi mdi-account"> {{ historical_file.author }}</p>
-                              <p class="text-xs font-semibold text-gray-800 mdi mdi-calendar-clock"> {{ historical_file.created_date }}</p>
-                            </div>
-
-                            <div class="">
-                              <p class="text-xs text-gray-900">{{ historical_file.md5 }}</p>
+                              <p class="text-xs font-semibold text-gray-700 mdi mdi-account"> {{ result.author }}</p>
+                              <p class="text-xs font-semibold text-gray-700 mdi mdi-calendar-clock"> {{ result.created_date }}</p>
                             </div>
 
                           </div>
@@ -161,6 +156,9 @@
         longitude: null,
         scrollPosition: 0,
         selectAuthor: null,
+        searchName: null,
+        startDateFile: null,
+        endDateFile: null,
       }
     },
     computed: {
@@ -186,7 +184,16 @@
       ...mapActions({
         searchForm: 'searchForm',
         addAllAuthors: 'addAllAuthors',
+        searchAction: 'searchAction',
     }),
+    searchSend() {
+      this.searchAction({
+        name: this.searchName,
+        author: this.selectAuthor,
+        start_date: this.startDateFile,
+        end_date: this.endDateFile,
+      })
+    },
       // ...mapMutations({
       //   toggle: 'todos/toggle'
       // }),
