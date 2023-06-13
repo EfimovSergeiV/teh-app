@@ -358,7 +358,6 @@
       </div>
     </div>
 
-    <p class="text-sm text-gray-700 px-10">Обновление: {{ uploadFiles }}</p>
 
     <!-- <div class="py-1 container mx-auto hidden">
       <UploadWidget />
