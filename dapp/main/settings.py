@@ -187,3 +187,5 @@ ELASTICSEARCH_DSL = {
 #         'FileHistoryModel'
 #     )),
 # )
+
+BACKEND_URL = 'http://192.168.60.201:8080/'
