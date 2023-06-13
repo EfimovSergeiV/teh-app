@@ -9,7 +9,7 @@ class CategoryModel(models.Model):
 
     class Meta:
         verbose_name = "Категория"
-        verbose_name_plural = "Категория"
+        verbose_name_plural = "1. Категория"
         ordering = ['id',]
 
     def __str__(self) -> str:
@@ -27,14 +27,11 @@ class ProjectArchiveModel(models.Model):
 
     class Meta:
         verbose_name = "Проект"
-        verbose_name_plural = "Проекты"
+        verbose_name_plural = "2. Проекты"
         ordering = ['-updated_date',]
 
     def __str__(self) -> str:
         return self.name
-    
-
-
 
 
 class AssemblyModel(models.Model):
@@ -45,7 +42,7 @@ class AssemblyModel(models.Model):
 
     class Meta:
         verbose_name = "Узел/Сборка"
-        verbose_name_plural = "Узлы/Сборки"
+        verbose_name_plural = "3. Узлы/Сборки"
 
     def __str__(self) -> str:
         return self.name
@@ -63,8 +60,8 @@ class FileArchiveModel(models.Model):
     created_date = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
 
     class Meta:
-        verbose_name = "Архив"
-        verbose_name_plural = "Архивы"
+        verbose_name = "Текущий архив"
+        verbose_name_plural = "4. Текущие архивы (последние)"
         ordering = ['-created_date',]
 
 
@@ -102,8 +99,8 @@ class FileHistoryModel(models.Model):
     created_date = models.DateTimeField(verbose_name="Дата создания")
     
     class Meta:
-        verbose_name = "Файл"
-        verbose_name_plural = "Файлы"
+        verbose_name = "Файл архива"
+        verbose_name_plural = "5. Файлы архивов"
         ordering = ['-created_date',]
 
     def __str__(self) -> str:

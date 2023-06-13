@@ -597,17 +597,15 @@ class SearchView(APIView):
         search = self.document_class.search().query(query) #[0:30]
         response = search.execute()
 
-        for resp in response:
-            print(f'Найден: {resp.id}. {resp.name}')
-
         files = [file.id for file in response ]
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
-        
+
         start_date = datetime.fromisoformat(request.data['start_date'])
         end_date = datetime.fromisoformat(request.data['end_date'])
         author = request.data['author']
 
         qs = FileHistoryModel.objects.filter(id__in=files).order_by(preserved)
+
         if author and author != 'null':
             qs = qs.filter(author=author)
 

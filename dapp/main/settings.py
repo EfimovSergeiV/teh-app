@@ -174,3 +174,16 @@ ELASTICSEARCH_DSL = {
         'hosts': 'localhost:9200'
     },
 }
+
+# ADMIN_REORDER = (
+#     # ('app1', ('App1Model1', 'App1Model2', 'App1Model3')),
+#     ('storage', (
+#         'CategoryModel', 
+#         'ProjectArchiveModel', 
+#         'AssemblyModel', 
+#         'FileArchiveModel', 
+#         'ProjectArchiveModel', 
+#         'FileArchiveModel', 
+#         'FileHistoryModel'
+#     )),
+# )
