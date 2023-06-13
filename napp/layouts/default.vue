@@ -13,7 +13,7 @@
               <transition-group tag="div" name="right-emergence">
                 <div v-for="toast in toasts" :key="toast.id" class="my-2">
                 
-                  <div class=" bg-gray-100 border border-gray-200 shadow-lg shadow-gray-900 rounded-md">
+                  <div class=" bg-white border border-gray-100 shadow-lg shadow-gray-900 rounded-md">
                     
                     <div v-if="toast.type == 'success'" class="flex gap-2 items-center">
                       <div class="">
