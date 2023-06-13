@@ -474,7 +474,7 @@ def custom_builder(project, user, data):
 
     for archive_qs in archives_qs:
         path_archive = f'{settings.BASE_DIR}/files/{archive_qs.file}'
-        path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{archive_qs.assembly}/{archive_qs.name}_{archive_qs.created_date}'
+        path_unpacking = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/{archive_qs.assembly}/{archive_qs.name}_{archive_qs.created_date.strftime("%Y-%m-%d %H:%M:%S")}'
         Path(path_unpacking).mkdir(parents=True, exist_ok=True)
         with zipfile.ZipFile(path_archive, 'r') as zip_file:
             zip_file.extractall(path_unpacking)
