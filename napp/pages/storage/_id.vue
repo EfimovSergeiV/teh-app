@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="container min-h-screen mx-auto px-12">
+    <div class="container min- h- screen mx-auto px-12">
       <div class="my-4">
         <div class="flex items-center justify-end">
           <span class="text-base mdi mdi-pencil-outline cursor-pointer mx-1 text-gray-600 hover:text-gray-800 transition-all" @click="editProjectDataForm = true"></span>

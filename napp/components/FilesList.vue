@@ -15,7 +15,7 @@
     </div>
 
 
-    <div class="container mx-auto min-h-screen py-6 px-12">
+    <div class="container mx-auto min- h- screen py-6 px-12">
       
       <div>
 

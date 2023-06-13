@@ -19,7 +19,7 @@ from storage.documents import FileDocument
 from django.db.models import Case, When
 from elasticsearch_dsl import Q
 from django.contrib.auth.models import User
-
+from rest_framework.permissions import AllowAny ,IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
 def check_zip_password(file_path):
@@ -54,6 +54,8 @@ def get_md5_summ(file):
 
 class CategoryView(APIView):
     """ Категории проектов """
+
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self, request):
         qs = CategoryModel.objects.all()
