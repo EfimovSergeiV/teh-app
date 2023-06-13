@@ -160,8 +160,8 @@
         scrollPosition: 0,
         selectAuthor: null,
         searchName: null,
-        startDateFile: null,
-        endDateFile: null,
+        startDateFile: '2000-01-01T12:00',
+        endDateFile: '2023-01-01T12:00',
       }
     },
     computed: {

@@ -6,7 +6,7 @@ from storage.views import (
     GetallProjectArchiveView,
     CreateOrUpdateProjectView,
     AssemblyView,
-    CreateOrUpdateFilesView,
+    # CreateOrUpdateFilesView,
     SearchView,
 
     GetAssemblyView,
@@ -29,7 +29,7 @@ urlpatterns = [
     path('projects/create-or-update/', CreateOrUpdateProjectView.as_view()),
     path('assembly/create/', AssemblyView.as_view()),
     # path('projects/update/<int:pk>/', CreateOrUpdateProjectView.as_view()),
-    path('files/create-or-update/', CreateOrUpdateFilesView.as_view()),
+    # path('files/create-or-update/', CreateOrUpdateFilesView.as_view()),
 
 
     path('cts/', CategoryView.as_view()),

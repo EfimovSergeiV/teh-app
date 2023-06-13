@@ -22,25 +22,25 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny ,IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
-def check_zip_password(file_path):
-    """ Проверка на запароленный архив """
-    try:
-        with zipfile.ZipFile(file_path) as zip_file:
-            # Получаем имена файлов в архиве
-            file_names = zip_file.namelist()
-            # Проверяем, защищен ли архив паролем
-            if zip_file.comment:
-                return True
-            for file_name in file_names:
-                # Получаем информацию о файле
-                file_info = zip_file.getinfo(file_name)
-                # Проверяем, защищен ли файл паролем
-                if file_info.flag_bits & 0x1:
-                    return True
-        return False
-    except zipfile.BadZipFile:
-        # Если файл не является ZIP-архивом, возвращаем False
-        return False
+# def check_zip_password(file_path):
+#     """ Проверка на запароленный архив """
+#     try:
+#         with zipfile.ZipFile(file_path) as zip_file:
+#             # Получаем имена файлов в архиве
+#             file_names = zip_file.namelist()
+#             # Проверяем, защищен ли архив паролем
+#             if zip_file.comment:
+#                 return True
+#             for file_name in file_names:
+#                 # Получаем информацию о файле
+#                 file_info = zip_file.getinfo(file_name)
+#                 # Проверяем, защищен ли файл паролем
+#                 if file_info.flag_bits & 0x1:
+#                     return True
+#         return False
+#     except zipfile.BadZipFile:
+#         # Если файл не является ZIP-архивом, возвращаем False
+#         return False
     
 def get_md5_summ(file):
     """ Проверка MD5 суммы архива """
@@ -128,110 +128,110 @@ class AssemblyView(APIView):
         
 
 
-def add_file_to_history(data):
-    """ Добавляем загруженный файл в историю """
-    # Добавить обновление архива
-    try:
-        FileHistoryModel.objects.create(
-            latest_id = data.id,
-            author = data.author,
-            created_date = data.created_date,
-            name = data.name,
-            md5 = data.md5,
-            file = data.file,
-        )
-    except AttributeError:
-        FileHistoryModel.objects.create(
-            latest_id = data["id"],
-            author = data["author"],
-            created_date = data["created_date"],
-            name = data["name"],
-            md5 = data["md5"],
-            file = data["file"],
-        )
+# def add_file_to_history(data):
+#     """ Добавляем загруженный файл в историю """
+#     # Добавить обновление архива
+#     try:
+#         FileHistoryModel.objects.create(
+#             latest_id = data.id,
+#             author = data.author,
+#             created_date = data.created_date,
+#             name = data.name,
+#             md5 = data.md5,
+#             file = data.file,
+#         )
+#     except AttributeError:
+#         FileHistoryModel.objects.create(
+#             latest_id = data["id"],
+#             author = data["author"],
+#             created_date = data["created_date"],
+#             name = data["name"],
+#             md5 = data["md5"],
+#             file = data["file"],
+#         )
 
 
 
-class CreateOrUpdateFilesView(APIView):
-    """ Создать или обновить архив проекта """
+# class CreateOrUpdateFilesView(APIView):
+#     """ Создать или обновить архив проекта """
 
-    def post(self, request):
-        file = request.FILES['file']
-        fs = FileSystemStorage()
+#     def post(self, request):
+#         file = request.FILES['file']
+#         fs = FileSystemStorage()
 
-        # print(file.name, request.data)
+#         # print(file.name, request.data)
 
-        # Проверки архива
-        if check_zip_password(file):
-            print("обнаружен пароль на архиве")
-            return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
-        md5_summ = get_md5_summ(file)
-
-
-        serializer = FileArchiveSerializer
-        project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
+#         # Проверки архива
+#         if check_zip_password(file):
+#             print("обнаружен пароль на архиве")
+#             return Response(data={'id': 1, 'msg': "Архивы с паролем запрещены", 'type': 'error'})
+#         md5_summ = get_md5_summ(file)
 
 
-        profile = User.objects.get(username=request.user)
-        uploader = f'{profile.first_name} {profile.last_name}'
-        author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
-        created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
+#         serializer = FileArchiveSerializer
+#         project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
 
 
-        data = {
-            "project": project.id,
-            "md5": md5_summ,
-            "file": file,
-            "author": author,
-            "created_date": created_data
-        }
+#         profile = User.objects.get(username=request.user)
+#         uploader = f'{profile.first_name} {profile.last_name}'
+#         author = request.data['author_history'] if 'author_history' in request.data.keys() else uploader
+#         created_data = datetime.fromisoformat(request.data['date_history']) if 'date_history' in request.data.keys() else timezone.now()
 
 
-        try:
-            data['name'] = request.data["name"]
-        except KeyError:
-            pass
+#         data = {
+#             "project": project.id,
+#             "md5": md5_summ,
+#             "file": file,
+#             "author": author,
+#             "created_date": created_data
+#         }
 
 
-        #if 'date_history' not in request.data.keys():
-        if request.data["file_id"] == 'newfile':
-            # print("создаём новую запись, добавляем файл / заносим в историю")
-            serializer_data = serializer(data=data)
-
-            if serializer_data.is_valid():
-                print("SAVING")
-                saved_data = serializer_data.save()
-            else:
-                print(serializer_data.errors)
+#         try:
+#             data['name'] = request.data["name"]
+#         except KeyError:
+#             pass
 
 
-        else:
-            qs = FileArchiveModel.objects.get(id=request.data["file_id"])
-            data['name'] = qs.name
+#         #if 'date_history' not in request.data.keys():
+#         if request.data["file_id"] == 'newfile':
+#             # print("создаём новую запись, добавляем файл / заносим в историю")
+#             serializer_data = serializer(data=data)
 
-            # print(f'data: {data}, id: {qs.id}, qs: {qs}')
-
-            serializer_data = serializer(data=data)
-            if serializer_data.is_valid():
-                print("UPDATE")
-                if 'date_history' in request.data.keys():
-                    print('move file to history')
-                    saved_data = data
-                    saved_data['id'] = int(request.data["file_id"])
-
-                # print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
-                else:
-                    print('move file to NOW')
-                    saved_data = serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
-
-            else:
-                print(serializer_data.errors)
+#             if serializer_data.is_valid():
+#                 print("SAVING")
+#                 saved_data = serializer_data.save()
+#             else:
+#                 print(serializer_data.errors)
 
 
-        # Добавляем файл в историю загрузок
-        print(saved_data)
-        add_file_to_history(saved_data)
-        return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
+#         else:
+#             qs = FileArchiveModel.objects.get(id=request.data["file_id"])
+#             data['name'] = qs.name
+
+#             # print(f'data: {data}, id: {qs.id}, qs: {qs}')
+
+#             serializer_data = serializer(data=data)
+#             if serializer_data.is_valid():
+#                 print("UPDATE")
+#                 if 'date_history' in request.data.keys():
+#                     print('move file to history')
+#                     saved_data = data
+#                     saved_data['id'] = int(request.data["file_id"])
+
+#                 # print(f'обновляем запись { request.data["file_id"]} / заносим в историю')
+#                 else:
+#                     print('move file to NOW')
+#                     saved_data = serializer_data.update(instance=qs, validated_data=serializer_data.validated_data) 
+
+#             else:
+#                 print(serializer_data.errors)
+
+
+#         # Добавляем файл в историю загрузок
+#         print(saved_data)
+#         add_file_to_history(saved_data)
+#         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
 
 
@@ -433,8 +433,6 @@ import os, zipfile, shutil
 from django.conf import settings
 from pathlib import Path
 
-
-
 def custom_builder(project, user, data):
     print(project, user, data)
 
@@ -488,7 +486,7 @@ def custom_builder(project, user, data):
             archive_zip.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder,file), f'{path_to_files}'), compress_type = zipfile.ZIP_DEFLATED)
     archive_zip.close()
 
-    url_to_zip = f'/files/{user}/tmp/{project.name}-build.zip'
+    url_to_zip = f'/files/{user}/{project.name}-build.zip'
     shutil.rmtree(f'{settings.BASE_DIR}/files/{user}/tmp/')
     return url_to_zip
 
@@ -598,6 +596,9 @@ class SearchView(APIView):
 
         search = self.document_class.search().query(query) #[0:30]
         response = search.execute()
+
+        for resp in response:
+            print(f'Найден: {resp.id}. {resp.name}')
 
         files = [file.id for file in response ]
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
