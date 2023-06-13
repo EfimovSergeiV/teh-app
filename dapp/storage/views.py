@@ -607,7 +607,12 @@ class SearchView(APIView):
         end_date = datetime.fromisoformat(request.data['end_date'])
         author = request.data['author']
 
-        qs = FileHistoryModel.objects.filter(id__in=files).filter(created_date__range=(start_date, end_date)).filter(author=author).order_by(preserved)
+        qs = FileHistoryModel.objects.filter(id__in=files).order_by(preserved)
+        if author and author != 'null':
+            qs = qs.filter(author=author)
+
+        if start_date and end_date and start_date != 'null' and end_date != 'null':
+            qs = qs.filter(created_date__range=(start_date, end_date))
 
         serializer = self.serializer_class(qs, many=True, context={'request':request})
 
