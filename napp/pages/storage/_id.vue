@@ -358,6 +358,8 @@
       </div>
     </div>
 
+    <p class="text-sm text-gray-700 px-10">Обновление: {{ uploadFiles }}</p>
+
     <!-- <div class="py-1 container mx-auto hidden">
       <UploadWidget />
     </div> -->
@@ -465,12 +467,14 @@ export default {
     onFileChange(event) {
       const EventData = event
       const EventID = EventData.target.id
-      const IndexFile = this.uploadFiles.findIndex((item) => item.file_id === String(EventID))
+      const IndexFile = this.uploadFiles.findIndex((item) => item.file_id === String(EventID))  /// индекс из списка выгрузки
+      const File = this.files.findIndex((item) => Number(item.id) === Number(EventID) )         /// индекс из файлов
 
       if (IndexFile === -1) {
         this.uploadFiles.push({
           "project_id": this.project.id,
           "file_id": EventID,
+          "file_name": this.files[File].name,
           "files": Array.from(event.target.files)
         })
       } else {
@@ -689,7 +693,7 @@ export default {
           zip.file(file.name, fileContent);
         }
         const zipContent = await zip.generateAsync({ type: 'blob' });
-        const archiveName = `archive.zip` // <= Сделать сюда название архива
+        const archiveName = `${fileData.file_name}.zip`
         formData.append("file", zipContent, archiveName)
 
 
