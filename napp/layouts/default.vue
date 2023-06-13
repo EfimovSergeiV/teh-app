@@ -1,7 +1,7 @@
 <template>
 
-  <div class="bg-gradient-to-r from-gray-100 to-gray-50 ">
-    <div id="background-page" class="bg-fixed min-h-screen bg-no-repeat bg-right bg-cover bg- contain bg-[url('/images/bg.webp')]">
+  <div class="bg-gradient-to-r from-gray-100 to-gray-50">
+    <div id="background-page" class="bg-fixed min-h-screen bg-no-repeat bg-[right_top_6rem] bg-ri ght bg- cover bg-contain bg-[url('/images/bg.webp')]">
 
       <div id="" class="grid grid-cols-1 content-between">
 
@@ -127,13 +127,13 @@
           </div>
         </transition>
 
-        <HeaderView />
+        <HeaderView class="" />
 
         <transition name="fade" mode="out-in">
-          <Nuxt id="page" class=" min-h-full" />
+          <Nuxt id="page" class=" min-h-screen" />
         </transition>
 
-        <FooterView class="fixed bottom-0 w-full" />
+        <FooterView class="bottom-0 w-full" />
 
       </div>
     </div>
