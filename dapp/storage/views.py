@@ -344,7 +344,6 @@ class UpdateLatestFileView(APIView):
         try:
             file = request.FILES['file']
             md5_summ = get_md5_summ(file)
-
             
             latest_file = FileArchiveModel.objects.get(id=pk)
 
@@ -357,7 +356,7 @@ class UpdateLatestFileView(APIView):
                 "project": latest_file.project.id,
                 "assembly": latest_file.assembly.id,
                 "latest": latest_file.id,
-                "name": latest_file.name,
+                "name": request.data['file_name'],
                 "md5": md5_summ,
                 "author": author,
                 "file": file,
@@ -373,6 +372,7 @@ class UpdateLatestFileView(APIView):
             FileArchiveModel.objects.filter(id=pk).update(
                 md5 = md5_summ,
                 author = author,
+                name = data['name'],
                 file = created.file,
                 created_date = created_date
             )

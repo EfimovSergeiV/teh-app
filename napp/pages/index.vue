@@ -38,7 +38,7 @@
 
               <div class="flex items-center justify-end">
                 <div class="mt-4">
-                  <button id="file" :disabled="btnStatus" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="createProject">Создать</button>
+                  <button id="create-file" class="px-6 py-2 bg-white disabled:bg-gray-400 rounded-full text-sm font-semibold text-sky-900 transition-all duration-700" @click="createProject">Создать</button>
                 </div>
               </div>
 

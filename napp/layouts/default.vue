@@ -3,7 +3,7 @@
   <div class="bg-gradient-to-r from-gray-100 to-gray-50">
     <div id="background-page" class="bg-fixed min-h-screen bg-no-repeat bg-[right_top_6rem] bg-ri ght bg- cover bg-contain bg-[url('/images/bg.webp')]">
 
-      <div id="" class="grid grid-cols-1 content-between">
+      <div id="page" class="grid grid-cols-1 content-between">
 
         <div class="">
           <div class="relative">

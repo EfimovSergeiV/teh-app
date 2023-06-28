@@ -128,6 +128,9 @@
             </transition>
           </p>
         </div>
+
+
+        <!-- THIS BUG WITH TRANSITION -->
         <div class=" h-full flex items-center justify-center">
           <transition name="fade" mode="out-in">
             <div v-if="uploadform" class=" w-full">
@@ -192,8 +195,8 @@
         </div>
 
         <!-- this debug -->
-        <!-- <p class="text-xs"> {{ uploadFiles }}</p>
-        <p class="text-xs"> {{ NamesUploadFiles }}</p> -->
+        <!-- <p class="text-xs"> {{ uploadFiles }}</p> -->
+        <!-- <p class="text-xs"> {{ NamesUploadFiles }}</p> -->
 
         <div v-if="files.length > 0" class="min-h-[300px]">
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
@@ -245,12 +248,9 @@
 
 
 
-
-                  <!-- <div class="mb-1">
-                    <input id="new-file-name" v-model="NamesUploadFiles" class="text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название">
-                  </div> -->
-
-
+                  <div class="mb-1">
+                    <input :id="project_file.id" class="text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название (необязательно)" @change="onFileNameChange">
+                  </div>
 
 
 
@@ -369,7 +369,7 @@
                 <div v-if="latest_file" class="">
                   <a :href="latest_file" class="w-[190px] border border-green-500 text-center text-sm font- semibold text-gray-200 bg-gradient-to-r from-green-600 via-green-600/90 to-green-600 px-8 py-2 rounded cursor-pointer flex gap-2 items-start mdi mdi-download" target="_blank"> Скачать архив</a>
                 </div>  
-                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-2 transition-all text-center text-sm font- semibold text-gray-200 hover:text-white bg-gradient-to-r from-sky-900 via-sky-900/90 to-sky-900  border border-sky-700 disabled:border-sky-500 disabled:from-sky-600 disabled:via-sky-600/90 disabled:to-sky-600 rounded-t-lg cursor-pointer flex gap-2 items-start duration-700" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
+                <button v-else :disabled="build_latest_file" class="w-[190px] px-8 py-1 transition-all text-center text-sm font- semibold text-gray-200 hover:text-white bg-gradient-to-r from-sky-900 via-sky-900/90 to-sky-900  border border-sky-700 disabled:border-sky-500 disabled:from-sky-600 disabled:via-sky-600/90 disabled:to-sky-600 rounded-t-lg cursor-pointer flex gap-2 items-start duration-700" @click="BuildProject"><span class="mdi mdi-package-variant"></span> Собрать проект</button>
               </div>
             </div>
           
@@ -484,6 +484,22 @@ export default {
     }),
 
     /// Без ключа х3 как сделать поэтому
+
+    onFileNameChange(event) {
+      const EventData = event
+      const EventID = EventData.target.id
+      const IndexFile = this.uploadFiles.findIndex((item) => item.file_id === String(EventID))  /// индекс из списка выгрузки
+      // const File = this.files.findIndex((item) => Number(item.id) === Number(EventID) )         /// индекс из файлов
+      
+      if (IndexFile === -1) {
+        this.addToast({ "id": 1, "msg": "Выберите сначала файлы", "type": "error" })
+      } else {
+
+        this.uploadFiles[IndexFile].file_name = event.target.value
+      }
+
+    },
+
     onFileChange(event) {
       const EventData = event
       const EventID = EventData.target.id
@@ -705,6 +721,7 @@ export default {
 
         formData.append("project_id", fileData.project_id)
         formData.append("file_id", fileData.file_id)
+        formData.append("file_name", fileData.file_name)
 
         const zip = new JSZip()
         for (let i = 0; i < fileData.files.length; i++) {
