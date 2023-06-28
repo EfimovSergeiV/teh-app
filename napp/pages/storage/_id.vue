@@ -191,7 +191,9 @@
           </transition>
         </div>
 
-
+        <!-- this debug -->
+        <!-- <p class="text-xs"> {{ uploadFiles }}</p>
+        <p class="text-xs"> {{ NamesUploadFiles }}</p> -->
 
         <div v-if="files.length > 0" class="min-h-[300px]">
           <transition-group tag="div" name="left-emergence" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
@@ -219,14 +221,18 @@
                     <p class="text-xs mdi mdi-update font-semibold text-gray-600"> {{ project_file.created_date }}</p>
                   </div>
                 </div>
+
+                
+
                 <div class="relative">
+
                   <div class="flex items-center justify-center">
                     <form class="flex items-center space-x-4">
                       <label :for="project_file.id" class="block">                        
                         <input
                           :id="project_file.id" type="file" multiple
                           class="block w-full text-sm text-slate-500
-                          file:mr-4 file:py-2 file:px-4
+                          file:mr-4 file:py-1 file:px-4
                           file:rounded-full file:border-0
                           file:text-sm
                           file:bg-white/0 file:text-sky-700
@@ -235,6 +241,20 @@
                       </label>
                     </form>
                   </div>
+
+
+
+
+
+                  <!-- <div class="mb-1">
+                    <input id="new-file-name" v-model="NamesUploadFiles" class="text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название">
+                  </div> -->
+
+
+
+
+
+
                   <div class="flex items-center justify-center">
                     <button :disabled="loadingNow" class="w-40 text-center text-sm cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-400" @click="uploadFile(project_file.id)"> Обновить</button>
                   </div>
@@ -408,6 +428,7 @@ export default {
       assemblyName: null,
       uploadDirFiles: [], /// Сюда скидывает новый один
       uploadFiles: [],    /// Сюда скидывает обновлённый с id
+      NamesUploadFiles: [], /// Сюда будут скидываться все последние названия файлов для обновления названия 
       historyFilesActived: null, /// Идентификатор файлов версий, которые отображаются
 
       latest_file: null, /// Адрес архива
