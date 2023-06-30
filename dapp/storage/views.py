@@ -493,7 +493,6 @@ class SearchView(APIView):
 
 
     def post(self, request):
-        print(request.data)
         search_query = request.data['name']
         target = request.data['target']
 
@@ -504,14 +503,12 @@ class SearchView(APIView):
 
 
         if target == 'file':
-            print(f'{target} - {search_query}')
             search = self.file_document_class.search().query(query)
             response = search.execute()
             ids = [file.id for file in response ]
             files = []
             response = InsertedFilesModel.objects.filter(id__in=ids)
             for inserted_qs in response:
-                print(inserted_qs.archive_id)
                 if inserted_qs.archive_id not in files:
                     files.append(inserted_qs.archive_id)
 
@@ -519,7 +516,6 @@ class SearchView(APIView):
             search = self.archive_document_class.search().query(query)
             response = search.execute()
             files = [file.id for file in response ]
-
 
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
 

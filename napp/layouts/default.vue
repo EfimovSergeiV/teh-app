@@ -47,7 +47,7 @@
           <div v-if="showSearchForm" class="fixed z-30 top-0 w-full">
             <div class="">
 
-              <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
+              <div class="container mx-auto py-2 px-12 bg-gray-100 h-[650px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
                 <div class="relative w-full flex justify-between my-4">
                   <div class="">
@@ -207,7 +207,7 @@
         selectAuthor: null,
         searchName: null,
         startDateFile: '2000-01-01T12:00',
-        endDateFile: '2000-01-01T12:00' ,
+        endDateFile: '2000-01-01T23:59' ,
         searchTarget: 'archive',
       }
     },
