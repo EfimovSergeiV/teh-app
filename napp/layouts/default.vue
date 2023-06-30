@@ -49,12 +49,16 @@
 
               <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
-                <div class="flex justify-between my-4">
+                <div class="relative w-full flex justify-between my-4">
                   <div class="">
-                    <p v-if="searchTarget === 'archive'" class="font-semibold text-gray-700 text-base">Поиск по архивам</p>
-                    <p v-if="searchTarget === 'file'" class="font-semibold text-gray-700 text-base">Поиск по файлам</p>
+                    <transition name="absolute-left-emergence" mode="in-out" >
+                      <p v-if="searchTarget === 'archive'" class="absolute font-semibold text-gray-700 text-base">Поиск по архивам</p>
+                    </transition>
+                    <transition name="absolute-left-emergence" mode="out-in">
+                      <p v-if="searchTarget === 'file'" class="absolute font-semibold text-gray-700 text-base">Поиск по файлам</p>
+                    </transition>
                   </div>
-                  <div class=""><button class="text-sm mdi mdi-close text-gray-700" @click="searchForm"> Закрыть</button></div>
+                  <div class=""><button class="text-sm mdi-24px mdi mdi-close text-gray-500" @click="searchForm"></button></div>
                 </div>
 
 
@@ -236,6 +240,7 @@
       this.searchAction({
         name: this.searchName,
         author: this.selectAuthor,
+        target: this.searchTarget,
         start_date: this.startDateFile,
         end_date: this.endDateFile,
       })

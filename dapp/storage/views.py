@@ -15,7 +15,7 @@ from storage.serializers import (
 )   
 from django.core.files.storage import FileSystemStorage
 import hashlib, zipfile
-from storage.documents import FileDocument
+from storage.documents import FileDocument, InsertedFilesDocument
 from django.db.models import Case, When
 from elasticsearch_dsl import Q
 from django.contrib.auth.models import User
@@ -470,13 +470,15 @@ class GetDiskSpaceView(APIView):
 
 class SearchView(APIView):
     serializer_class = SearchSerializer
-    document_class = FileDocument
+    archive_document_class = FileDocument
+    file_document_class = InsertedFilesDocument
 
     def get(self, request):
         """ Возвращает список всех авторов и крайние даты """
 
         archives_qs = FileHistoryModel.objects.all()
         authors = []
+        extensions = []
 
         for archive_qs in archives_qs:
             if archive_qs.author not in authors:
@@ -484,6 +486,7 @@ class SearchView(APIView):
 
         return Response({
             "authors": authors,
+            "extensions": extensions,
             "first_date": "",
             "latest_date": "",
         })
@@ -492,15 +495,32 @@ class SearchView(APIView):
     def post(self, request):
         print(request.data)
         search_query = request.data['name']
+        target = request.data['target']
+
         query = Q('multi_match', query=search_query,
                 fields=[
                     'name',
                 ], fuzziness='auto')
 
-        search = self.document_class.search().query(query) #[0:30]
-        response = search.execute()
 
-        files = [file.id for file in response ]
+        if target == 'file':
+            print(f'{target} - {search_query}')
+            search = self.file_document_class.search().query(query)
+            response = search.execute()
+            ids = [file.id for file in response ]
+            files = []
+            response = InsertedFilesModel.objects.filter(id__in=ids)
+            for inserted_qs in response:
+                print(inserted_qs.archive_id)
+                if inserted_qs.archive_id not in files:
+                    files.append(inserted_qs.archive_id)
+
+        else:
+            search = self.archive_document_class.search().query(query)
+            response = search.execute()
+            files = [file.id for file in response ]
+
+
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(files)])
 
         start_date = datetime.fromisoformat(request.data['start_date'])

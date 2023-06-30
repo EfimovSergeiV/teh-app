@@ -295,7 +295,7 @@
           <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
             <div class="flex justify-between my-2">
               <div class=""><p class="font-semibold text-sky-800 text-sm">История версий</p></div>
-              <div class=""><button class="text-sm mdi mdi-close text-sky-800" @click="historyFilesModal = false"> Закрыть</button></div>
+              <div class=""><button class="text-sm mdi-24px mdi mdi-close text-gray-500" @click="historyFilesModal = false"></button></div>
             </div>
             <div class="flex items-center justify-between gap-2">
               <div class="w-32"><p class="text-sky-900 font-semibold text-sm mdi mdi-file cursor-pointer"> Проектов: <span class="mx-1">{{ historical_files.length }}</span></p></div>
