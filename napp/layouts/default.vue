@@ -124,7 +124,7 @@
                                 <div class="group">
                                   <p class=" text-sm text-sky-900 cursor-pointer">Файлы</p>
 
-                                  <div class="absolute bg-sky-800 border border-gray-300 rounded-md z-50 transition invisible group-hover:visible">
+                                  <div class="absolute left-0 bg-sky-800 border border-gray-300 rounded-md z-50 transition invisible group-hover:visible">
                                     <div class="px-1 py-2">
                                       <div v-for="file in result.inserted_files" :key="file.id" class="">
                                         <p class="text-xs text-gray-200">{{ file.name }}</p>
