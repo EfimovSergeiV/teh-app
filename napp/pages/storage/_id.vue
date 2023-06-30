@@ -249,7 +249,7 @@
 
 
                   <div class="mb-1">
-                    <input :id="project_file.id" class="text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название (необязательно)" @change="onFileNameChange">
+                    <input :id="project_file.id" :disabled="checkFiles(project_file.id)" class="text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название (необязательно)" @change="onFileNameChange">
                   </div>
 
 
@@ -507,8 +507,8 @@ export default {
     onFileNameChange(event) {
       const EventData = event
       const EventID = EventData.target.id
-      const IndexFile = this.uploadFiles.findIndex((item) => item.file_id === String(EventID))  /// индекс из списка выгрузки
-      // const File = this.files.findIndex((item) => Number(item.id) === Number(EventID) )         /// индекс из файлов
+      const IndexFile = this.uploadFiles.findIndex((item) => item.file_id === String(EventID))    /// индекс из списка выгрузки
+      // const File = this.files.findIndex((item) => Number(item.id) === Number(EventID) )        /// индекс из файлов
       
       if (IndexFile === -1) {
         this.addToast({ "id": 1, "msg": "Выберите сначала файлы", "type": "error" })
@@ -516,7 +516,16 @@ export default {
 
         this.uploadFiles[IndexFile].file_name = event.target.value
       }
+    },
 
+    /// Проверяем файлы, для активации поля нового названия архива
+    checkFiles(id) {
+      const IndexFile = this.uploadFiles.findIndex((item) => item.file_id === String(id))
+      if (IndexFile === -1) {
+        return true 
+      } else {
+        return false
+      }
     },
 
     onFileChange(event) {
