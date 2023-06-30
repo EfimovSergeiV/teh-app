@@ -249,7 +249,7 @@
 
 
                   <div class="mb-1">
-                    <input :id="project_file.id" :disabled="checkFiles(project_file.id)" class="text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название (необязательно)" @change="onFileNameChange">
+                    <input :id="project_file.id" :disabled="checkFiles(project_file.id)" class="visible disabled:invisible text-xs appearance-none font-semibold border-b border-gray-800/0 focus:border-gray-800/0 rounded w-full px-4 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="text" placeholder="Новое название (необязательно)" @change="onFileNameChange">
                   </div>
 
 
