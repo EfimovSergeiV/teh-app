@@ -256,7 +256,6 @@ export const state = () => ({
     searchAction({ commit }, data) {
       
       this.$axios.$post('s/search/', data ).then((resp) => {
-        console.log(resp)
         commit('searchMutation', resp)
       }).catch(() => {})
     },
