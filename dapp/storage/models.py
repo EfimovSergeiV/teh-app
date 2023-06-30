@@ -86,22 +86,36 @@ def upload_file_to(instance, filename):
     return file_path
 
 class FileHistoryModel(models.Model):
-    """ 
-        История файлов ( содержит сам файл, потому что их может быть несколько )
-    """
+    """ История файлов ( содержит сам файл, потому что их может быть несколько ) """
+
     project = models.ForeignKey(ProjectArchiveModel, verbose_name="Проект", related_name='project_history_files', on_delete=models.CASCADE)
     assembly = models.ForeignKey(AssemblyModel, verbose_name="Узел/Сборка", related_name='assembly_history_files', null=True, blank=True, on_delete=models.CASCADE)
     latest = models.ForeignKey(FileArchiveModel, verbose_name="Текущий архив", related_name='historical_files', on_delete=models.CASCADE)
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
-    file = models.FileField(verbose_name="Архив файлов", upload_to=upload_file_to) 
+    file = models.FileField(verbose_name="Архив файлов", upload_to=upload_file_to)
     created_date = models.DateTimeField(verbose_name="Дата создания")
     
     class Meta:
-        verbose_name = "Файл архива"
-        verbose_name_plural = "5. Файлы архивов"
+        verbose_name = "Архивы"
+        verbose_name_plural = "5. Архив"
         ordering = ['-created_date',]
 
     def __str__(self) -> str:
         return self.name
+    
+
+class InsertedFilesModel(models.Model):
+    """ Файлы которые вложенны в архив """
+
+    archive = models.ForeignKey(FileHistoryModel, related_name='inserted_files', on_delete=models.CASCADE)
+    name = models.CharField(verbose_name='Название файла', max_length=300)
+    extension = models.CharField(verbose_name='Тип', max_length=50)
+
+    class Meta:
+        verbose_name = "Файл архива"
+        verbose_name_plural = "Файлы архива"
+
+    def __str__(self) -> str:
+        return f'Файл { self.extension }'

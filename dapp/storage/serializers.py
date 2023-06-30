@@ -12,8 +12,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 
+class InsertedFilesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = InsertedFilesModel
+        fields = '__all__'
+
 class FileHistorySerializer(serializers.ModelSerializer):
     """ Сериалихзатор истории файла """
+    inserted_files = InsertedFilesSerializer(many=True, read_only=True)
 
     class Meta:
         model = FileHistoryModel
@@ -60,6 +67,7 @@ class ProjectArchiveSerializer(serializers.ModelSerializer):
 
 class SearchSerializer(serializers.ModelSerializer):
     """ Поиск по истории файлов """
+    inserted_files = InsertedFilesSerializer(many=True, read_only=True)
 
     class Meta:
         model = FileHistoryModel
@@ -69,4 +77,5 @@ class SearchSerializer(serializers.ModelSerializer):
             'author',
             'file',
             'created_date',
+            'inserted_files',
             )

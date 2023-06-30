@@ -50,8 +50,28 @@
               <div class="container mx-auto py-2 px-12 bg-gray-100 h-[600px] border-t border-sky-500 rounded-br-xl rounded-bl-xl shadow-lg shadow-gray-900/50">
 
                 <div class="flex justify-between my-4">
-                  <div class=""><p class="font-semibold text-gray-700 text-sm">Поиск по архивам</p></div>
+                  <div class="">
+                    <p v-if="searchTarget === 'archive'" class="font-semibold text-gray-700 text-base">Поиск по архивам</p>
+                    <p v-if="searchTarget === 'file'" class="font-semibold text-gray-700 text-base">Поиск по файлам</p>
+                  </div>
                   <div class=""><button class="text-sm mdi mdi-close text-gray-700" @click="searchForm"> Закрыть</button></div>
+                </div>
+
+
+                <div class="">
+
+                  <div class="flex gap-4 my-2">
+
+                    <div class="">
+                      <input id="default-radio-1" v-model="searchTarget" type="radio" value="archive" name="default-radio" class="w-4 h-4 text-xs text-sky-800 bg-gray-100 border-gray-300 focus:ring-sky-500/0  focus:ring-0 dark:bg-gray-700 dark:border-gray-600">
+                      <label for="default-radio-1" class="text-xs font-semibold text-gray-600 cursor-pointer"> Архивы</label>
+                    </div>
+                    <div class="">
+                      <input id="default-radio-2" v-model="searchTarget" type="radio" value="file" name="default-radio" class="w-4 h-4 text-xs text-sky-800 bg-gray-100 border-gray-300 focus:ring-sky-500/0 focus:ring-0 dark:bg-gray-700 dark:border-gray-600">
+                      <label for="default-radio-2" class="text-xs font-semibold text-gray-600 cursor-pointer"> Файлы</label>
+                    </div>
+                  </div>
+
                 </div>
                 
                 <div class="flex items-center gap-4">
@@ -79,30 +99,52 @@
                 <div class="my-2">
                   <div class="overflow-y-auto h-[500px] py-1 border-b border-t border-sky-500/50">
                     <div class="">
-
+                      
                       <div v-if="searchResult.length > 0" class="">
                         <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
+                          
                           <div v-for="result in searchResult" :key="result.id" class="">
-                            <div class="border-b border-gray-300">
+                            <div class="border-b border-gray-300 relative">
 
                               <div class="">
                                 <p class="text-sm text-gray-700">{{ result.name }}</p>
                               </div>
 
-                              <div class="flex items-center justify-start my-1">
-                                <div>
+                              <div class="flex items-center justify-start my-1 gap-2">
+                                <!-- <div>
                                   <label class="flex items-center gap-2">
                                     <input type="checkbox" class="rounded text-sky-700 focus:ring-0">
                                     <p class="text-gray-700 text-sm font-semibold"></p>
                                   </label>
+                                </div> -->
+                                <a :href="result.file" class=" text-sm text-sky-900">Скачать</a>
+                                
+                              
+                                
+                                <div class="group">
+                                  <p class=" text-sm text-sky-900 cursor-pointer">Файлы</p>
+
+                                  <div class="absolute bg-sky-800 border border-gray-300 rounded-md z-50 transition invisible group-hover:visible">
+                                    <div class="px-1 py-2">
+                                      <div v-for="file in result.inserted_files" :key="file.id" class="">
+                                        <p class="text-xs text-gray-200">{{ file.name }}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+
                                 </div>
-                                <a :href="result.file" class=" text-sm text-gray-900">Скачать</a>
+                              
+
+                              
+                              
                               </div>
 
                               <div class="my-1">
                                 <p class="text-xs font-semibold text-gray-700 mdi mdi-account"> {{ result.author }}</p>
                                 <p class="text-xs font-semibold text-gray-700 mdi mdi-calendar-clock"> {{ result.created_date }}</p>
                               </div>
+
+
 
                             </div>
 
@@ -161,7 +203,8 @@
         selectAuthor: null,
         searchName: null,
         startDateFile: '2000-01-01T12:00',
-        endDateFile: '2023-01-01T23:59',
+        endDateFile: '2000-01-01T12:00' ,
+        searchTarget: 'archive',
       }
     },
     computed: {

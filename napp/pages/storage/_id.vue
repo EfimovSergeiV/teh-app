@@ -329,6 +329,7 @@
             <div class="my-2">
               <div class="overflow-y-auto h-[460px] py-1 border-b border-t border-sky-500/50">
                 <div class="">
+
                   <transition-group tag="div" name="fade" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 py-4">
                     <div v-for="historical_file in historical_files" :key="historical_file.id" class="">
                       <div class="border-b border-gray-300">
@@ -342,6 +343,24 @@
                             </label>
                           </div>
                           <a :href="historical_file.file" class=" text-sm text-sky-900">Скачать</a>
+                          
+                          
+                          <!-- <div class="">
+                            <p class=" text-sm text-sky-900 cursor-pointer">Файлы</p>
+                          </div> -->
+                          <div class="group">
+                            <p class=" text-sm text-sky-900 cursor-pointer">Файлы</p>
+
+                            <div class="absolute bg-sky-800 border border-gray-300 rounded-md z-50 transition invisible group-hover:visible">
+                              <div class="px-2 py-1">
+                                <div v-for="filename in historical_file.inserted_files" :key="filename.id" class="">
+                                  <p class="text-xs text-gray-200">{{ filename.name }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
                         </div>
                         <div class="my-2">
                           <p class="text-xs font-semibold text-gray-600 mdi mdi-account"> {{ historical_file.author }}</p>

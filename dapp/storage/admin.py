@@ -5,6 +5,7 @@ from storage.models import (
     ProjectArchiveModel, 
     FileArchiveModel,
     FileHistoryModel,
+    InsertedFilesModel,
 )
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -65,6 +66,17 @@ class FileArchiveAdmin(admin.ModelAdmin):
     readonly_fields = ('file_path',)
     list_filter = ('project', 'assembly', 'author',)
 
+
+class InsertedFiles(admin.TabularInline):
+    model = InsertedFilesModel
+    readonly_fields = ('archive', 'name', 'extension',)
+    
+    # fieldsets = (
+    #     (None, {'fields': (('name', 'assembly', 'file', ),)}),
+    #     (None, {'fields': (('author'),)}),
+    # )
+    extra = 0
+
 class FileHistoryAdmin(admin.ModelAdmin):
     """ """
 
@@ -72,7 +84,8 @@ class FileHistoryAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'author', 'created_date')
     search_fields = ('id', 'name',)
     list_editable = ('name',)
-    list_filter = ('project', 'assembly', 'author',)
+    list_filter = ('project', 'author',)
+    inlines = (InsertedFiles,)
 
 
 admin.site.register(CategoryModel, CategoryAdmin)
