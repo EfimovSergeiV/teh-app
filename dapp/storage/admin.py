@@ -64,7 +64,7 @@ class FileArchiveAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name',)
     list_editable = ('name',)
     readonly_fields = ('file_path',)
-    list_filter = ('project', 'assembly', 'author',)
+    list_filter = ('project', 'author',)
 
 
 class InsertedFiles(admin.TabularInline):

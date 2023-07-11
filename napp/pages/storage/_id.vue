@@ -171,7 +171,11 @@
                 </div>
 
                 <div class="flex items-center justify-center gap-2">
-                  <button :disabled="loadingNow" class="w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-sky-700 disabled:text-gray-600" @click="sendLatestFile"> Загрузить</button>
+                  <div class="flex gap-2 items-center bg-sky-800 px-2 h-10 rounded-md">
+                    <input id="datetime" v-model="newFileCustomDateStatus" type="checkbox" class="rounded text-sky-800 focus:ring-white/0 focus:ring-offset-0 focus:outline-none">
+                    <input id="date-time" v-model="dateFileHistory" class="shadow text-xs appearance-none font-semibold rounded w-full py-1 px-3 text-gray-700 leading-tight placeholder-gray-700/80 focus:ring-white/0 focus:ring-offset-0 focus:outline-none" type="datetime-local">
+                  </div>
+                  <button :disabled="loadingNow" class="bg-sky-800 px-2 h-10 rounded-md w-40 text-center text-sm font-semibold cursor-pointer mdi mdi-upload text-gray-100 disabled:text-gray-200" @click="sendLatestFile"> Загрузить</button>
                 </div>
 
                 <div v-if="loadingID === 'newfile'" class="absolute top-0 w-full h-full">
@@ -442,7 +446,8 @@ export default {
       editProjectDataForm: false,
       historyFilesModal: false,
       authorFileHistory: this.$auth.user,
-      dateFileHistory: '2000-01-12T12:00',
+      newFileCustomDateStatus: false,       /// Если true, тогда новый файл пиздует в историю
+      dateFileHistory: '2000-01-12T12:00',  /// Отсюда берётся кастомная дата для истор файлов и новых
 
       assemblyName: null,
       uploadDirFiles: [], /// Сюда скидывает новый один
@@ -586,6 +591,11 @@ export default {
 
       formData.append("project_id", this.project.id)
       formData.append("assembly_id", this.selectedAssembly.id)
+
+      if (this.newFileCustomDateStatus) {
+        formData.append("date_history", this.dateFileHistory)
+      }
+
       if (this.newArchiveName) {
           formData.append("name", this.newArchiveName)
       }

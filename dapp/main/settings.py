@@ -26,12 +26,7 @@ SECRET_KEY = 'django-insecure-#%$x3lr=75xcn!wo_9x_-@6gus9bcv83d&xlbe5i^ga2e46em3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    '*',
-    # '0.0.0.0',
-    # '127.0.0.1',
-    # '192.168.60.201'
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -91,10 +86,24 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# POSTGRESQL
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fileserv_db',
+        'USER': 'fileserv_user',
+        'PASSWORD': 'N3O9f#*STSUXvok5NS',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -144,25 +153,21 @@ DATA_UPLOAD_MAX_NUMBER_FILES = None
 DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024 * 1024  # 100 GB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024 * 1024  # 100 GB
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    # BASE_DIR / "static",
-    # "/var/www/static/",
-]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+MEDIA_URL = '/files/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')
 
 
-STATIC_ROOT = BASE_DIR / 'static'
-MEDIA_URL = 'files/'
-MEDIA_ROOT = BASE_DIR / 'files'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

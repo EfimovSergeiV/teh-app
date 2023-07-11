@@ -80,7 +80,6 @@ class CreateOrUpdateProjectView(APIView):
         if serializer.is_valid():
             if 'project' in data.keys():
                 msg = 'Проект обновлён'
-                print('update')
                 project = ProjectArchiveModel.objects.get(id=data['project'])
                 serializer.update(project, validated_data=serializer.validated_data)
             else:
@@ -100,7 +99,6 @@ class AssemblyView(APIView):
         if serializer.is_valid():
             serializer.save()
         else:
-            print(serializer.errors)
             return Response(data={'id': 1, 'msg': f'Нада название сборки', 'type': 'error'})
 
 
@@ -138,16 +136,16 @@ def add_file_to_history(data):
     """ Добавляем загруженный файл в историю """
 
     serializer = FileHistorySerializer(data=data)
-
     if serializer.is_valid():
         qs = serializer.save()
         return qs
     else:
-        print(f'ERR HISTORY: {serializer.errors}')
+        pass
+        # print(f'ERR HISTORY: {serializer.errors}')
 
 
 def add_inserted_files(qs, file):
-    """ Заполняем файлы, которые находятся в ахиве """
+    """ Заполняем файлы, которые находятся в архиве """
 
     with zipfile.ZipFile(file, 'r') as zip_file:
         files = zip_file.namelist()
@@ -184,8 +182,6 @@ class UploadLatestFileView(APIView):
             file = request.FILES['file']
             md5_summ = get_md5_summ(file)
 
-            print(file.name)
-
             project = ProjectArchiveModel.objects.get(id=int(request.data["project_id"]))
 
             profile = User.objects.get(username=request.user)
@@ -202,28 +198,26 @@ class UploadLatestFileView(APIView):
                 "created_date": created_data
             }
 
-
-
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer_data = FileArchiveSerializer(data=data)      
 
         if serializer_data.is_valid():
-            print(f'ser valid {serializer_data.validated_data}')
             saved_data = serializer_data.save()
             data["latest"] = saved_data.id
 
         else:
-            print(f'ERR ARCHIVE: {serializer_data.errors}')
+            Response(status=status.HTTP_400_BAD_REQUEST)
         
-        data['file'] = file
-
-        qs = add_file_to_history(data=data)
-        add_inserted_files(qs, file)
-
-        latest = FileArchiveModel.objects.filter(id=saved_data.id)
-        latest.update(file=str(qs.file))
+        try:
+            data['file'] = file
+            qs = add_file_to_history(data=data)
+            add_inserted_files(qs, file)
+            latest = FileArchiveModel.objects.filter(id=saved_data.id)
+            latest.update(file=str(qs.file))
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
@@ -282,7 +276,6 @@ class UpdateLatestFileView(APIView):
             return Response(data={'id': 1, 'msg': f'Архив загружен', 'type': 'success'})
 
         else:
-            print(f'ERR : {serializer_data.errors}')
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         
@@ -337,7 +330,6 @@ from django.conf import settings
 from pathlib import Path
 
 def custom_builder(project, user, data):
-    print(project, user, data)
 
     assembly_ids = data['assembly_ids']
     latest_ids = data['latest_ids']
@@ -350,7 +342,6 @@ def custom_builder(project, user, data):
     path_to_files = f'{settings.BASE_DIR}/files/{user}/tmp/{project.name}/'
     path_to_zip = f'{settings.BASE_DIR}/files/{user}/{project.name}-build.zip'
 
-    print("\nAssembly:")
     for assembly_qs in assemblys_qs:
         files = assembly_qs.assembly_files.all()
         
@@ -402,8 +393,6 @@ class BuilderProjectView(APIView):
         user = request.user
         path = f'{settings.BASE_DIR}/files/{ user }/tmp/'
 
-        print(request.data)
-
         project_qs = ProjectArchiveModel.objects.get(id=pk)
         assemplys_qs = project_qs.project_assembly.all()
 
@@ -431,8 +420,6 @@ class BuilderProjectView(APIView):
                 with zipfile.ZipFile(zip_path, 'r') as zip_file:
                     zip_file.extractall(create_path)
 
-                print(f"Кидаем в корень: {create_path}")
-
             elif len(files) > 1:
                 for file in files:
                     create_path = f'{path}{assemply_qs.name}/{file.name}'
@@ -440,8 +427,6 @@ class BuilderProjectView(APIView):
                     zip_path = f'{ settings.BASE_DIR }/files/{file.file}'
                     with zipfile.ZipFile(zip_path, 'r') as zip_file:
                         zip_file.extractall(create_path)
-
-                    print(f'Создаём вложенные директории: { create_path }')
 
         archive_zip = zipfile.ZipFile(f'{settings.BASE_DIR}/files/{user}/{project_qs.name}-build.zip', 'w')
         for folder, subfolders, files in os.walk(f'{settings.BASE_DIR}/files/{user}/tmp/'):

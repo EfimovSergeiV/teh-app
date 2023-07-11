@@ -57,7 +57,7 @@ class FileArchiveModel(models.Model):
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
     file = models.CharField(verbose_name="Путь к архиву", null=True, blank=True, max_length=500)
-    created_date = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
+    created_date = models.DateTimeField(verbose_name="Дата создания")
 
     class Meta:
         verbose_name = "Текущий архив"
@@ -71,17 +71,16 @@ class FileArchiveModel(models.Model):
 from transliterate import slugify
 def upload_file_to(instance, filename):
     related_model_id = instance.project_id
-
+    
     project, assembly = str(instance.project.name), str(instance.assembly.name)
     project_translate, assembly_translate = slugify(project), slugify(assembly)
-
+    
     project_path = project_translate if project_translate else project.replace(' ', '-').lower()
     assembly_path = assembly_translate if assembly_translate else assembly.replace(' ', '-').lower()
-
-    print(f'Path: {project_path}/{assembly_path}/{filename}')
-
+    
     directory_path = f"storage/models/{project_path}/{assembly_path}/"
     file_path = os.path.join(directory_path, filename)
+
     return file_path
 
 class FileHistoryModel(models.Model):
@@ -93,7 +92,7 @@ class FileHistoryModel(models.Model):
     author = models.CharField(verbose_name="Автор", max_length=250)
     name = models.CharField(verbose_name="Название", max_length=250)
     md5 = models.CharField(verbose_name="MD5 сумма",max_length=100, null=True, blank=True)
-    file = models.FileField(verbose_name="Архив файлов", upload_to=upload_file_to)
+    file = models.FileField(verbose_name="Архив файлов", upload_to=upload_file_to, max_length=500)
     created_date = models.DateTimeField(verbose_name="Дата создания")
 
     class Meta:
